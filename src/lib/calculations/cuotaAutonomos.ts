@@ -70,11 +70,12 @@ export interface ResultadoCuotaAutonomo {
 }
 
 function localizarTramo(rendimientoNetoMensual: number): TramoCotizacionRETA {
+  const rendimientoAcotado = Math.max(0, rendimientoNetoMensual);
   return (
     TABLA_TRAMOS_RETA.find(
       (tramo) =>
-        rendimientoNetoMensual >= tramo.rendimientoNetoMinimo &&
-        (tramo.rendimientoNetoMaximo === null || rendimientoNetoMensual < tramo.rendimientoNetoMaximo),
+        rendimientoAcotado >= tramo.rendimientoNetoMinimo &&
+        (tramo.rendimientoNetoMaximo === null || rendimientoAcotado < tramo.rendimientoNetoMaximo),
     ) ?? TABLA_TRAMOS_RETA[TABLA_TRAMOS_RETA.length - 1]
   );
 }
