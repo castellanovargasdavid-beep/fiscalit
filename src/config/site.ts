@@ -7,9 +7,10 @@ export const siteConfig = {
   /**
    * Email de contacto para leads de alto valor (auditoría gratuita) y para
    * el resto de avisos legales. Sobrescribible vía NEXT_PUBLIC_CONTACT_EMAIL
-   * en el entorno de build; en su ausencia usa un buzón formal del dominio.
+   * en el entorno de build. Buzón personal provisional del titular: cambiar
+   * en cuanto exista un buzón del dominio (p. ej. contacto@fiscalit.es).
    */
-  contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "contacto@fiscalit.es",
+  contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "lecastvarg@gmail.com",
   /** Número de WhatsApp Business en formato internacional sin espacios ni símbolos (p. ej. "34600000000"). Vacío = se oculta el botón de WhatsApp. */
   whatsappNumber: "",
   /** URL de un servicio de formularios sin backend (Formspree, Resend, un webhook propio...) para los leads de alto valor. Vacío = se usa solo el email de contacto. */
@@ -22,23 +23,14 @@ export const siteConfig = {
   newsletterEndpoint: "",
   /**
    * Titular del sitio a efectos del art. 10 LSSI-CE. Sobrescribible vía
-   * NEXT_PUBLIC_LEGAL_NAME en el entorno de build (recomendado en cuanto
-   * exista una razón social o alta de autónomo definitiva); en su ausencia
-   * usa una titularidad provisional formal para no dejar el Aviso Legal con
-   * huecos en producción.
+   * NEXT_PUBLIC_LEGAL_NAME en el entorno de build (p. ej. si más adelante
+   * se constituye una sociedad y el titular pasa a ser esa razón social).
    */
-  legalName: process.env.NEXT_PUBLIC_LEGAL_NAME ?? "Responsable editorial y técnico de FiscalIT.es",
+  legalName: process.env.NEXT_PUBLIC_LEGAL_NAME ?? "Leexny David Castellano Vargas",
   /** NIF/CIF del titular. Sobrescribible vía NEXT_PUBLIC_LEGAL_TAX_ID en el entorno de build. */
-  taxId: process.env.NEXT_PUBLIC_LEGAL_TAX_ID ?? "CIF/NIF en proceso de asignación registral",
-  /**
-   * Domicilio a efectos de notificaciones (LSSI-CE art. 10). Sobrescribible
-   * vía NEXT_PUBLIC_LEGAL_ADDRESS; en su ausencia se ofrece el email de
-   * contacto como canal formal de notificaciones mientras no exista un
-   * domicilio registral publicable.
-   */
-  legalAddress:
-    process.env.NEXT_PUBLIC_LEGAL_ADDRESS ??
-    `A efectos de notificaciones: ${process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "contacto@fiscalit.es"}`,
+  taxId: process.env.NEXT_PUBLIC_LEGAL_TAX_ID ?? "Y1578539V",
+  /** Domicilio a efectos de notificaciones (LSSI-CE art. 10). Sobrescribible vía NEXT_PUBLIC_LEGAL_ADDRESS. */
+  legalAddress: process.env.NEXT_PUBLIC_LEGAL_ADDRESS ?? "Calle Reial, 9, 2º-3ª, 43003 Tarragona (España)",
   /**
    * Fecha (ISO) de la última revisión técnica global de la metodología y
    * las fuentes normativas de todas las calculadoras. Actualízala cada vez
