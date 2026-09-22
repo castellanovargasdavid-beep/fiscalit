@@ -3,8 +3,13 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { mainNav } from "@/config/site";
+import { mainNav, siteConfig } from "@/config/site";
+import { formatMesAnioISO } from "@/lib/format";
 import { Logo } from "@/components/Logo";
+
+/** "septiembre de 2026" (formatMesAnioISO) → "Septiembre 2026", para el badge de revisión normativa. */
+const mesAnioRevision = formatMesAnioISO(siteConfig.lastMethodologyReview).replace(" de ", " ");
+const NORMATIVA_REVISION_LABEL = mesAnioRevision.charAt(0).toUpperCase() + mesAnioRevision.slice(1);
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -17,7 +22,7 @@ export function Header() {
         <div className="hidden min-w-0 items-center gap-6 md:flex">
           <span className="hidden shrink-0 items-center gap-1.5 rounded-full border border-slate-200/80 bg-slate-100/80 px-2.5 py-1 text-xs font-medium whitespace-nowrap text-slate-600 lg:inline-flex">
             <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" aria-hidden="true" />
-            Normativa 2026/2027 verificada · Territorio Común
+            Normativa revisada · {NORMATIVA_REVISION_LABEL} · Territorio Común
           </span>
 
           <nav

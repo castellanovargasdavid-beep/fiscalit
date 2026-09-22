@@ -1,4 +1,4 @@
-import { Cookie, Landmark, Lock, MonitorSmartphone, RefreshCw, Zap } from "lucide-react";
+import { ArrowRight, Cookie, Landmark, Lock, MonitorSmartphone, RefreshCw, Zap } from "lucide-react";
 import { ToolsExplorer } from "@/components/home/ToolsExplorer";
 import { SystemStatusBar } from "@/components/home/SystemStatusBar";
 import { HeroProductMockup } from "@/components/home/HeroProductMockup";
@@ -75,15 +75,32 @@ export default function Home() {
               </span>
 
               <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
-                Calcula antes de decidir. Herramientas fiscales y societarias{" "}
+                Calcula antes de decidir. Herramientas fiscales para autónomos y micropymes,{" "}
                 <span className="bg-gradient-to-r from-blue-700 to-indigo-600 bg-clip-text text-transparent">
                   sin complicaciones
                 </span>
+                .
               </h1>
               <p className="mt-4 text-lg leading-8 text-slate-600">
                 Simuladores interactivos para autónomos y pymes en España. Procesamiento 100% en tu navegador
                 conforme a tablas oficiales del BOE.
               </p>
+
+              <div className="mt-6 flex flex-wrap items-center gap-3">
+                <a
+                  href="#herramientas"
+                  className="inline-flex items-center gap-1.5 rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700"
+                >
+                  Empezar a calcular
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </a>
+                <a
+                  href="#herramientas"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50"
+                >
+                  Explorar 6 herramientas
+                </a>
+              </div>
 
               <ul className="mt-6 flex flex-wrap gap-3">
                 {TRUST_BADGES.map((badge) => (
@@ -103,7 +120,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div id="herramientas" className="mt-16 scroll-mt-24">
+          <div id="herramientas" className="mt-10 scroll-mt-24">
             <ToolsExplorer />
           </div>
         </div>

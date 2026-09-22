@@ -30,8 +30,8 @@ const CARDS: { key: string; className: string; content: ReactNode }[] = [
           <div className="mt-2.5 flex items-center justify-between gap-2">
             <span className="text-xs text-slate-700">Ticket Combustible (Estación de Servicio)</span>
             <span className="flex shrink-0 items-center gap-1">
-              <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-medium text-emerald-700">
-                ✓ Canjear factura
+              <span className="rounded-full bg-slate-200 px-2 py-0.5 text-[11px] font-medium text-slate-700">
+                Requiere justificación documental
               </span>
               <span className="rounded-full bg-slate-200 px-2 py-0.5 text-[11px] font-medium text-slate-700">
                 {formatEUR(-64.2, true)}
@@ -40,8 +40,8 @@ const CARDS: { key: string; className: string; content: ReactNode }[] = [
           </div>
           <div className="mt-2 flex items-center justify-between gap-2">
             <span className="text-xs text-slate-700">Peaje AP-7</span>
-            <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-medium text-emerald-700">
-              ✓ Deducible 100%
+            <span className="rounded-full bg-slate-200 px-2 py-0.5 text-[11px] font-medium text-slate-700">
+              Gasto potencialmente deducible
             </span>
           </div>
         </div>
@@ -64,7 +64,7 @@ const CARDS: { key: string; className: string; content: ReactNode }[] = [
             Tramo 4 activo
           </span>
         </div>
-        <p className="mt-3 text-xs font-medium tracking-wide text-slate-400 uppercase">Cuota estimada</p>
+        <p className="mt-3 text-xs font-medium tracking-wide text-slate-400 uppercase">Cuota mensual estimada</p>
         <p className="mt-1 text-2xl font-semibold text-slate-900">{formatEUR(347.82, true)}/mes</p>
       </div>
     ),
@@ -79,9 +79,7 @@ const CARDS: { key: string; className: string; content: ReactNode }[] = [
           <span className="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-medium text-amber-800">
             Alerta técnica
           </span>
-          <p className="mt-1 text-xs leading-5 text-amber-800">
-            2 requisitos pendientes · Evita sanción art. 201 bis LGT
-          </p>
+          <p className="mt-1 text-xs leading-5 text-amber-800">Diagnóstico VeriFactu · 2 aspectos a revisar</p>
         </div>
       </div>
     ),
@@ -92,7 +90,7 @@ const CARDS: { key: string; className: string; content: ReactNode }[] = [
     content: (
       <div className="flex items-center gap-2.5 rounded-2xl border border-slate-200/80 bg-white p-3.5 shadow-lg">
         <Lock className="h-4 w-4 shrink-0 text-emerald-600" />
-        <p className="text-xs leading-5 text-slate-600">100% en local · Sin cookies ni trackers</p>
+        <p className="text-xs leading-5 text-slate-600">Cálculos locales · 0 datos financieros transmitidos al servidor</p>
       </div>
     ),
   },
