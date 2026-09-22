@@ -6,29 +6,19 @@ interface FiscalitMarkProps {
 }
 
 /**
- * Isotipo propio de FiscalIT: monograma geométrico de la "F" construido a
- * partir del trazo vertical de la letra y tres barras horizontales de
- * longitud decreciente, evocando líneas de balance contable / un ledger.
- * Trazos sólidos de 2px, `currentColor` (sin relleno ni gradiente en el
- * propio símbolo: el color depende de dónde se use), viewBox 24x24 para
- * alinearse al mismo grid que el resto de iconos de Lucide del sitio.
+ * Isotipo propio de FiscalIT: monograma geométrico y modular de la "F",
+ * construido con bloques sólidos (no trazos) sobre su propia caja azul
+ * corporativa redondeada. El SVG incluye su fondo: no necesita un
+ * contenedor exterior que lo recorte ni lo coloree.
  */
 export function FiscalitMark({ className }: FiscalitMarkProps) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <path d="M6 4v16" />
-      <path d="M6 4h11" />
-      <path d="M6 12h8" />
-      <path d="M6 17h5" />
+    <svg viewBox="0 0 32 32" fill="none" className={className} aria-hidden="true">
+      <rect width="32" height="32" rx="8" fill="#2563EB" />
+      <rect x="7" y="7" width="4.5" height="18" rx="2" fill="white" />
+      <rect x="13.5" y="7" width="11.5" height="4.5" rx="2" fill="white" />
+      <rect x="13.5" y="13.5" width="8" height="4.5" rx="2" fill="white" fillOpacity="0.8" />
+      <circle cx="22.5" cy="22.5" r="2.5" fill="white" fillOpacity="0.5" />
     </svg>
   );
 }
@@ -44,9 +34,7 @@ export function Logo({ className }: LogoProps) {
       href="/"
       className={cn("group flex items-center gap-2.5 transition-all duration-150 hover:opacity-95", className)}
     >
-      <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600 shadow-sm shadow-blue-600/20 ring-1 ring-black/5">
-        <FiscalitMark className="h-5 w-5 text-white" />
-      </span>
+      <FiscalitMark className="h-9 w-9 shrink-0 shadow-sm shadow-blue-600/20" />
       <span className="flex items-center">
         <span className="text-lg font-extrabold tracking-tight text-slate-900">Fiscal</span>
         <span className="text-lg font-black tracking-tight text-blue-600">it</span>
