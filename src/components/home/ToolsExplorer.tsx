@@ -47,7 +47,7 @@ export function ToolsExplorer() {
         Herramientas disponibles
       </h2>
 
-      <div className="relative">
+      <div className="relative rounded-full border border-slate-300 bg-white shadow-sm transition-all hover:border-slate-400 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100">
         <Search
           className="pointer-events-none absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-slate-400"
           aria-hidden="true"
@@ -58,8 +58,11 @@ export function ToolsExplorer() {
           onChange={(event) => setBusqueda(event.target.value)}
           placeholder="Busca por tarea: cuota, factura, sl, dietas, iva, verifactu, pluriactividad..."
           aria-label="Buscar herramienta"
-          className="w-full rounded-full border border-slate-300 bg-white py-3 pr-4 pl-11 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+          className="w-full rounded-full bg-transparent py-3 pr-20 pl-11 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none"
         />
+        <kbd className="pointer-events-none absolute top-1/2 right-3 hidden -translate-y-1/2 rounded-md border border-slate-200 bg-slate-50 px-2 py-1 text-[11px] font-medium text-slate-500 sm:inline-block">
+          Buscar
+        </kbd>
       </div>
 
       <div className="mt-4 flex flex-wrap gap-2" role="group" aria-label="Filtrar por categoría">
