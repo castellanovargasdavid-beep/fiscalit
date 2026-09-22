@@ -1,5 +1,6 @@
 import { Cookie, Landmark, Lock, MonitorSmartphone, RefreshCw, Zap } from "lucide-react";
 import { ToolsExplorer } from "@/components/home/ToolsExplorer";
+import { buildOrganizationJsonLd, buildWebSiteJsonLd } from "@/lib/seo";
 
 const TRUST_BADGES = [
   { icon: Cookie, label: "Cero cookies invasivas" },
@@ -29,6 +30,15 @@ const VALUE_PROPS = [
 export default function Home() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildWebSiteJsonLd()) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildOrganizationJsonLd()) }}
+      />
+
       <section className="max-w-2xl">
         <h1 className="text-4xl font-semibold tracking-tight text-zinc-900 sm:text-5xl dark:text-zinc-50">
           Herramientas de cálculo fiscal, laboral y cotizaciones sin complicaciones

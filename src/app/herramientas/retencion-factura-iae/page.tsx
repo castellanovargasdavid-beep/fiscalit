@@ -1,13 +1,23 @@
 import type { Metadata } from "next";
 import { RetencionIAETool } from "@/components/tools/RetencionIAETool";
 import type { FAQItem } from "@/components/FAQAccordion";
-import { buildFaqJsonLd } from "@/lib/seo";
+import { buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Calculadora de retención IRPF en factura (0%, 7% o 15%)",
+const PATH = "/herramientas/retencion-factura-iae";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: "Calculadora Retención IRPF en Factura 2026: 0%, 7% o 15%",
   description:
-    "Descubre si tu factura lleva retención de IRPF según tu epígrafe del IAE y simula una factura proforma completa con IVA y retención.",
-};
+    "Descubre en segundos qué porcentaje de retención IRPF debes aplicar según tu epígrafe del IAE y simula tu factura proforma completa con IVA incluido.",
+  path: PATH,
+});
+
+const WEB_APPLICATION_JSON_LD = buildWebApplicationJsonLd({
+  name: "Retención IRPF en factura",
+  description:
+    "Averigua si tu factura lleva retención (0%, 7% o 15%) según tu epígrafe del IAE y simula el líquido a cobrar.",
+  path: PATH,
+});
 
 const FAQ_ITEMS: FAQItem[] = [
   {
@@ -40,6 +50,10 @@ const FAQ_ITEMS: FAQItem[] = [
 export default function RetencionFacturaIAEPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(WEB_APPLICATION_JSON_LD) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildFaqJsonLd(FAQ_ITEMS)) }}

@@ -1,13 +1,23 @@
 import type { Metadata } from "next";
 import { PluriactividadTool } from "@/components/tools/PluriactividadTool";
 import type { FAQItem } from "@/components/FAQAccordion";
-import { buildFaqJsonLd } from "@/lib/seo";
+import { buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Calculadora de devolución por pluriactividad",
+const PATH = "/herramientas/pluriactividad-devolucion";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: "Calculadora Devolución Pluriactividad Seguridad Social",
   description:
-    "Comprueba si tienes derecho a la devolución de oficio de la Seguridad Social por cotizar a la vez en Régimen General y RETA, y estima el importe.",
-};
+    "Comprueba gratis si tienes derecho a que la Seguridad Social te devuelva de oficio el exceso cotizado entre Régimen General y RETA, y estima el importe.",
+  path: PATH,
+});
+
+const WEB_APPLICATION_JSON_LD = buildWebApplicationJsonLd({
+  name: "Devolución por pluriactividad",
+  description:
+    "Comprueba si tienes derecho a que la Seguridad Social te devuelva el exceso cotizado entre Régimen General y RETA.",
+  path: PATH,
+});
 
 const FAQ_ITEMS: FAQItem[] = [
   {
@@ -40,6 +50,10 @@ const FAQ_ITEMS: FAQItem[] = [
 export default function PluriactividadDevolucionPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(WEB_APPLICATION_JSON_LD) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildFaqJsonLd(FAQ_ITEMS)) }}

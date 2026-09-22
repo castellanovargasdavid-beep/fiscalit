@@ -1,13 +1,22 @@
 import type { Metadata } from "next";
 import { VerifactuTool } from "@/components/tools/VerifactuTool";
 import type { FAQItem } from "@/components/FAQAccordion";
-import { buildFaqJsonLd } from "@/lib/seo";
+import { buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Diagnóstico VeriFactu: ¿estoy obligado y desde cuándo?",
+const PATH = "/herramientas/diagnostico-verifactu";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: "Diagnóstico VeriFactu 2026: ¿Estás Obligado? Compruébalo Gratis",
   description:
-    "Responde 4 preguntas y descubre si tu negocio ya está obligado a VeriFactu, la fecha límite legal y el checklist técnico que te falta por cumplir.",
-};
+    "Responde 4 preguntas y descubre al instante si tu negocio ya está obligado a VeriFactu, la fecha límite legal y el checklist técnico que te falta por cumplir.",
+  path: PATH,
+});
+
+const WEB_APPLICATION_JSON_LD = buildWebApplicationJsonLd({
+  name: "Diagnóstico VeriFactu",
+  description: "Comprueba si ya estás obligado a VeriFactu y a la Ley Crea y Crece, con checklist técnico y plazos.",
+  path: PATH,
+});
 
 const FAQ_ITEMS: FAQItem[] = [
   {
@@ -40,6 +49,10 @@ const FAQ_ITEMS: FAQItem[] = [
 export default function DiagnosticoVerifactuPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(WEB_APPLICATION_JSON_LD) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildFaqJsonLd(FAQ_ITEMS)) }}

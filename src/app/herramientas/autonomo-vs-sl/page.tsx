@@ -1,13 +1,23 @@
 import type { Metadata } from "next";
 import { AutonomoVsSLTool } from "@/components/tools/AutonomoVsSLTool";
 import type { FAQItem } from "@/components/FAQAccordion";
-import { buildFaqJsonLd } from "@/lib/seo";
+import { buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Autónomo vs Sociedad Limitada: calculadora comparativa",
+const PATH = "/herramientas/autonomo-vs-sl";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: "Autónomo vs Sociedad Limitada 2026: ¿Qué te Conviene Más?",
   description:
-    "Compara en segundos cuánto te quedaría neto como autónomo o como Sociedad Limitada, con IRPF, cuota RETA e Impuesto sobre Sociedades actualizados.",
-};
+    "Descubre en segundos si te compensa más ser autónomo o crear una SL. Compara tu neto real con IRPF, cuota RETA e Impuesto de Sociedades. Calculadora 100% gratis.",
+  path: PATH,
+});
+
+const WEB_APPLICATION_JSON_LD = buildWebApplicationJsonLd({
+  name: "Autónomo vs Sociedad Limitada",
+  description:
+    "Compara cuánto te quedaría neto como autónomo o creando una SL, con IRPF, cuota RETA e Impuesto de Sociedades.",
+  path: PATH,
+});
 
 const FAQ_ITEMS: FAQItem[] = [
   {
@@ -40,6 +50,10 @@ const FAQ_ITEMS: FAQItem[] = [
 export default function AutonomoVsSLPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(WEB_APPLICATION_JSON_LD) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildFaqJsonLd(FAQ_ITEMS)) }}

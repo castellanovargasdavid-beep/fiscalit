@@ -1,13 +1,22 @@
 import type { Metadata } from "next";
 import { KilometrajeDietasTool } from "@/components/tools/KilometrajeDietasTool";
 import type { FAQItem } from "@/components/FAQAccordion";
-import { buildFaqJsonLd } from "@/lib/seo";
+import { buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Calculadora de kilometraje y dietas exentas de IRPF",
+const PATH = "/herramientas/calculadora-kilometraje-dietas";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: "Calculadora de Kilometraje y Dietas Exentas de IRPF",
   description:
-    "Calcula el importe exento de IRPF por kilometraje (0,26 €/km) y dietas de manutención con y sin pernocta, en España y en el extranjero.",
-};
+    "Calcula al instante el importe exento de IRPF por kilometraje (0,26 €/km) y dietas de manutención, con y sin pernocta, en España y en el extranjero.",
+  path: PATH,
+});
+
+const WEB_APPLICATION_JSON_LD = buildWebApplicationJsonLd({
+  name: "Kilometraje y dietas exentas",
+  description: "Calcula el importe exento de IRPF por kilometraje y dietas de manutención en tus desplazamientos.",
+  path: PATH,
+});
 
 const FAQ_ITEMS: FAQItem[] = [
   {
@@ -40,6 +49,10 @@ const FAQ_ITEMS: FAQItem[] = [
 export default function CalculadoraKilometrajeDietasPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(WEB_APPLICATION_JSON_LD) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildFaqJsonLd(FAQ_ITEMS)) }}

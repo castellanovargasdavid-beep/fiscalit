@@ -1,13 +1,22 @@
 import type { Metadata } from "next";
 import { CuotaAutonomosTool } from "@/components/tools/CuotaAutonomosTool";
 import type { FAQItem } from "@/components/FAQAccordion";
-import { buildFaqJsonLd } from "@/lib/seo";
+import { buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Calculadora de cuota de autónomos por tramos",
+const PATH = "/herramientas/calculadora-cuota-autonomos";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: "Calculadora Cuota Autónomos 2026: Tramos y Rendimiento Neto",
   description:
-    "Descubre en qué tramo de cotización RETA estás y cuánto pagarás de cuota mensual según tu rendimiento neto real, como autónomo individual o societario.",
-};
+    "Calcula tu cuota de autónomos exacta por tramos de rendimiento neto real. Descubre tu tramo RETA (1 a 15) y la cuota mensual mínima y máxima al instante.",
+  path: PATH,
+});
+
+const WEB_APPLICATION_JSON_LD = buildWebApplicationJsonLd({
+  name: "Calculadora de cuota de autónomos",
+  description: "Descubre tu tramo de cotización RETA y la cuota mensual según tu rendimiento neto real.",
+  path: PATH,
+});
 
 const FAQ_ITEMS: FAQItem[] = [
   {
@@ -40,6 +49,10 @@ const FAQ_ITEMS: FAQItem[] = [
 export default function CalculadoraCuotaAutonomosPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(WEB_APPLICATION_JSON_LD) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildFaqJsonLd(FAQ_ITEMS)) }}
