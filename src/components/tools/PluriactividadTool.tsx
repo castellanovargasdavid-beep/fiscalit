@@ -8,6 +8,7 @@ import {
 } from "@/lib/calculations/pluriactividad";
 import { SliderInput } from "@/components/ui/SliderInput";
 import { SplitBar } from "@/components/tools/SplitBar";
+import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 import { formatEUR } from "@/lib/format";
@@ -129,6 +130,11 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
           exceso de cotización.
         </p>
       </div>
+
+      <LegalSourceBadge
+        fuente="Art. 313 del Texto Refundido de la Ley General de la Seguridad Social."
+        url="https://www.boe.es/buscar/act.php?id=BOE-A-2015-11724#a313"
+      />
 
       <div className="mt-10">
         <AffiliateCard partnerId="ayuda-t-pymes" />

@@ -59,3 +59,30 @@ export const ESCALA_BASE_AHORRO_IRPF: TramoImpositivo[] = [
   { desde: 200_000, hasta: 300_000, tipo: 0.27 },
   { desde: 300_000, hasta: null, tipo: 0.3 },
 ];
+
+export type ComunidadAutonoma = "general" | "madrid" | "cataluna" | "andalucia" | "comunidad_valenciana";
+
+/**
+ * Ajuste APROXIMADO (en puntos porcentuales, sumado al tipo marginal de
+ * `ESCALA_GENERAL_IRPF`) para reflejar, de forma orientativa, que cada
+ * comunidad autónoma fija su propio tramo autonómico de IRPF. No reproduce
+ * la tabla real de cada comunidad tramo a tramo: Madrid tiende a tributar
+ * por debajo de la media estatal, Cataluña y la Comunitat Valenciana por
+ * encima (sobre todo en tramos altos), y Andalucía se sitúa cerca de la
+ * media tras su rebaja de 2022. Úsalo solo como orientación relativa entre
+ * comunidades, no como sustituto de la tabla oficial de cada una.
+ */
+export const AJUSTE_AUTONOMICO_IRPF: Record<ComunidadAutonoma, number> = {
+  general: 0,
+  madrid: -0.02,
+  cataluna: 0.015,
+  andalucia: -0.005,
+  comunidad_valenciana: 0.01,
+};
+
+/** Aplica el ajuste autonómico aproximado a la escala general de IRPF, sin bajar ningún tramo de 0%. */
+export function escalaGeneralIrpfPorComunidad(comunidad: ComunidadAutonoma): TramoImpositivo[] {
+  const ajuste = AJUSTE_AUTONOMICO_IRPF[comunidad];
+  if (ajuste === 0) return ESCALA_GENERAL_IRPF;
+  return ESCALA_GENERAL_IRPF.map((tramo) => ({ ...tramo, tipo: Math.max(0, tramo.tipo + ajuste) }));
+}

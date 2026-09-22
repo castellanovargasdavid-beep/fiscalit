@@ -5,6 +5,7 @@ import { AlertTriangle } from "lucide-react";
 import { calcularRetencionIAE, type SeccionIAE, type TipoIVA } from "@/lib/calculations/retencionIAE";
 import { OptionGroup } from "@/components/ui/OptionGroup";
 import { SliderInput } from "@/components/ui/SliderInput";
+import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 import { formatEUR } from "@/lib/format";
@@ -136,6 +137,11 @@ export function RetencionIAETool({ faqItems }: RetencionIAEToolProps) {
           retención de IRPF.
         </p>
       </div>
+
+      <LegalSourceBadge
+        fuente="Art. 95 del Reglamento del IRPF (RD 439/2007)."
+        url="https://www.boe.es/buscar/act.php?id=BOE-A-2007-6820#a95"
+      />
 
       <div className="mt-10">
         <AffiliateCard partnerId="taxdown" />

@@ -1,12 +1,14 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { CheckCircle2 } from "lucide-react";
-import { compararAutonomoVsSL } from "@/lib/calculations/autonomoVsSL";
+import { CheckCircle2, ChevronDown } from "lucide-react";
+import { compararAutonomoVsSL, type ComunidadAutonoma } from "@/lib/calculations/autonomoVsSL";
 import { SliderInput } from "@/components/ui/SliderInput";
 import { ScenarioPresets, type ScenarioPreset } from "@/components/ui/ScenarioPresets";
 import { ScenarioActions } from "@/components/tools/ScenarioActions";
 import { SplitBar, type SplitBarSegment } from "@/components/tools/SplitBar";
+import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
+import { HighValueLeadCard } from "@/components/tools/HighValueLeadCard";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 import { useSyncScenarioToUrl, useUrlSeededScenario } from "@/lib/useScenarioShare";
@@ -28,12 +30,18 @@ interface Escenario {
   ingresosAnuales: number;
   gastosDeduciblesAnuales: number;
   salarioBrutoAdministrador: number;
+  comunidadAutonoma: ComunidadAutonoma;
+  gestoriaAnualAutonomo: number;
+  gestoriaAnualSL: number;
 }
 
 const ESCENARIO_POR_DEFECTO: Escenario = {
   ingresosAnuales: 60_000,
   gastosDeduciblesAnuales: 12_000,
   salarioBrutoAdministrador: 18_000,
+  comunidadAutonoma: "general",
+  gestoriaAnualAutonomo: 600,
+  gestoriaAnualSL: 1_800,
 };
 
 const PRESETS: ScenarioPreset<Escenario>[] = [
@@ -51,12 +59,30 @@ const PRESETS: ScenarioPreset<Escenario>[] = [
   },
 ];
 
+const OPCIONES_COMUNIDAD: { value: ComunidadAutonoma; label: string }[] = [
+  { value: "general", label: "Resto / General" },
+  { value: "madrid", label: "Madrid" },
+  { value: "cataluna", label: "Cataluña" },
+  { value: "andalucia", label: "Andalucía" },
+  { value: "comunidad_valenciana", label: "Comunidad Valenciana" },
+];
+
+/** Facturación bruta anual a partir de la cual se ofrece la auditoría mercantil gratuita (lead B2B de alto valor). */
+const UMBRAL_LEAD_ALTO_VALOR = 80_000;
+
 export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
   const [escenario, setEscenario] = useState<Escenario>(ESCENARIO_POR_DEFECTO);
   useUrlSeededScenario(ESCENARIO_POR_DEFECTO, setEscenario);
   useSyncScenarioToUrl(escenario);
 
-  const { ingresosAnuales, gastosDeduciblesAnuales, salarioBrutoAdministrador } = escenario;
+  const {
+    ingresosAnuales,
+    gastosDeduciblesAnuales,
+    salarioBrutoAdministrador,
+    comunidadAutonoma,
+    gestoriaAnualAutonomo,
+    gestoriaAnualSL,
+  } = escenario;
 
   const aplicarPreset = (valores: Partial<Escenario>) => {
     setEscenario((prev) => ({ ...prev, ...valores }));
@@ -68,8 +94,18 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
         ingresosAnuales,
         gastosDeduciblesAnuales,
         salarioBrutoAdministrador,
+        comunidadAutonoma,
+        gestoriaAnualAutonomo,
+        gestoriaAnualSL,
       }),
-    [ingresosAnuales, gastosDeduciblesAnuales, salarioBrutoAdministrador],
+    [
+      ingresosAnuales,
+      gastosDeduciblesAnuales,
+      salarioBrutoAdministrador,
+      comunidadAutonoma,
+      gestoriaAnualAutonomo,
+      gestoriaAnualSL,
+    ],
   );
 
   const { autonomo, sociedadLimitada, diferenciaNeta, opcionMasVentajosa } = resultado;
@@ -177,6 +213,63 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
         />
       </div>
 
+      <details className="group mt-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-medium text-slate-900">
+          Ajustes avanzados
+          <ChevronDown
+            className="h-4 w-4 shrink-0 text-slate-400 transition-transform group-open:rotate-180"
+            aria-hidden="true"
+          />
+        </summary>
+
+        <div className="mt-5">
+          <p className="text-sm font-medium text-slate-700">Comunidad autónoma</p>
+          <p className="mt-1 text-xs text-slate-500">
+            Aplica un ajuste aproximado sobre la escala general de IRPF según tu comunidad. Es orientativo, no
+            sustituye la tabla oficial de tu comunidad.
+          </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {OPCIONES_COMUNIDAD.map((opcion) => (
+              <button
+                key={opcion.value}
+                type="button"
+                onClick={() => setEscenario((prev) => ({ ...prev, comunidadAutonoma: opcion.value }))}
+                aria-pressed={comunidadAutonoma === opcion.value}
+                className={cn(
+                  "rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors",
+                  comunidadAutonoma === opcion.value
+                    ? "bg-blue-600 text-white"
+                    : "border border-slate-200 text-slate-600 hover:text-slate-900",
+                )}
+              >
+                {opcion.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-6 grid gap-6 sm:grid-cols-2">
+          <SliderInput
+            label="Gasto de gestoría anual — Autónomo"
+            value={gestoriaAnualAutonomo}
+            onChange={(value) => setEscenario((prev) => ({ ...prev, gestoriaAnualAutonomo: value }))}
+            min={0}
+            max={5_000}
+            step={50}
+            formatValue={(value) => formatEUR(value)}
+          />
+          <SliderInput
+            label="Gasto de gestoría anual — Sociedad Limitada"
+            value={gestoriaAnualSL}
+            onChange={(value) => setEscenario((prev) => ({ ...prev, gestoriaAnualSL: value }))}
+            min={0}
+            max={8_000}
+            step={50}
+            formatValue={(value) => formatEUR(value)}
+          />
+        </div>
+      </details>
+
       <div className="mt-8 grid gap-4 sm:grid-cols-2">
         <ResultCard
           titulo="Autónomo"
@@ -186,11 +279,15 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
             { label: "Neto disponible", value: autonomo.netoDisponible, className: "bg-emerald-500" },
             { label: "Cuota RETA", value: autonomo.cuotaRetaAnual, className: "bg-amber-500" },
             { label: "IRPF", value: autonomo.cuotaIRPF, className: "bg-rose-500" },
+            ...(gestoriaAnualAutonomo > 0
+              ? [{ label: "Gestoría", value: gestoriaAnualAutonomo, className: "bg-slate-400" }]
+              : []),
           ]}
           detalle={[
             { label: "Rendimiento neto", value: autonomo.rendimientoNetoAnual },
             { label: "Cuota RETA anual", value: -autonomo.cuotaRetaAnual },
             { label: "IRPF", value: -autonomo.cuotaIRPF },
+            ...(gestoriaAnualAutonomo > 0 ? [{ label: "Gestoría", value: -gestoriaAnualAutonomo }] : []),
           ]}
         />
         <ResultCard
@@ -219,11 +316,15 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
               value: sociedadLimitada.tributacionDividendos,
               className: "bg-purple-500",
             },
+            ...(gestoriaAnualSL > 0
+              ? [{ label: "Gestoría", value: gestoriaAnualSL, className: "bg-slate-400" }]
+              : []),
           ]}
           detalle={[
             { label: "Salario neto administrador", value: sociedadLimitada.salarioNetoAdministrador },
             { label: "Impuesto sobre Sociedades", value: -sociedadLimitada.cuotaImpuestoSociedades },
             { label: "Cuota RETA societaria", value: -sociedadLimitada.cuotaRetaSocietariaAnual },
+            ...(gestoriaAnualSL > 0 ? [{ label: "Gestoría", value: -gestoriaAnualSL }] : []),
             { label: "Dividendos netos", value: sociedadLimitada.dividendosNetos },
           ]}
         />
@@ -244,6 +345,13 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
           </p>
         )}
       </div>
+
+      <LegalSourceBadge
+        fuente="Basado en el Real Decreto-ley 13/2022 y tablas del BOE núm. 180."
+        url="https://www.boe.es/buscar/act.php?id=BOE-A-2022-12482"
+      />
+
+      {ingresosAnuales > UMBRAL_LEAD_ALTO_VALOR && <HighValueLeadCard facturacionAnual={ingresosAnuales} />}
 
       <div className="mt-10">
         <AffiliateCard partnerId="ayuda-t-pymes" {...ctaGestoria} />

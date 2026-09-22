@@ -7,6 +7,7 @@ import {
   type DesplazamientoDieta,
 } from "@/lib/calculations/kilometrajeDietas";
 import { SliderInput } from "@/components/ui/SliderInput";
+import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 import { formatEUR } from "@/lib/format";
@@ -169,6 +170,11 @@ export function KilometrajeDietasTool({ faqItems }: KilometrajeDietasToolProps) 
           </ul>
         </div>
       </div>
+
+      <LegalSourceBadge
+        fuente="Orden HFP/792/2023 (0,26 €/km en IRPF)."
+        url="https://www.boe.es/buscar/doc.php?id=BOE-A-2023-16461"
+      />
 
       <div className="mt-10">
         <AffiliateCard partnerId="qonto" />

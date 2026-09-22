@@ -9,6 +9,7 @@ import {
   type TipoContribuyente,
 } from "@/lib/calculations/verifactu";
 import { OptionGroup } from "@/components/ui/OptionGroup";
+import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 import { useIsClient } from "@/lib/hooks";
@@ -255,6 +256,11 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
           ))}
         </ul>
       </div>
+
+      <LegalSourceBadge
+        fuente="Conforme al Reglamento de requisitos de los sistemas informáticos de facturación (Orden HAC/1177/2024)."
+        url="https://www.boe.es/diario_boe/txt.php?id=BOE-A-2024-22138"
+      />
 
       <div className="mt-10">
         <AffiliateCard partnerId="quipu" {...ctaQuipu} />

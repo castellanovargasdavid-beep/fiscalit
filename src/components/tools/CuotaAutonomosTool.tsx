@@ -10,6 +10,7 @@ import {
 import { SliderInput } from "@/components/ui/SliderInput";
 import { ScenarioPresets, type ScenarioPreset } from "@/components/ui/ScenarioPresets";
 import { ScenarioActions } from "@/components/tools/ScenarioActions";
+import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 import { useSyncScenarioToUrl, useUrlSeededScenario } from "@/lib/useScenarioShare";
@@ -224,6 +225,11 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
           </table>
         </div>
       </details>
+
+      <LegalSourceBadge
+        fuente="Basado en el Real Decreto-ley 13/2022 y tablas del BOE núm. 180."
+        url="https://www.boe.es/buscar/act.php?id=BOE-A-2022-12482"
+      />
 
       <div className="mt-10">
         <AffiliateCard partnerId="holded" {...ctaHolded} />

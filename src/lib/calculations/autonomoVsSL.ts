@@ -1,5 +1,13 @@
 import { calcularCuotaAutonomo, type ResultadoCuotaAutonomo } from "./cuotaAutonomos";
-import { ESCALA_BASE_AHORRO_IRPF, ESCALA_GENERAL_IRPF, calcularImpuestoProgresivo, round2 } from "./shared";
+import {
+  ESCALA_BASE_AHORRO_IRPF,
+  calcularImpuestoProgresivo,
+  escalaGeneralIrpfPorComunidad,
+  round2,
+  type ComunidadAutonoma,
+} from "./shared";
+
+export type { ComunidadAutonoma } from "./shared";
 
 export type TipoTributacionIS = "microempresa" | "general";
 
@@ -26,6 +34,12 @@ export interface AutonomoVsSLInput {
    * Sociedad Limitada. No aplica al escenario de Autónomo.
    */
   salarioBrutoAdministrador: number;
+  /** Comunidad autónoma para aplicar un ajuste aproximado de IRPF (opcional, por defecto "general"). */
+  comunidadAutonoma?: ComunidadAutonoma;
+  /** Gasto anual de gestoría en el escenario Autónomo (opcional, por defecto 0). */
+  gestoriaAnualAutonomo?: number;
+  /** Gasto anual de gestoría en el escenario Sociedad Limitada (opcional, por defecto 0). */
+  gestoriaAnualSL?: number;
 }
 
 export interface DesgloseImporte {
@@ -84,15 +98,21 @@ export interface ComparativaAutonomoVsSL {
  */
 export function compararAutonomoVsSL(input: AutonomoVsSLInput): ComparativaAutonomoVsSL {
   const rendimientoNetoAnual = input.ingresosAnuales - input.gastosDeduciblesAnuales;
+  const comunidadAutonoma = input.comunidadAutonoma ?? "general";
+  const escalaGeneralAjustada = escalaGeneralIrpfPorComunidad(comunidadAutonoma);
+  const gestoriaAnualAutonomo = input.gestoriaAnualAutonomo ?? 0;
+  const gestoriaAnualSL = input.gestoriaAnualSL ?? 0;
 
   // --- Escenario Autónomo ---
   const cuotaReta = calcularCuotaAutonomo(rendimientoNetoAnual, "individual");
   const cuotaRetaAnual = cuotaReta.cuotaAnualMinimaEstimada;
   const baseImponibleIRPFAutonomo = Math.max(0, rendimientoNetoAnual - cuotaRetaAnual);
   const cuotaIRPFAutonomo = round2(
-    calcularImpuestoProgresivo(baseImponibleIRPFAutonomo, ESCALA_GENERAL_IRPF),
+    calcularImpuestoProgresivo(baseImponibleIRPFAutonomo, escalaGeneralAjustada),
   );
-  const netoDisponibleAutonomo = round2(rendimientoNetoAnual - cuotaRetaAnual - cuotaIRPFAutonomo);
+  const netoDisponibleAutonomo = round2(
+    rendimientoNetoAnual - cuotaRetaAnual - cuotaIRPFAutonomo - gestoriaAnualAutonomo,
+  );
 
   const autonomo: ResultadoEscenarioAutonomo = {
     rendimientoNetoAnual: round2(rendimientoNetoAnual),
@@ -105,6 +125,9 @@ export function compararAutonomoVsSL(input: AutonomoVsSLInput): ComparativaAuton
       { concepto: "Rendimiento neto", importe: round2(rendimientoNetoAnual) },
       { concepto: "Cuota RETA anual", importe: -cuotaRetaAnual },
       { concepto: "IRPF", importe: -cuotaIRPFAutonomo },
+      ...(gestoriaAnualAutonomo > 0
+        ? [{ concepto: "Gestoría", importe: -round2(gestoriaAnualAutonomo) }]
+        : []),
       { concepto: "Neto disponible", importe: netoDisponibleAutonomo },
     ],
   };
@@ -118,7 +141,7 @@ export function compararAutonomoVsSL(input: AutonomoVsSLInput): ComparativaAuton
   const cuotaRetaSocietariaAnual = cuotaRetaSocietaria.cuotaAnualMinimaEstimada;
 
   const irpfNomina = round2(
-    calcularImpuestoProgresivo(input.salarioBrutoAdministrador, ESCALA_GENERAL_IRPF),
+    calcularImpuestoProgresivo(input.salarioBrutoAdministrador, escalaGeneralAjustada),
   );
   const salarioNetoAdministrador = round2(input.salarioBrutoAdministrador - irpfNomina);
 
@@ -135,7 +158,7 @@ export function compararAutonomoVsSL(input: AutonomoVsSLInput): ComparativaAuton
   );
   const dividendosNetos = round2(dividendosBrutos - tributacionDividendos);
 
-  const netoDisponibleSL = round2(salarioNetoAdministrador + dividendosNetos);
+  const netoDisponibleSL = round2(salarioNetoAdministrador + dividendosNetos - gestoriaAnualSL);
 
   const sociedadLimitada: ResultadoEscenarioSL = {
     tipoTributacionIS,
@@ -157,6 +180,7 @@ export function compararAutonomoVsSL(input: AutonomoVsSLInput): ComparativaAuton
       { concepto: "Salario neto administrador", importe: salarioNetoAdministrador },
       { concepto: "Impuesto sobre Sociedades", importe: -cuotaImpuestoSociedades },
       { concepto: "Cuota RETA societaria anual", importe: -cuotaRetaSocietariaAnual },
+      ...(gestoriaAnualSL > 0 ? [{ concepto: "Gestoría", importe: -round2(gestoriaAnualSL) }] : []),
       { concepto: "Dividendos netos", importe: dividendosNetos },
       { concepto: "Neto disponible", importe: netoDisponibleSL },
     ],
