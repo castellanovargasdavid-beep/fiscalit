@@ -7,7 +7,7 @@ export function Footer() {
 
   return (
     <footer className="border-t border-slate-200 bg-slate-100">
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:grid-cols-2 sm:px-6">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:grid-cols-3 sm:px-6">
         <div>
           <p className="text-sm font-semibold text-slate-900">Fiscalit</p>
           <p className="mt-2 max-w-xs text-sm leading-6 text-slate-600">{siteConfig.description}</p>
@@ -23,6 +23,17 @@ export function Footer() {
                 </Link>
               </li>
             ))}
+          </ul>
+        </nav>
+
+        <nav aria-label="Empresa">
+          <p className="text-sm font-semibold text-slate-900">Empresa</p>
+          <ul className="mt-3 space-y-2">
+            <li>
+              <Link href="/sobre-fiscalit" className="text-sm text-slate-600 transition-colors hover:text-slate-900">
+                Sobre Fiscalit
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>
