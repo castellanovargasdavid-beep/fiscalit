@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Download, Link2, Loader2, RotateCcw } from "lucide-react";
+import { Check, Download, FileSpreadsheet, Link2, Loader2, RotateCcw } from "lucide-react";
 import { useCopyShareLink } from "@/lib/useScenarioShare";
 import { cn } from "@/lib/utils";
 
@@ -9,12 +9,15 @@ interface ScenarioActionsProps {
   onReset: () => void;
   /** Genera y descarga el informe en PDF de la simulación actual. Si se omite, el botón no se muestra. */
   onDownloadPdf?: () => void | Promise<void>;
+  /** Genera y descarga el CSV/Excel de la simulación actual. Si se omite, el botón no se muestra. */
+  onDownloadCsv?: () => void | Promise<void>;
 }
 
-/** Barra de acción contextual: compartir la simulación (vía URL), descargar el informe en PDF y restablecer los valores por defecto. */
-export function ScenarioActions({ onReset, onDownloadPdf }: ScenarioActionsProps) {
+/** Barra de acción contextual: compartir la simulación (vía URL), descargar el informe en PDF o CSV/Excel, y restablecer los valores por defecto. */
+export function ScenarioActions({ onReset, onDownloadPdf, onDownloadCsv }: ScenarioActionsProps) {
   const { copied, copyShareLink } = useCopyShareLink();
   const [generatingPdf, setGeneratingPdf] = useState(false);
+  const [generatingCsv, setGeneratingCsv] = useState(false);
 
   const handleDownloadPdf = async () => {
     if (!onDownloadPdf || generatingPdf) return;
@@ -26,8 +29,18 @@ export function ScenarioActions({ onReset, onDownloadPdf }: ScenarioActionsProps
     }
   };
 
+  const handleDownloadCsv = async () => {
+    if (!onDownloadCsv || generatingCsv) return;
+    setGeneratingCsv(true);
+    try {
+      await onDownloadCsv();
+    } finally {
+      setGeneratingCsv(false);
+    }
+  };
+
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex flex-wrap items-center gap-2 print:hidden">
       <button
         type="button"
         onClick={() => void copyShareLink()}
@@ -60,6 +73,22 @@ export function ScenarioActions({ onReset, onDownloadPdf }: ScenarioActionsProps
             <Download className="h-3.5 w-3.5" aria-hidden="true" />
           )}
           {generatingPdf ? "Generando PDF…" : "Descargar informe (PDF)"}
+        </button>
+      )}
+
+      {onDownloadCsv && (
+        <button
+          type="button"
+          onClick={() => void handleDownloadCsv()}
+          disabled={generatingCsv}
+          className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:border-slate-300 hover:text-slate-900 disabled:cursor-wait disabled:opacity-60"
+        >
+          {generatingCsv ? (
+            <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
+          ) : (
+            <FileSpreadsheet className="h-3.5 w-3.5" aria-hidden="true" />
+          )}
+          {generatingCsv ? "Generando CSV…" : "Descargar Excel/CSV"}
         </button>
       )}
 

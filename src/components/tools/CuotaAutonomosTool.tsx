@@ -12,10 +12,12 @@ import { ScenarioPresets, type ScenarioPreset } from "@/components/ui/ScenarioPr
 import { ScenarioActions } from "@/components/tools/ScenarioActions";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
+import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 import { useSyncScenarioToUrl, useUrlSeededScenario } from "@/lib/useScenarioShare";
 import { downloadScenarioPdf } from "@/lib/generateScenarioPdf";
+import { downloadScenarioCsv } from "@/lib/exportCsv";
 import { getAffiliate } from "@/config/affiliates";
 import { formatEUR } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -79,35 +81,37 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
     promoBadgeText: "Prueba gratis 30 días",
   };
 
+  const reportSections = [
+    {
+      title: "Datos introducidos",
+      rows: [
+        { label: "Ingresos brutos anuales", value: formatEUR(ingresosAnuales) },
+        { label: "Gastos deducibles anuales", value: formatEUR(gastosDeduciblesAnuales) },
+        {
+          label: "Tipo de autónomo",
+          value: tipoAutonomo === "individual" ? "Individual" : "Societario",
+        },
+      ],
+    },
+    {
+      title: "Resultado",
+      rows: [
+        { label: "Tramo asignado", value: `${resultado.tramoAsignado.tramo} / 15` },
+        { label: "Rendimiento neto mensual", value: formatEUR(resultado.rendimientoNetoMensual) },
+        { label: "Rendimiento neto computable", value: formatEUR(resultado.rendimientoNetoComputable) },
+        { label: "Cuota mensual mínima", value: formatEUR(resultado.cuotaMensualMinima) },
+        { label: "Cuota mensual máxima", value: formatEUR(resultado.cuotaMensualMaxima) },
+      ],
+    },
+  ];
+
   const handleDownloadPdf = () => {
     const partner = getAffiliate("holded");
     return downloadScenarioPdf({
       toolTitle: "Calculadora de cuota de autónomos por tramos",
       highlight: `Tramo asignado: ${resultado.tramoAsignado.tramo}/15 — cuota mensual entre ${formatEUR(resultado.cuotaMensualMinima)} y ${formatEUR(resultado.cuotaMensualMaxima)}.`,
       fileName: "fiscalit-cuota-autonomos",
-      sections: [
-        {
-          title: "Datos introducidos",
-          rows: [
-            { label: "Ingresos brutos anuales", value: formatEUR(ingresosAnuales) },
-            { label: "Gastos deducibles anuales", value: formatEUR(gastosDeduciblesAnuales) },
-            {
-              label: "Tipo de autónomo",
-              value: tipoAutonomo === "individual" ? "Individual" : "Societario",
-            },
-          ],
-        },
-        {
-          title: "Resultado",
-          rows: [
-            { label: "Tramo asignado", value: `${resultado.tramoAsignado.tramo} / 15` },
-            { label: "Rendimiento neto mensual", value: formatEUR(resultado.rendimientoNetoMensual) },
-            { label: "Rendimiento neto computable", value: formatEUR(resultado.rendimientoNetoComputable) },
-            { label: "Cuota mensual mínima", value: formatEUR(resultado.cuotaMensualMinima) },
-            { label: "Cuota mensual máxima", value: formatEUR(resultado.cuotaMensualMaxima) },
-          ],
-        },
-      ],
+      sections: reportSections,
       promo: {
         partnerName: partner.name,
         badgeText: ctaHolded.promoBadgeText,
@@ -117,8 +121,18 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
     });
   };
 
+  const handleDownloadCsv = () => {
+    downloadScenarioCsv({
+      toolTitle: "Calculadora de cuota de autónomos por tramos",
+      fileName: "fiscalit-cuota-autonomos",
+      sections: reportSections,
+    });
+  };
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
+      <PrintHeader toolTitle="Calculadora de cuota de autónomos por tramos" />
+
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
           Calculadora de cuota de autónomos por tramos
@@ -131,7 +145,11 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
 
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <ScenarioPresets presets={PRESETS} onSelect={aplicarPreset} />
-        <ScenarioActions onReset={() => setEscenario(ESCENARIO_POR_DEFECTO)} onDownloadPdf={handleDownloadPdf} />
+        <ScenarioActions
+          onReset={() => setEscenario(ESCENARIO_POR_DEFECTO)}
+          onDownloadPdf={handleDownloadPdf}
+          onDownloadCsv={handleDownloadCsv}
+        />
       </div>
 
       <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -158,7 +176,7 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
 
         <div className="mt-6">
           <p className="text-sm font-medium text-slate-700">Tipo de autónomo</p>
-          <div className="mt-2 inline-flex rounded-full border border-slate-200 p-1">
+          <div className="mt-2 inline-flex rounded-full border border-slate-200 p-1 print:hidden">
             {OPCIONES_TIPO.map((opcion) => (
               <button
                 key={opcion.value}
@@ -179,7 +197,7 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
         </div>
       </div>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-4">
+      <div className="mt-8 grid gap-4 sm:grid-cols-4 print:break-inside-avoid">
         <StatCard label="Tramo asignado" value={`Tramo ${resultado.tramoAsignado.tramo} / 15`} destacado />
         <StatCard label="Rendimiento neto mensual" value={formatEUR(resultado.rendimientoNetoMensual)} />
         <StatCard label="Cuota mensual mínima" value={formatEUR(resultado.cuotaMensualMinima)} />

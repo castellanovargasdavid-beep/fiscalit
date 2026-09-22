@@ -13,7 +13,7 @@ interface ScenarioPresetsProps<T> {
 /** Fila de escenarios rápidos (presets) que rellenan los controles con un clic. */
 export function ScenarioPresets<T>({ presets, onSelect }: ScenarioPresetsProps<T>) {
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex flex-wrap items-center gap-2 print:hidden">
       <span className="text-xs font-medium text-slate-500">Escenarios rápidos:</span>
       {presets.map((preset) => (
         <button

@@ -50,7 +50,10 @@ export function BoeAlertSignup({ className }: BoeAlertSignupProps) {
   if (estado === "enviado") {
     return (
       <div
-        className={cn("rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-center shadow-sm", className)}
+        className={cn(
+          "rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-center shadow-sm print:hidden",
+          className,
+        )}
       >
         <p className="text-sm font-semibold text-emerald-700">✓ Te avisaremos de las novedades</p>
       </div>
@@ -58,7 +61,7 @@ export function BoeAlertSignup({ className }: BoeAlertSignupProps) {
   }
 
   return (
-    <div className={cn("rounded-2xl border border-slate-200 bg-white p-6 shadow-sm", className)}>
+    <div className={cn("rounded-2xl border border-slate-200 bg-white p-6 shadow-sm print:hidden", className)}>
       <div className="flex items-start gap-3">
         <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
           <BellRing className="h-5 w-5" aria-hidden="true" />

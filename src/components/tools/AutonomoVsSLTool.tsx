@@ -10,10 +10,12 @@ import { SplitBar, type SplitBarSegment } from "@/components/tools/SplitBar";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { HighValueLeadCard } from "@/components/tools/HighValueLeadCard";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
+import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 import { useSyncScenarioToUrl, useUrlSeededScenario } from "@/lib/useScenarioShare";
 import { downloadScenarioPdf } from "@/lib/generateScenarioPdf";
+import { downloadScenarioCsv } from "@/lib/exportCsv";
 import { getAffiliate } from "@/config/affiliates";
 import { formatEUR } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -129,41 +131,43 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
       ? "Ambas opciones te dejan un neto disponible prácticamente igual."
       : `Te conviene ser ${opcionMasVentajosa === "autonomo" ? "Autónomo" : "Sociedad Limitada"}: ganas ${formatEUR(Math.abs(diferenciaNeta))} más al año.`;
 
+  const reportSections = [
+    {
+      title: "Datos introducidos",
+      rows: [
+        { label: "Facturación bruta anual", value: formatEUR(ingresosAnuales) },
+        { label: "Gastos deducibles anuales", value: formatEUR(gastosDeduciblesAnuales) },
+        { label: "Sueldo anual como administrador", value: formatEUR(salarioBrutoAdministrador) },
+      ],
+    },
+    {
+      title: "Resultado — Autónomo",
+      rows: [
+        { label: "Rendimiento neto", value: formatEUR(autonomo.rendimientoNetoAnual) },
+        { label: "Cuota RETA anual", value: formatEUR(autonomo.cuotaRetaAnual) },
+        { label: "IRPF", value: formatEUR(autonomo.cuotaIRPF) },
+        { label: "Neto disponible al año", value: formatEUR(autonomo.netoDisponible) },
+      ],
+    },
+    {
+      title: "Resultado — Sociedad Limitada",
+      rows: [
+        { label: "Salario neto administrador", value: formatEUR(sociedadLimitada.salarioNetoAdministrador) },
+        { label: "Impuesto sobre Sociedades", value: formatEUR(sociedadLimitada.cuotaImpuestoSociedades) },
+        { label: "Cuota RETA societaria", value: formatEUR(sociedadLimitada.cuotaRetaSocietariaAnual) },
+        { label: "Dividendos netos", value: formatEUR(sociedadLimitada.dividendosNetos) },
+        { label: "Neto disponible al año", value: formatEUR(sociedadLimitada.netoDisponible) },
+      ],
+    },
+  ];
+
   const handleDownloadPdf = () => {
     const partner = getAffiliate("ayuda-t-pymes");
     return downloadScenarioPdf({
       toolTitle: "Autónomo vs Sociedad Limitada",
       highlight: conclusion,
       fileName: "fiscalit-autonomo-vs-sl",
-      sections: [
-        {
-          title: "Datos introducidos",
-          rows: [
-            { label: "Facturación bruta anual", value: formatEUR(ingresosAnuales) },
-            { label: "Gastos deducibles anuales", value: formatEUR(gastosDeduciblesAnuales) },
-            { label: "Sueldo anual como administrador", value: formatEUR(salarioBrutoAdministrador) },
-          ],
-        },
-        {
-          title: "Resultado — Autónomo",
-          rows: [
-            { label: "Rendimiento neto", value: formatEUR(autonomo.rendimientoNetoAnual) },
-            { label: "Cuota RETA anual", value: formatEUR(autonomo.cuotaRetaAnual) },
-            { label: "IRPF", value: formatEUR(autonomo.cuotaIRPF) },
-            { label: "Neto disponible al año", value: formatEUR(autonomo.netoDisponible) },
-          ],
-        },
-        {
-          title: "Resultado — Sociedad Limitada",
-          rows: [
-            { label: "Salario neto administrador", value: formatEUR(sociedadLimitada.salarioNetoAdministrador) },
-            { label: "Impuesto sobre Sociedades", value: formatEUR(sociedadLimitada.cuotaImpuestoSociedades) },
-            { label: "Cuota RETA societaria", value: formatEUR(sociedadLimitada.cuotaRetaSocietariaAnual) },
-            { label: "Dividendos netos", value: formatEUR(sociedadLimitada.dividendosNetos) },
-            { label: "Neto disponible al año", value: formatEUR(sociedadLimitada.netoDisponible) },
-          ],
-        },
-      ],
+      sections: reportSections,
       promo: {
         partnerName: partner.name,
         badgeText: ctaGestoria.promoBadgeText,
@@ -173,8 +177,18 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
     });
   };
 
+  const handleDownloadCsv = () => {
+    downloadScenarioCsv({
+      toolTitle: "Autónomo vs Sociedad Limitada",
+      fileName: "fiscalit-autonomo-vs-sl",
+      sections: reportSections,
+    });
+  };
+
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
+      <PrintHeader toolTitle="Autónomo vs Sociedad Limitada" />
+
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
           Autónomo vs Sociedad Limitada
@@ -184,7 +198,11 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
 
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <ScenarioPresets presets={PRESETS} onSelect={aplicarPreset} />
-        <ScenarioActions onReset={() => setEscenario(ESCENARIO_POR_DEFECTO)} onDownloadPdf={handleDownloadPdf} />
+        <ScenarioActions
+          onReset={() => setEscenario(ESCENARIO_POR_DEFECTO)}
+          onDownloadPdf={handleDownloadPdf}
+          onDownloadCsv={handleDownloadCsv}
+        />
       </div>
 
       <div className="mt-4 grid gap-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:grid-cols-3">
@@ -217,7 +235,7 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
         />
       </div>
 
-      <details className="group mt-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+      <details className="group mt-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm print:hidden">
         <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-medium text-slate-900">
           Ajustes avanzados
           <ChevronDown
@@ -274,7 +292,7 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
         </div>
       </details>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2">
+      <div className="mt-8 grid gap-4 sm:grid-cols-2 print:break-inside-avoid">
         <ResultCard
           titulo="Autónomo"
           neto={autonomo.netoDisponible}
@@ -336,7 +354,7 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
 
       <div
         className={cn(
-          "mt-6 rounded-2xl border p-5 text-center",
+          "mt-6 rounded-2xl border p-5 text-center print:break-inside-avoid",
           opcionMasVentajosa === "equivalente" ? "border-slate-200 bg-white" : "border-emerald-200 bg-emerald-50",
         )}
       >
@@ -378,7 +396,7 @@ function ResultCard({ titulo, neto, esGanador, segments, detalle }: ResultCardPr
   return (
     <div
       className={cn(
-        "rounded-2xl border bg-white p-6 shadow-sm",
+        "rounded-2xl border bg-white p-6 shadow-sm print:break-inside-avoid",
         esGanador ? "border-blue-300 ring-1 ring-blue-100" : "border-slate-200",
       )}
     >

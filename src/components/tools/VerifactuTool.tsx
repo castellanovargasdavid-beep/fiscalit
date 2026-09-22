@@ -11,6 +11,7 @@ import {
 import { OptionGroup } from "@/components/ui/OptionGroup";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
+import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 import { useIsClient } from "@/lib/hooks";
@@ -133,6 +134,8 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
+      <PrintHeader toolTitle="Diagnóstico VeriFactu y Ley Crea y Crece" />
+
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
           Diagnóstico VeriFactu y Ley Crea y Crece
@@ -143,7 +146,7 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
       <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <div>
           <p className="text-sm font-medium text-slate-700">Calculando para</p>
-          <div className="mt-2 inline-flex rounded-full border border-slate-200 p-1">
+          <div className="mt-2 inline-flex rounded-full border border-slate-200 p-1 print:hidden">
             {(
               [
                 { value: "autonomo", label: "Autónomo" },
@@ -215,7 +218,7 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
         </div>
       </div>
 
-      <div className={cn("mt-8 rounded-2xl border p-6", EstiloEstado.border, EstiloEstado.bg)}>
+      <div className={cn("mt-8 rounded-2xl border p-6 print:break-inside-avoid", EstiloEstado.border, EstiloEstado.bg)}>
         <div className="flex items-start gap-4">
           <IconoEstado className={cn("h-8 w-8 shrink-0", EstiloEstado.texto)} aria-hidden="true" />
           <div>
@@ -242,7 +245,7 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
         </dl>
       </div>
 
-      <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm print:break-inside-avoid">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">Checklist técnico</h2>
         <ul className="mt-4 space-y-3">
           {resultado.checklist.map((item) => (

@@ -29,7 +29,7 @@ export function OptionGroup<T extends string>({
       <p className="text-sm font-medium text-slate-700">{label}</p>
       <div
         className={cn(
-          "mt-2 grid gap-2",
+          "mt-2 grid gap-2 print:hidden",
           columns === 2 && "grid-cols-2",
           columns === 3 && "grid-cols-3",
           columns === 4 && "grid-cols-2 sm:grid-cols-4",

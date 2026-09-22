@@ -47,7 +47,7 @@ export function ToolsExplorer() {
         Herramientas disponibles
       </h2>
 
-      <div className="relative rounded-full border border-slate-300 bg-white shadow-sm transition-all hover:border-slate-400 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100">
+      <div className="relative rounded-full border border-slate-300 bg-white shadow-sm transition-all hover:border-slate-400 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100 print:hidden">
         <Search
           className="pointer-events-none absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-slate-400"
           aria-hidden="true"
@@ -65,7 +65,7 @@ export function ToolsExplorer() {
         </kbd>
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-2" role="group" aria-label="Filtrar por categoría">
+      <div className="mt-4 flex flex-wrap gap-2 print:hidden" role="group" aria-label="Filtrar por categoría">
         <FiltroPill
           activo={categoria === "todas"}
           onClick={() => setCategoria("todas")}

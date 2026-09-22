@@ -9,6 +9,7 @@ import {
 import { SliderInput } from "@/components/ui/SliderInput";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
+import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 import { formatEUR } from "@/lib/format";
@@ -78,6 +79,8 @@ export function KilometrajeDietasTool({ faqItems }: KilometrajeDietasToolProps) 
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
+      <PrintHeader toolTitle="Calculadora de kilometraje y dietas exentas" />
+
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
           Calculadora de kilometraje y dietas exentas
@@ -135,12 +138,12 @@ export function KilometrajeDietasTool({ faqItems }: KilometrajeDietasToolProps) 
         </div>
       </div>
 
-      <div className="mt-8 rounded-2xl border border-emerald-600 bg-emerald-600 p-6 text-white shadow-sm">
+      <div className="mt-8 rounded-2xl border border-emerald-600 bg-emerald-600 p-6 text-white shadow-sm print:break-inside-avoid">
         <p className="text-sm text-emerald-100">Total exento de IRPF</p>
         <p className="mt-1 text-4xl font-semibold tracking-tight">{formatEUR(resultado.totalExentoIRPF)}</p>
       </div>
 
-      <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm print:break-inside-avoid">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">Desglose</h2>
         {resultado.resumen.length === 0 ? (
           <p className="mt-3 text-sm text-slate-500">Introduce kilómetros o días de dieta para ver el desglose.</p>
@@ -166,7 +169,7 @@ export function KilometrajeDietasTool({ faqItems }: KilometrajeDietasToolProps) 
         </div>
       </div>
 
-      <div className="mt-6 flex gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-5">
+      <div className="mt-6 flex gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-5 print:break-inside-avoid">
         <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" aria-hidden="true" />
         <div>
           <p className="text-sm font-semibold text-amber-800">Documentación obligatoria para la AEAT</p>

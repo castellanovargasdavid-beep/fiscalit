@@ -7,6 +7,7 @@ import { OptionGroup } from "@/components/ui/OptionGroup";
 import { SliderInput } from "@/components/ui/SliderInput";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
+import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 import { formatEUR } from "@/lib/format";
@@ -37,6 +38,8 @@ export function RetencionIAETool({ faqItems }: RetencionIAEToolProps) {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
+      <PrintHeader toolTitle="Calculadora de retención IRPF en factura" />
+
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
           Calculadora de retención IRPF en factura
@@ -101,7 +104,7 @@ export function RetencionIAETool({ faqItems }: RetencionIAEToolProps) {
         </div>
       </div>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-[220px_1fr]">
+      <div className="mt-8 grid gap-4 sm:grid-cols-[220px_1fr] print:break-inside-avoid">
         <div className="flex flex-col items-center justify-center rounded-2xl border border-blue-600 bg-blue-600 p-6 text-center text-white shadow-sm">
           <p className="text-xs text-blue-100">Retención IRPF a aplicar</p>
           <p className="mt-1 text-4xl font-semibold">{(resultado.tipoRetencionIRPF * 100).toFixed(0)}%</p>
@@ -111,7 +114,7 @@ export function RetencionIAETool({ faqItems }: RetencionIAEToolProps) {
         </div>
       </div>
 
-      <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-100 p-6 shadow-sm">
+      <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-100 p-6 shadow-sm print:break-inside-avoid">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">Factura proforma</h2>
         <div className="mt-4 space-y-2 font-mono text-sm text-slate-800">
           <div className="flex justify-between">

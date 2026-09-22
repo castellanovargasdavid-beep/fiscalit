@@ -40,7 +40,7 @@ export function EmbedWidgetModal({ slug, toolTitle, className }: EmbedWidgetModa
         type="button"
         onClick={() => dialogRef.current?.showModal()}
         className={cn(
-          "inline-flex shrink-0 items-center gap-1.5 rounded-full border border-slate-200 px-3.5 py-1.5 text-xs font-medium text-slate-500 transition-colors hover:border-slate-300 hover:text-slate-700",
+          "inline-flex shrink-0 items-center gap-1.5 rounded-full border border-slate-200 px-3.5 py-1.5 text-xs font-medium text-slate-500 transition-colors hover:border-slate-300 hover:text-slate-700 print:hidden",
           className,
         )}
       >
@@ -51,7 +51,7 @@ export function EmbedWidgetModal({ slug, toolTitle, className }: EmbedWidgetModa
       <dialog
         ref={dialogRef}
         aria-labelledby="embed-modal-title"
-        className="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-0 shadow-xl backdrop:bg-slate-900/50"
+        className="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-0 shadow-xl backdrop:bg-slate-900/50 print:hidden"
         onClick={(event) => {
           if (event.target === dialogRef.current) dialogRef.current?.close();
         }}

@@ -61,7 +61,7 @@ export function HighValueLeadCard({ facturacionAnual, className }: HighValueLead
   };
 
   return (
-    <div className={cn("mt-8 rounded-2xl border border-amber-200 bg-amber-50 p-6 shadow-sm", className)}>
+    <div className={cn("mt-8 rounded-2xl border border-amber-200 bg-amber-50 p-6 shadow-sm print:hidden", className)}>
       <div className="flex items-start gap-3">
         <ShieldCheck className="mt-0.5 h-6 w-6 shrink-0 text-amber-700" aria-hidden="true" />
         <div>

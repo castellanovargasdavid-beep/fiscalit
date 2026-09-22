@@ -40,7 +40,7 @@ export function SliderInput({
         step={step}
         value={value}
         onChange={(event) => onChange(Number(event.target.value))}
-        className="h-2 w-full cursor-pointer accent-blue-600"
+        className="h-2 w-full cursor-pointer accent-blue-600 print:hidden"
       />
       <input
         type="number"
@@ -50,7 +50,7 @@ export function SliderInput({
         value={value}
         onChange={(event) => onChange(Number(event.target.value) || 0)}
         aria-label={`${label} (valor exacto)`}
-        className="w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+        className="w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none print:hidden"
       />
     </div>
   );

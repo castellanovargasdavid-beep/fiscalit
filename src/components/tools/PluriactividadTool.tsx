@@ -10,6 +10,7 @@ import { SliderInput } from "@/components/ui/SliderInput";
 import { SplitBar } from "@/components/tools/SplitBar";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
+import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 import { formatEUR } from "@/lib/format";
@@ -42,6 +43,8 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
+      <PrintHeader toolTitle="Calculadora de devolución por pluriactividad" />
+
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
           Calculadora de devolución por pluriactividad
@@ -72,7 +75,7 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
 
       <div
         className={cn(
-          "mt-8 rounded-2xl border p-6 text-center shadow-sm",
+          "mt-8 rounded-2xl border p-6 text-center shadow-sm print:break-inside-avoid",
           resultado.tieneDerechoDevolucion ? "border-emerald-200 bg-emerald-50" : "border-slate-200 bg-white",
         )}
       >
@@ -88,7 +91,7 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
       </div>
 
       {resultado.tieneDerechoDevolucion && (
-        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 print:break-inside-avoid">
           <div className="rounded-xl border border-emerald-600 bg-emerald-600 p-4 text-white shadow-sm">
             <p className="text-xs text-emerald-100">Importe estimado a devolver</p>
             <p className="mt-1 text-lg font-semibold">{formatEUR(resultado.importeDevolucion)}</p>
@@ -100,7 +103,7 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
         </div>
       )}
 
-      <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm print:break-inside-avoid">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
           Base conjunta cotizada vs. tope legal
         </h2>
