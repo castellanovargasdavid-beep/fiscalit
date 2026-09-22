@@ -12,6 +12,28 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/*
+ * Animación de flotación suave para la maqueta de producto de la Hero
+ * (HeroProductMockup): solo `transform`/`opacity` (composición en GPU, sin
+ * repintado de layout) y con `motion-reduce:animate-none` aplicado en el
+ * propio componente para respetar `prefers-reduced-motion`.
+ */
+@theme {
+  --animate-float-1: float-card 6s ease-in-out infinite;
+  --animate-float-2: float-card 7s ease-in-out infinite;
+  --animate-float-3: float-card 8s ease-in-out infinite;
+}
+
+@keyframes float-card {
+  0%,
+  100% {
+    transform: translateY(-4px);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

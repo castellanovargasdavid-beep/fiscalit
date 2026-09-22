@@ -1,6 +1,7 @@
 import { Cookie, Landmark, Lock, MonitorSmartphone, RefreshCw, Zap } from "lucide-react";
 import { ToolsExplorer } from "@/components/home/ToolsExplorer";
 import { SystemStatusBar } from "@/components/home/SystemStatusBar";
+import { HeroProductMockup } from "@/components/home/HeroProductMockup";
 import { BoeAlertSignup } from "@/components/BoeAlertSignup";
 import { buildOrganizationJsonLd, buildWebSiteJsonLd } from "@/lib/seo";
 
@@ -66,37 +67,41 @@ export default function Home() {
         />
 
         <div className="relative mx-auto max-w-6xl px-4 pt-16 pb-10 sm:px-6 sm:pt-24 sm:pb-14">
-          <section className="max-w-2xl">
-            <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
-              <Zap className="h-3 w-3" aria-hidden="true" />
-              Suite Fiscal 2026 para Autónomos y Pymes
-            </span>
-
-            <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
-              Calcula antes de decidir. Herramientas fiscales y societarias{" "}
-              <span className="bg-gradient-to-r from-blue-700 to-indigo-600 bg-clip-text text-transparent">
-                sin complicaciones
+          <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-10">
+            <section className="max-w-2xl">
+              <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
+                <Zap className="h-3 w-3" aria-hidden="true" />
+                Suite Fiscal 2026 para Autónomos y Pymes
               </span>
-            </h1>
-            <p className="mt-4 text-lg leading-8 text-slate-600">
-              Simuladores interactivos para autónomos y pymes en España. Procesamiento 100% en tu navegador conforme
-              a tablas oficiales del BOE.
-            </p>
 
-            <ul className="mt-6 flex flex-wrap gap-3">
-              {TRUST_BADGES.map((badge) => (
-                <li
-                  key={badge.label}
-                  className="inline-flex items-center gap-2 rounded-full border border-slate-200/90 bg-white px-3.5 py-1.5 text-xs font-medium text-slate-700 shadow-sm"
-                >
-                  <badge.icon className={`h-3.5 w-3.5 ${badge.color}`} aria-hidden="true" />
-                  {badge.label}
-                </li>
-              ))}
-            </ul>
-          </section>
+              <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
+                Calcula antes de decidir. Herramientas fiscales y societarias{" "}
+                <span className="bg-gradient-to-r from-blue-700 to-indigo-600 bg-clip-text text-transparent">
+                  sin complicaciones
+                </span>
+              </h1>
+              <p className="mt-4 text-lg leading-8 text-slate-600">
+                Simuladores interactivos para autónomos y pymes en España. Procesamiento 100% en tu navegador
+                conforme a tablas oficiales del BOE.
+              </p>
 
-          <div id="herramientas" className="mt-10 scroll-mt-24">
+              <ul className="mt-6 flex flex-wrap gap-3">
+                {TRUST_BADGES.map((badge) => (
+                  <li
+                    key={badge.label}
+                    className="inline-flex items-center gap-2 rounded-full border border-slate-200/90 bg-white px-3.5 py-1.5 text-xs font-medium text-slate-700 shadow-sm"
+                  >
+                    <badge.icon className={`h-3.5 w-3.5 ${badge.color}`} aria-hidden="true" />
+                    {badge.label}
+                  </li>
+                ))}
+              </ul>
+            </section>
+
+            <HeroProductMockup />
+          </div>
+
+          <div id="herramientas" className="mt-16 scroll-mt-24">
             <ToolsExplorer />
           </div>
         </div>
