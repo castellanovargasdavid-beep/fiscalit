@@ -30,6 +30,10 @@ export interface Tool {
   icon: LucideIcon;
   /** Palabras clave adicionales para el buscador (sinónimos, términos coloquiales). */
   keywords: string[];
+  /** Verbo de acción específico para el CTA de la tarjeta en la home (p. ej. "Comparar ahora"), sin la flecha. */
+  ctaLabel: string;
+  /** `true` únicamente en la herramienta que se destaca visualmente en el grid de la home (como máximo una). */
+  featured?: boolean;
 }
 
 /**
@@ -46,6 +50,8 @@ export const tools: Tool[] = [
     category: "fiscal",
     icon: Scale,
     keywords: ["autonomo", "sl", "sociedad limitada", "sociedad", "impuesto de sociedades", "neto"],
+    ctaLabel: "Comparar ahora",
+    featured: true,
   },
   {
     slug: "calculadora-cuota-autonomos",
@@ -55,6 +61,7 @@ export const tools: Tool[] = [
     category: "cotizaciones",
     icon: Calculator,
     keywords: ["cuota", "autonomos", "reta", "tramos", "seguridad social", "cotizacion"],
+    ctaLabel: "Calcular cuota",
   },
   {
     slug: "diagnostico-verifactu",
@@ -65,6 +72,7 @@ export const tools: Tool[] = [
     category: "facturacion",
     icon: ShieldCheck,
     keywords: ["verifactu", "factura", "crea y crece", "aeat", "software facturacion", "sancion"],
+    ctaLabel: "Comprobar plazos",
   },
   {
     slug: "calculadora-kilometraje-dietas",
@@ -75,6 +83,7 @@ export const tools: Tool[] = [
     category: "fiscal",
     icon: Car,
     keywords: ["kilometraje", "dietas", "km", "desplazamiento", "manutencion", "exento", "empleados", "administradores"],
+    ctaLabel: "Calcular exención",
   },
   {
     slug: "retencion-factura-iae",
@@ -85,6 +94,7 @@ export const tools: Tool[] = [
     category: "facturacion",
     icon: Receipt,
     keywords: ["retencion", "iae", "factura", "irpf", "epigrafe", "iva"],
+    ctaLabel: "Consultar retención",
   },
   {
     slug: "pluriactividad-devolucion",
@@ -95,5 +105,6 @@ export const tools: Tool[] = [
     category: "cotizaciones",
     icon: ArrowLeftRight,
     keywords: ["pluriactividad", "devolucion", "reta", "regimen general", "seguridad social", "exceso"],
+    ctaLabel: "Simular devolución",
   },
 ];

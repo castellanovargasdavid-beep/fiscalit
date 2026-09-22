@@ -1,5 +1,6 @@
 import { Cookie, Landmark, Lock, MonitorSmartphone, RefreshCw, Zap } from "lucide-react";
 import { ToolsExplorer } from "@/components/home/ToolsExplorer";
+import { SystemStatusBar } from "@/components/home/SystemStatusBar";
 import { BoeAlertSignup } from "@/components/BoeAlertSignup";
 import { buildOrganizationJsonLd, buildWebSiteJsonLd } from "@/lib/seo";
 
@@ -30,7 +31,18 @@ const VALUE_PROPS = [
 
 export default function Home() {
   return (
-    <>
+    <div className="relative">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 motion-reduce:hidden"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 50% -20%, rgba(37, 99, 235, 0.05), transparent 45%), linear-gradient(rgba(15, 23, 42, 0.02) 1px, transparent 1px), linear-gradient(to right, rgba(15, 23, 42, 0.02) 1px, transparent 1px)",
+          backgroundSize: "100% 800px, 48px 48px, 48px 48px",
+          backgroundRepeat: "no-repeat, repeat, repeat",
+        }}
+      />
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildWebSiteJsonLd()) }}
@@ -61,14 +73,14 @@ export default function Home() {
             </span>
 
             <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
-              Herramientas de cálculo fiscal, laboral y cotizaciones{" "}
+              Calcula antes de decidir. Herramientas fiscales y societarias{" "}
               <span className="bg-gradient-to-r from-blue-700 to-indigo-600 bg-clip-text text-transparent">
                 sin complicaciones
               </span>
             </h1>
             <p className="mt-4 text-lg leading-8 text-slate-600">
-              Calculadoras gratuitas y privadas para autónomos y micropymes en España: se ejecutan 100% en tu
-              navegador y están adaptadas a la normativa vigente.
+              Simuladores interactivos para autónomos y pymes en España. Procesamiento 100% en tu navegador conforme
+              a tablas oficiales del BOE.
             </p>
 
             <ul className="mt-6 flex flex-wrap gap-3">
@@ -108,10 +120,11 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="mt-16">
+        <section className="mt-16 space-y-4">
+          <SystemStatusBar />
           <BoeAlertSignup />
         </section>
       </div>
-    </>
+    </div>
   );
 }

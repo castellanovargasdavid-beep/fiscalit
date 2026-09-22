@@ -64,5 +64,6 @@ export const siteConfig = {
 export const mainNav: { label: string; href: string }[] = [
   { label: "Inicio", href: "/" },
   { label: "Herramientas", href: "/#herramientas" },
-  { label: "Sobre Fiscalit", href: "/sobre-fiscalit" },
+  { label: "Metodología", href: "/metodologia" },
+  { label: "Sobre FiscalIT", href: "/sobre-fiscalit" },
 ];

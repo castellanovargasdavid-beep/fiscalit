@@ -23,3 +23,12 @@ export function formatFechaISO(fechaISO: string): string {
     timeZone: "UTC",
   });
 }
+
+/** Formatea una fecha ISO (`"2026-09-22"`) como "mes año" en español (p. ej. "septiembre 2026"), sin el día. */
+export function formatMesAnioISO(fechaISO: string): string {
+  return new Date(`${fechaISO}T00:00:00Z`).toLocaleDateString("es-ES", {
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}
