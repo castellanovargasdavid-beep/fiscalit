@@ -73,6 +73,13 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
         />
       </div>
 
+      <p className="mt-2 text-xs text-slate-500">
+        Aproximación: se asume que toda la cuota del RETA introducida corresponde a contingencias comunes, que es
+        la base sobre la que la TGSS calcula la devolución. En la práctica, tu cuota real también incluye otros
+        conceptos (cese de actividad, formación, contingencias profesionales...), por lo que el importe exacto de
+        devolución puede variar respecto a esta estimación.
+      </p>
+
       <div
         className={cn(
           "mt-8 rounded-2xl border p-6 text-center shadow-sm print:break-inside-avoid",

@@ -7,23 +7,24 @@ import { buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd } from "@/
 const PATH = "/herramientas/diagnostico-verifactu";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Diagnóstico VeriFactu 2026: ¿Estás Obligado? Compruébalo Gratis",
+  title: "Diagnóstico VeriFactu 2027: ¿Cumple tu Sistema de Facturación?",
   description:
-    "Responde 4 preguntas y descubre al instante si tu negocio ya está obligado a VeriFactu, la fecha límite legal y el checklist técnico que te falta por cumplir.",
+    "Responde 4 preguntas y descubre si tu sistema de facturación cumple ya los requisitos técnicos de VeriFactu, tu fecha límite legal (2027) y el checklist que te falta.",
   path: PATH,
 });
 
 const WEB_APPLICATION_JSON_LD = buildWebApplicationJsonLd({
   name: "Diagnóstico VeriFactu",
-  description: "Comprueba si ya estás obligado a VeriFactu y a la Ley Crea y Crece, con checklist técnico y plazos.",
+  description:
+    "Comprueba si tu sistema de facturación cumple los requisitos técnicos de VeriFactu y de la Ley Crea y Crece, con checklist y fechas límite de 2027.",
   path: PATH,
 });
 
 const FAQ_ITEMS: FAQItem[] = [
   {
-    question: "¿Qué pasa si no cumplo con VeriFactu?",
+    question: "¿Cuándo es obligatorio VeriFactu y qué pasa si no cumplo a partir de esa fecha?",
     answer:
-      "La Ley 11/2021 antifraude prevé sanciones de hasta 50.000 € por ejercicio para quien use, produzca o tenga instalados sistemas de facturación que no cumplan los requisitos, y de hasta 150.000 € para los fabricantes o comercializadores de software no conforme.",
+      "VeriFactu será obligatorio desde el 1 de enero de 2027 para los contribuyentes del Impuesto sobre Sociedades y desde el 1 de julio de 2027 para autónomos y el resto de obligados tributarios. A partir de tu fecha límite, la Ley 11/2021 antifraude prevé sanciones de hasta 50.000 € por ejercicio para quien use sistemas de facturación no conformes, y de hasta 150.000 € para fabricantes o comercializadores de software que no cumpla los requisitos.",
   },
   {
     question: "¿Puedo seguir facturando con Excel o Word?",

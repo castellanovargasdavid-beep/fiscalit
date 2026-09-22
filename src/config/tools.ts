@@ -60,7 +60,8 @@ export const tools: Tool[] = [
     slug: "diagnostico-verifactu",
     href: "/herramientas/diagnostico-verifactu",
     title: "Diagnóstico VeriFactu",
-    description: "Comprueba si ya estás obligado a VeriFactu y a la Ley Crea y Crece, con checklist técnico y plazos.",
+    description:
+      "Comprueba si tu sistema actual cumple los requisitos técnicos de facturación para la entrada en vigor obligatoria de VeriFactu y la Ley Crea y Crece, en 2027.",
     category: "facturacion",
     icon: ShieldCheck,
     keywords: ["verifactu", "factura", "crea y crece", "aeat", "software facturacion", "sancion"],
@@ -69,10 +70,11 @@ export const tools: Tool[] = [
     slug: "calculadora-kilometraje-dietas",
     href: "/herramientas/calculadora-kilometraje-dietas",
     title: "Kilometraje y dietas exentas",
-    description: "Calcula el importe exento de IRPF por kilometraje y dietas de manutención en tus desplazamientos.",
+    description:
+      "Calcula el importe exento de IRPF por kilometraje y dietas de manutención para empleados y administradores en sus desplazamientos.",
     category: "fiscal",
     icon: Car,
-    keywords: ["kilometraje", "dietas", "km", "desplazamiento", "manutencion", "exento"],
+    keywords: ["kilometraje", "dietas", "km", "desplazamiento", "manutencion", "exento", "empleados", "administradores"],
   },
   {
     slug: "retencion-factura-iae",

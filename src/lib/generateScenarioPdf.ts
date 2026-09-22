@@ -18,7 +18,7 @@ export interface PdfReportPromo {
 export interface PdfReportData {
   /** Nombre de la herramienta, usado como título del informe. */
   toolTitle: string;
-  /** Frase de conclusión destacada (opcional), p. ej. "Te conviene ser Autónomo: ganas 1.763 € más al año." */
+  /** Frase de conclusión destacada (opcional), p. ej. "Bajo estos supuestos, el capital neto disponible estimado difiere en 1.763 € a favor de Autónomo." */
   highlight?: string;
   sections: PdfReportSection[];
   promo?: PdfReportPromo;

@@ -27,6 +27,8 @@ interface AutonomoVsSLToolProps {
 interface DetalleLinea {
   label: string;
   value: number;
+  /** Línea puramente informativa (p. ej. un subtotal intermedio dentro de la sociedad) que no se suma al resto. */
+  esInformativa?: boolean;
 }
 
 interface Escenario {
@@ -116,20 +118,19 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
   const ctaGestoria =
     opcionMasVentajosa === "sociedad_limitada"
       ? {
-          dynamicHeadline: `Ahorra esos ${formatEUR(Math.abs(diferenciaNeta))} al año: constituye tu SL con Ayuda T Pymes en 48h.`,
-          dynamicSavingAmount: Math.abs(diferenciaNeta),
+          dynamicHeadline: `Bajo estos supuestos, el capital neto disponible estimado es ${formatEUR(Math.abs(diferenciaNeta))} superior como Sociedad Limitada, antes de costes mercantiles y contables. Si valoras dar el paso, constituye tu SL con Ayuda T Pymes en 48h.`,
           promoBadgeText: "Cupón exclusivo: -20% en tu primer año",
         }
       : {
           dynamicHeadline:
-            "Te compensa seguir siendo autónomo: no dejes deducciones sin aplicar y optimiza tu contabilidad con Ayuda T Pymes.",
+            "Si de momento sigues como autónomo, no dejes deducciones sin aplicar: optimiza tu contabilidad con Ayuda T Pymes.",
           promoBadgeText: "Primera consulta gratuita",
         };
 
   const conclusion =
     opcionMasVentajosa === "equivalente"
-      ? "Ambas opciones te dejan un neto disponible prácticamente igual."
-      : `Te conviene ser ${opcionMasVentajosa === "autonomo" ? "Autónomo" : "Sociedad Limitada"}: ganas ${formatEUR(Math.abs(diferenciaNeta))} más al año.`;
+      ? "Bajo estos supuestos, el capital neto disponible estimado es prácticamente igual en ambas opciones."
+      : `Bajo estos supuestos, el capital neto disponible estimado difiere en ${formatEUR(Math.abs(diferenciaNeta))} a favor de ${opcionMasVentajosa === "autonomo" ? "Autónomo" : "Sociedad Limitada"}, antes de costes mercantiles y contables (constitución, gestoría, Registro Mercantil...).`;
 
   const reportSections = [
     {
@@ -152,10 +153,14 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
     {
       title: "Resultado — Sociedad Limitada",
       rows: [
-        { label: "Salario neto administrador", value: formatEUR(sociedadLimitada.salarioNetoAdministrador) },
         { label: "Impuesto sobre Sociedades", value: formatEUR(sociedadLimitada.cuotaImpuestoSociedades) },
         { label: "Cuota RETA societaria", value: formatEUR(sociedadLimitada.cuotaRetaSocietariaAnual) },
-        { label: "Dividendos netos", value: formatEUR(sociedadLimitada.dividendosNetos) },
+        {
+          label: "Beneficio de la sociedad (tras Impuesto de Sociedades)",
+          value: formatEUR(sociedadLimitada.beneficioDespuesDeImpuestos),
+        },
+        { label: "Remuneración neta (nómina del socio)", value: formatEUR(sociedadLimitada.salarioNetoAdministrador) },
+        { label: "Dividendo neto en el bolsillo", value: formatEUR(sociedadLimitada.dividendosNetos) },
         { label: "Neto disponible al año", value: formatEUR(sociedadLimitada.netoDisponible) },
       ],
     },
@@ -343,11 +348,14 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
               : []),
           ]}
           detalle={[
-            { label: "Salario neto administrador", value: sociedadLimitada.salarioNetoAdministrador },
-            { label: "Impuesto sobre Sociedades", value: -sociedadLimitada.cuotaImpuestoSociedades },
-            { label: "Cuota RETA societaria", value: -sociedadLimitada.cuotaRetaSocietariaAnual },
+            {
+              label: "Beneficio de la sociedad (tras Impuesto de Sociedades)",
+              value: sociedadLimitada.beneficioDespuesDeImpuestos,
+              esInformativa: true,
+            },
+            { label: "Remuneración neta (nómina del socio)", value: sociedadLimitada.salarioNetoAdministrador },
+            { label: "Dividendo neto en el bolsillo", value: sociedadLimitada.dividendosNetos },
             ...(gestoriaAnualSL > 0 ? [{ label: "Gestoría", value: -gestoriaAnualSL }] : []),
-            { label: "Dividendos netos", value: sociedadLimitada.dividendosNetos },
           ]}
         />
       </div>
@@ -358,14 +366,9 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
           opcionMasVentajosa === "equivalente" ? "border-slate-200 bg-white" : "border-emerald-200 bg-emerald-50",
         )}
       >
-        {opcionMasVentajosa === "equivalente" ? (
-          <p className="text-sm text-slate-600">{conclusion}</p>
-        ) : (
-          <p className="text-sm text-slate-700">
-            Te conviene ser <strong className="text-slate-900">{opcionMasVentajosa === "autonomo" ? "Autónomo" : "Sociedad Limitada"}</strong>
-            : ganas <strong className="text-emerald-600">{formatEUR(Math.abs(diferenciaNeta))}</strong> más al año.
-          </p>
-        )}
+        <p className={opcionMasVentajosa === "equivalente" ? "text-sm text-slate-600" : "text-sm text-slate-700"}>
+          {conclusion}
+        </p>
       </div>
 
       <LegalSourceBadge
@@ -420,9 +423,17 @@ function ResultCard({ titulo, neto, esGanador, segments, detalle }: ResultCardPr
       <ul className="mt-4 space-y-1.5 text-sm text-slate-600">
         {detalle.map((linea) => (
           <li key={linea.label} className="flex justify-between gap-4">
-            <span>{linea.label}</span>
-            <span className={linea.value < 0 ? "text-rose-600" : "text-slate-900"}>
-              {linea.value < 0 ? "−" : ""}
+            <span className={linea.esInformativa ? "text-slate-400 italic" : undefined}>{linea.label}</span>
+            <span
+              className={cn(
+                linea.esInformativa
+                  ? "text-slate-400 italic"
+                  : linea.value < 0
+                    ? "text-rose-600"
+                    : "text-slate-900",
+              )}
+            >
+              {!linea.esInformativa && linea.value < 0 ? "−" : ""}
               {formatEUR(Math.abs(linea.value))}
             </span>
           </li>

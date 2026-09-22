@@ -46,6 +46,21 @@ const FAQ_ITEMS: FAQItem[] = [
     answer:
       "Puedes consultarlo en tu alta censal (modelo 036 o 037) presentada ante la AEAT, donde figura el epígrafe del IAE correspondiente a tu actividad.",
   },
+  {
+    question: "¿Tengo yo que presentar el Modelo 111 por la retención de mis facturas?",
+    answer:
+      "No. El Modelo 111 es la autoliquidación trimestral que presenta tu cliente (el pagador/retenedor) para ingresar en Hacienda las retenciones que te ha practicado; tú no lo presentas ni lo declaras como gasto o deducción propia. Lo que tú declaras es el Modelo 130, tu propio pago fraccionado de IRPF.",
+  },
+  {
+    question: "¿Qué relación tiene la retención con el Modelo 130?",
+    answer:
+      "El Modelo 130 es el pago fraccionado trimestral del IRPF que adelanta todo autónomo en estimación directa. Las retenciones que ya te han practicado tus clientes en factura se restan de ese pago fraccionado, porque son un anticipo del mismo impuesto. Además, si al menos el 70% de tus ingresos del ejercicio anterior llevaron retención o ingreso a cuenta, quedas exento de ingresar cuota en el Modelo 130 (art. 110.3 del Reglamento del IRPF).",
+  },
+  {
+    question: "¿Tengo que pagar el IAE si soy autónomo?",
+    answer:
+      "En la práctica, no. Las personas físicas y las entidades con un importe neto de cifra de negocios inferior a 1.000.000 € están exentas del pago del Impuesto sobre Actividades Económicas (art. 82 Texto Refundido de la Ley de Haciendas Locales). Solo debes darte de alta censal en el epígrafe correspondiente a tu actividad, sin cuota a ingresar mientras no superes ese umbral de facturación.",
+  },
 ];
 
 export default function RetencionFacturaIAEPage() {

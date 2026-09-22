@@ -36,14 +36,18 @@ export interface DiagnosticoVerifactuResult {
 }
 
 /**
- * Fechas límite de entrada en vigor de VeriFactu (Reglamento de facturación
- * aprobado por el RD 1007/2023, en desarrollo de la Ley 11/2021 antifraude).
- * La AEAT ha aplazado estos plazos en el pasado: verifica la fecha vigente
- * antes de usar este diagnóstico en producción.
+ * Fechas límite de entrada en vigor obligatoria de VeriFactu (Reglamento de
+ * facturación aprobado por el RD 1007/2023, en desarrollo de la Ley 11/2021
+ * antifraude, con el aplazamiento introducido por el RD 254/2025): 1 de
+ * enero de 2027 para los contribuyentes del Impuesto sobre Sociedades (art.
+ * 3.1.a del Reglamento) y 1 de julio de 2027 para el resto de obligados
+ * tributarios (autónomos, entidades sin personalidad jurídica...). Verifica
+ * la fecha vigente antes de usar este diagnóstico en producción: la AEAT ha
+ * aplazado estos plazos más de una vez.
  */
 export const FECHA_LIMITE_VERIFACTU: Record<TipoContribuyente, Date> = {
-  sociedad: new Date("2026-01-01T00:00:00Z"),
-  autonomo: new Date("2026-07-01T00:00:00Z"),
+  sociedad: new Date("2027-01-01T00:00:00Z"),
+  autonomo: new Date("2027-07-01T00:00:00Z"),
 };
 
 /** Umbral de facturación (Ley 18/2022 "Crea y Crece") que acorta el plazo de adaptación a la factura electrónica B2B. */

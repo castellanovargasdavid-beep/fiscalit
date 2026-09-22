@@ -110,14 +110,14 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
       return {
         nivel: "verde",
         titulo: "Cumpliendo",
-        mensaje: "Tu sistema ya cumple los requisitos de VeriFactu, antes de que te sea obligatorio.",
+        mensaje: `Tu sistema ya cumple los requisitos técnicos que serán obligatorios el ${formatearFecha(resultado.fechaLimiteVerifactu)}.`,
       };
     }
 
     return {
       nivel: "amarillo",
-      titulo: "Plazo próximo de adaptación",
-      mensaje: `Tienes hasta el ${formatearFecha(resultado.fechaLimiteVerifactu)} para adaptar tu sistema de facturación.`,
+      titulo: "Pendiente de adaptación",
+      mensaje: `Tienes hasta el ${formatearFecha(resultado.fechaLimiteVerifactu)} para adaptar tu sistema de facturación a los requisitos técnicos del Reglamento.`,
     };
   }, [resultado]);
 
@@ -127,7 +127,7 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
   const ctaQuipu =
     estado.nivel !== "verde"
       ? {
-          dynamicHeadline: "Evita sanciones de hasta 50.000 €: adapta tu facturación a VeriFactu con Quipu.",
+          dynamicHeadline: "Adapta tu facturación a VeriFactu antes de tu fecha límite con Quipu.",
           promoBadgeText: "Migración asistida incluida",
         }
       : {};
@@ -142,6 +142,12 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
         </h1>
         <EmbedWidgetModal slug="diagnostico-verifactu" toolTitle="Diagnóstico VeriFactu y Ley Crea y Crece" />
       </div>
+
+      <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+        Comprueba si tu sistema actual cumple ya los requisitos técnicos de facturación exigidos por el Reglamento
+        VeriFactu, de cara a su entrada en vigor obligatoria en 2027 (1 de enero para sociedades, 1 de julio para
+        autónomos y el resto de obligados tributarios).
+      </p>
 
       <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <div>

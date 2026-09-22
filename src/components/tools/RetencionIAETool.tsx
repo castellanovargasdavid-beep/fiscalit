@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, Info } from "lucide-react";
 import { calcularRetencionIAE, type SeccionIAE, type TipoIVA } from "@/lib/calculations/retencionIAE";
 import { OptionGroup } from "@/components/ui/OptionGroup";
 import { SliderInput } from "@/components/ui/SliderInput";
@@ -143,6 +143,26 @@ export function RetencionIAETool({ faqItems }: RetencionIAEToolProps) {
           autónomo en España. Si facturas a un particular (B2C) o a un cliente extranjero, nunca debes aplicar
           retención de IRPF.
         </p>
+      </div>
+
+      <div className="mt-6 flex gap-3 rounded-2xl border border-blue-200 bg-blue-50 p-5 print:break-inside-avoid">
+        <Info className="mt-0.5 h-5 w-5 shrink-0 text-blue-600" aria-hidden="true" />
+        <div className="space-y-2 text-sm text-blue-800">
+          <p>
+            <strong>La retención no la declaras tú:</strong> es tu cliente (el pagador/retenedor) quien la ingresa
+            en Hacienda cada trimestre mediante el Modelo 111 — no es una deducción que tú presentes. Para ti, es
+            un anticipo de tu propio IRPF que restas del Modelo 130, el pago fraccionado trimestral que adelanta
+            todo autónomo en estimación directa. Si al menos el 70% de tus ingresos del ejercicio anterior
+            llevaron retención o ingreso a cuenta, quedas exento de ingresar cuota en el Modelo 130 (art. 110.3
+            del Reglamento del IRPF).
+          </p>
+          <p>
+            <strong>El IAE no suele suponer coste:</strong> las personas físicas y las empresas con un importe
+            neto de cifra de negocios inferior a 1.000.000 € están exentas de pagar el Impuesto sobre Actividades
+            Económicas (art. 82 Texto Refundido de la Ley de Haciendas Locales); solo debes darte de alta en el
+            epígrafe correspondiente al presentar el modelo censal, sin cuota a ingresar por este impuesto.
+          </p>
+        </div>
       </div>
 
       <LegalSourceBadge

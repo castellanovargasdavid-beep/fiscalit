@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, AlertTriangle } from "lucide-react";
 import {
   calcularKilometrajeDietas,
   type DesplazamientoDieta,
@@ -83,12 +83,30 @@ export function KilometrajeDietasTool({ faqItems }: KilometrajeDietasToolProps) 
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-          Calculadora de kilometraje y dietas exentas
+          Simulador de gastos de desplazamiento y dietas exentas (empleados y administradores)
         </h1>
         <EmbedWidgetModal
           slug="calculadora-kilometraje-dietas"
-          toolTitle="Calculadora de kilometraje y dietas exentas"
+          toolTitle="Simulador de gastos de desplazamiento y dietas exentas (empleados y administradores)"
         />
+      </div>
+
+      <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+        Calcula las asignaciones por kilometraje y dietas de manutención exentas de IRPF que una empresa puede
+        pagar a sus trabajadores o administradores por desplazamientos justificados.
+      </p>
+
+      <div className="mt-6 flex gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-5">
+        <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" aria-hidden="true" />
+        <p className="text-sm text-amber-800">
+          <strong>Aviso para autónomos (personas físicas):</strong> los 0,26 €/km están pensados para las
+          asignaciones que una empresa paga a sus trabajadores o administradores, no como deducción automática por
+          usar tu propio vehículo. La AEAT exige que el vehículo esté afecto de forma <strong>exclusiva</strong> a
+          tu actividad económica para deducir sus gastos, salvo excepciones concretas (taxistas, autoescuelas,
+          representantes de comercio...). Las dietas de manutención sí puedes aplicarlas con estos mismos importes
+          (art. 30.2.5ª Ley IRPF); consulta con tu gestor el criterio de afectación exclusiva antes de deducir el
+          kilometraje.
+        </p>
       </div>
 
       <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -182,7 +200,7 @@ export function KilometrajeDietasTool({ faqItems }: KilometrajeDietasToolProps) 
       </div>
 
       <LegalSourceBadge
-        fuente="Orden HFP/792/2023 (0,26 €/km en IRPF)."
+        fuente="Orden HFP/792/2023 (0,26 €/km en IRPF para asignaciones de empresa a trabajadores y administradores)."
         url="https://www.boe.es/buscar/doc.php?id=BOE-A-2023-16461"
       />
 

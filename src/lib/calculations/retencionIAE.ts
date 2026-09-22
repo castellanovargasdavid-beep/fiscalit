@@ -40,6 +40,17 @@ export interface RetencionIAEResult {
  * factura. Las actividades profesionales (Sección 2 IAE) llevan un 15% de
  * retención general, reducido al 7% durante el año de alta y los dos
  * siguientes (art. 101 Ley IRPF).
+ *
+ * Importante para la UI: la retención que aquí se calcula la ingresa en
+ * Hacienda el CLIENTE (pagador/retenedor) mediante el Modelo 111, no el
+ * autónomo que emite la factura. Para el autónomo funciona como un anticipo
+ * de su propio IRPF, que se resta del Modelo 130 (pago fraccionado
+ * trimestral); si al menos el 70% de sus ingresos del ejercicio anterior
+ * llevaron retención, queda exento de ingresar cuota en el Modelo 130 (art.
+ * 110.3 Reglamento IRPF). El IAE, por separado, está exento para personas
+ * físicas y empresas con cifra de negocio inferior a 1.000.000 € (art. 82
+ * TRLHL): no depende de la sección IAE ni del tipo de retención calculados
+ * aquí.
  */
 export function calcularRetencionIAE(input: RetencionIAEInput): RetencionIAEResult {
   const tipoActividad: TipoActividad = input.seccionIAE === "1" ? "empresarial" : "profesional";

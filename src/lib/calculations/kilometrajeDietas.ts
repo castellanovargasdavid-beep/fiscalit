@@ -2,7 +2,25 @@ import { round2 } from "./shared";
 
 export type ZonaDesplazamiento = "espana" | "extranjero";
 
-/** Importe exento por kilómetro recorrido con vehículo propio (art. 9 Reglamento IRPF). */
+/**
+ * Importe exento por kilómetro (Orden HFP/792/2023, art. 9.A.2.b y 9.B.1.a
+ * Reglamento IRPF) aplicable a las ASIGNACIONES que una empresa paga a sus
+ * trabajadores o administradores para compensar el uso del vehículo propio
+ * en desplazamientos justificados por motivos de trabajo: para el
+ * perceptor, esa asignación no tributa como mayor renta del trabajo hasta
+ * este importe.
+ *
+ * Para autónomos personas físicas en estimación directa, este importe NO es
+ * una deducción automática por usar el vehículo propio: la AEAT exige que
+ * el vehículo esté afecto de forma EXCLUSIVA a la actividad económica (art.
+ * 22.4 Reglamento IRPF) para poder deducir sus gastos, salvo actividades
+ * concretas con excepción legal (taxistas, autoescuelas, agentes/
+ * representantes de comercio, transporte de viajeros...). Usa este
+ * simulador para esos dos colectivos (empleados y administradores con
+ * retribución justificada); si eres autónomo persona física, revisa con tu
+ * gestor si tu vehículo cumple el criterio de afectación exclusiva antes de
+ * aplicar esta tarifa como gasto deducible.
+ */
 export const TARIFA_KM_EXENTO = 0.26;
 
 /** Importes exentos de dietas de manutención según haya o no pernocta. */
