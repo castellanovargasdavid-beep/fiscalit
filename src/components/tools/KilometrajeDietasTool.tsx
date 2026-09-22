@@ -8,6 +8,7 @@ import {
 } from "@/lib/calculations/kilometrajeDietas";
 import { SliderInput } from "@/components/ui/SliderInput";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
+import { CompactSimulationNotice } from "@/components/tools/CompactSimulationNotice";
 import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
 import { PrivacyLocalBadge } from "@/components/tools/PrivacyLocalBadge";
 import { TerritorialScopeNotice } from "@/components/tools/TerritorialScopeNotice";
@@ -160,13 +161,11 @@ export function KilometrajeDietasTool({ faqItems }: KilometrajeDietasToolProps) 
         </div>
       </div>
 
-      <SimulationDisclaimer />
-      <PrivacyLocalBadge />
-      <TerritorialScopeNotice />
+      <CompactSimulationNotice />
 
       <div className="mt-8 rounded-2xl border border-emerald-600 bg-emerald-600 p-6 text-white shadow-sm print:break-inside-avoid">
         <p className="text-sm text-emerald-100">Total exento de IRPF</p>
-        <p className="mt-1 text-4xl font-semibold tracking-tight">{formatEUR(resultado.totalExentoIRPF)}</p>
+        <h2 className="mt-1 text-4xl font-bold tracking-tight">{formatEUR(resultado.totalExentoIRPF)}</h2>
       </div>
 
       <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm print:break-inside-avoid">
@@ -211,6 +210,10 @@ export function KilometrajeDietasTool({ faqItems }: KilometrajeDietasToolProps) 
         fuente="Orden HFP/792/2023 (0,26 €/km en IRPF para asignaciones de empresa a trabajadores y administradores)."
         url="https://www.boe.es/buscar/doc.php?id=BOE-A-2023-16461"
       />
+
+      <SimulationDisclaimer />
+      <PrivacyLocalBadge />
+      <TerritorialScopeNotice />
 
       <div className="mt-10">
         <AffiliateCard

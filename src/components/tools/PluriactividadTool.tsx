@@ -9,6 +9,7 @@ import {
 import { SliderInput } from "@/components/ui/SliderInput";
 import { SplitBar } from "@/components/tools/SplitBar";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
+import { CompactSimulationNotice } from "@/components/tools/CompactSimulationNotice";
 import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
 import { PrivacyLocalBadge } from "@/components/tools/PrivacyLocalBadge";
 import { TerritorialScopeNotice } from "@/components/tools/TerritorialScopeNotice";
@@ -84,9 +85,7 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
         devolución puede variar respecto a esta estimación.
       </p>
 
-      <SimulationDisclaimer />
-      <PrivacyLocalBadge />
-      <TerritorialScopeNotice />
+      <CompactSimulationNotice />
 
       <div
         className={cn(
@@ -95,26 +94,23 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
         )}
       >
         <p className="text-sm text-slate-600">¿Tienes derecho a devolución de oficio de la Seguridad Social?</p>
-        <p
+        <h2
           className={cn(
-            "mt-2 text-3xl font-semibold",
+            "mt-2 text-3xl font-bold sm:text-4xl",
             resultado.tieneDerechoDevolucion ? "text-emerald-700" : "text-slate-900",
           )}
         >
-          {resultado.tieneDerechoDevolucion ? "Sí" : "No"}
-        </p>
+          {resultado.tieneDerechoDevolucion ? `Sí — ${formatEUR(resultado.importeDevolucion)}` : "No"}
+        </h2>
+        {resultado.tieneDerechoDevolucion && (
+          <p className="mt-1 text-sm text-emerald-700">Importe estimado a devolver</p>
+        )}
       </div>
 
       {resultado.tieneDerechoDevolucion && (
-        <div className="mt-4 grid gap-4 sm:grid-cols-2 print:break-inside-avoid">
-          <div className="rounded-xl border border-emerald-600 bg-emerald-600 p-4 text-white shadow-sm">
-            <p className="text-xs text-emerald-100">Importe estimado a devolver</p>
-            <p className="mt-1 text-lg font-semibold">{formatEUR(resultado.importeDevolucion)}</p>
-          </div>
-          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-            <p className="text-xs text-slate-500">Tope máximo de devolución legal</p>
-            <p className="mt-1 text-lg font-semibold text-slate-900">{formatEUR(limiteDevolucion)}</p>
-          </div>
+        <div className="mt-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm print:break-inside-avoid">
+          <p className="text-xs text-slate-500">Tope máximo de devolución legal</p>
+          <p className="mt-1 text-lg font-semibold text-slate-900">{formatEUR(limiteDevolucion)}</p>
         </div>
       )}
 
@@ -157,6 +153,10 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
         fuente="Art. 313 del Texto Refundido de la Ley General de la Seguridad Social."
         url="https://www.boe.es/buscar/act.php?id=BOE-A-2015-11724#a313"
       />
+
+      <SimulationDisclaimer />
+      <PrivacyLocalBadge />
+      <TerritorialScopeNotice />
 
       <div className="mt-10">
         <AffiliateCard

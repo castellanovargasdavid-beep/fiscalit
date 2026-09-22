@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import {
   TABLA_TRAMOS_RETA,
@@ -12,6 +11,7 @@ import { SliderInput } from "@/components/ui/SliderInput";
 import { ScenarioPresets, type ScenarioPreset } from "@/components/ui/ScenarioPresets";
 import { ScenarioActions } from "@/components/tools/ScenarioActions";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
+import { CompactSimulationNotice } from "@/components/tools/CompactSimulationNotice";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
@@ -203,16 +203,7 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
         </div>
       </div>
 
-      <p className="mt-4 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-slate-500 print:hidden">
-        <span aria-hidden="true">🔒</span>
-        <span>Proceso 100% en local · Territorio Común · Simulación orientativa ·</span>
-        <Link
-          href="/metodologia"
-          className="font-medium text-blue-600 underline underline-offset-2 hover:text-blue-800"
-        >
-          Metodología
-        </Link>
-      </p>
+      <CompactSimulationNotice />
 
       <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm print:break-inside-avoid">
         <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">

@@ -6,6 +6,7 @@ import { calcularRetencionIAE, type SeccionIAE, type TipoIVA } from "@/lib/calcu
 import { OptionGroup } from "@/components/ui/OptionGroup";
 import { SliderInput } from "@/components/ui/SliderInput";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
+import { CompactSimulationNotice } from "@/components/tools/CompactSimulationNotice";
 import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
 import { PrivacyLocalBadge } from "@/components/tools/PrivacyLocalBadge";
 import { TerritorialScopeNotice } from "@/components/tools/TerritorialScopeNotice";
@@ -108,14 +109,12 @@ export function RetencionIAETool({ faqItems }: RetencionIAEToolProps) {
         </div>
       </div>
 
-      <SimulationDisclaimer />
-      <PrivacyLocalBadge />
-      <TerritorialScopeNotice />
+      <CompactSimulationNotice />
 
       <div className="mt-8 grid gap-4 sm:grid-cols-[220px_1fr] print:break-inside-avoid">
         <div className="flex flex-col items-center justify-center rounded-2xl border border-blue-600 bg-blue-600 p-6 text-center text-white shadow-sm">
           <p className="text-xs text-blue-100">Retención IRPF a aplicar</p>
-          <p className="mt-1 text-4xl font-semibold">{(resultado.tipoRetencionIRPF * 100).toFixed(0)}%</p>
+          <h2 className="mt-1 text-4xl font-bold">{(resultado.tipoRetencionIRPF * 100).toFixed(0)}%</h2>
         </div>
         <div className="flex items-center rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
           <p className="text-sm text-slate-600">{resultado.motivoRetencion}</p>
@@ -177,6 +176,10 @@ export function RetencionIAETool({ faqItems }: RetencionIAEToolProps) {
         fuente="Art. 95 del Reglamento del IRPF (RD 439/2007)."
         url="https://www.boe.es/buscar/act.php?id=BOE-A-2007-6820#a95"
       />
+
+      <SimulationDisclaimer />
+      <PrivacyLocalBadge />
+      <TerritorialScopeNotice />
 
       <div className="mt-10">
         <AffiliateCard

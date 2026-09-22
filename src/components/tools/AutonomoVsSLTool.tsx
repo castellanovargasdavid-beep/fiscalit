@@ -9,6 +9,7 @@ import { ScenarioActions } from "@/components/tools/ScenarioActions";
 import { SplitBar, type SplitBarSegment } from "@/components/tools/SplitBar";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { HighValueLeadCard } from "@/components/tools/HighValueLeadCard";
+import { CompactSimulationNotice } from "@/components/tools/CompactSimulationNotice";
 import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
 import { PrivacyLocalBadge } from "@/components/tools/PrivacyLocalBadge";
 import { TerritorialScopeNotice } from "@/components/tools/TerritorialScopeNotice";
@@ -142,6 +143,11 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
           nextStepIntro: "Para no dejar deducciones sin aplicar, un software de contabilidad automática como",
           promoBadgeText: undefined as string | undefined,
         };
+
+  const veredictoTitulo =
+    opcionMasVentajosa === "equivalente"
+      ? "Capital neto disponible prácticamente igual en ambas opciones"
+      : `${opcionMasVentajosa === "autonomo" ? "Autónomo" : "Sociedad Limitada"} te deja ${formatEUR(Math.abs(diferenciaNeta))} más de capital neto disponible`;
 
   const conclusion =
     opcionMasVentajosa === "equivalente"
@@ -313,11 +319,26 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
         </div>
       </details>
 
-      <SimulationDisclaimer />
-      <PrivacyLocalBadge />
-      <TerritorialScopeNotice />
+      <CompactSimulationNotice />
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 print:break-inside-avoid">
+      <div
+        className={cn(
+          "mt-6 rounded-2xl border p-6 text-center print:break-inside-avoid",
+          opcionMasVentajosa === "equivalente" ? "border-slate-200 bg-white" : "border-emerald-200 bg-emerald-50",
+        )}
+      >
+        <h2
+          className={cn(
+            "text-2xl font-bold tracking-tight sm:text-3xl",
+            opcionMasVentajosa === "equivalente" ? "text-slate-900" : "text-emerald-700",
+          )}
+        >
+          {veredictoTitulo}
+        </h2>
+        <p className="mt-2 text-sm text-slate-600">{conclusion}</p>
+      </div>
+
+      <div className="mt-6 grid gap-4 sm:grid-cols-2 print:break-inside-avoid">
         <ResultCard
           titulo="Autónomo"
           neto={autonomo.netoDisponible}
@@ -380,21 +401,14 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
         />
       </div>
 
-      <div
-        className={cn(
-          "mt-6 rounded-2xl border p-5 text-center print:break-inside-avoid",
-          opcionMasVentajosa === "equivalente" ? "border-slate-200 bg-white" : "border-emerald-200 bg-emerald-50",
-        )}
-      >
-        <p className={opcionMasVentajosa === "equivalente" ? "text-sm text-slate-600" : "text-sm text-slate-700"}>
-          {conclusion}
-        </p>
-      </div>
-
       <LegalSourceBadge
         fuente="Basado en el Real Decreto-ley 13/2022 y tablas del BOE núm. 180."
         url="https://www.boe.es/buscar/act.php?id=BOE-A-2022-12482"
       />
+
+      <SimulationDisclaimer />
+      <PrivacyLocalBadge />
+      <TerritorialScopeNotice />
 
       {ingresosAnuales > UMBRAL_LEAD_ALTO_VALOR && <HighValueLeadCard facturacionAnual={ingresosAnuales} />}
 

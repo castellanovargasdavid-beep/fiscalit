@@ -10,6 +10,7 @@ import {
 } from "@/lib/calculations/verifactu";
 import { OptionGroup } from "@/components/ui/OptionGroup";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
+import { CompactSimulationNotice } from "@/components/tools/CompactSimulationNotice";
 import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
 import { PrivacyLocalBadge } from "@/components/tools/PrivacyLocalBadge";
 import { TerritorialScopeNotice } from "@/components/tools/TerritorialScopeNotice";
@@ -236,15 +237,13 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
         </div>
       </div>
 
-      <SimulationDisclaimer />
-      <PrivacyLocalBadge />
-      <TerritorialScopeNotice />
+      <CompactSimulationNotice />
 
       <div className={cn("mt-8 rounded-2xl border p-6 print:break-inside-avoid", EstiloEstado.border, EstiloEstado.bg)}>
         <div className="flex items-start gap-4">
           <IconoEstado className={cn("h-8 w-8 shrink-0", EstiloEstado.texto)} aria-hidden="true" />
           <div>
-            <p className={cn("text-lg font-semibold", EstiloEstado.texto)}>{estado.titulo}</p>
+            <h2 className={cn("text-2xl font-bold sm:text-3xl", EstiloEstado.texto)}>{estado.titulo}</h2>
             <p className="mt-1 text-sm text-slate-700">{estado.mensaje}</p>
           </div>
         </div>
@@ -290,6 +289,10 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
         fuente="Conforme al Reglamento de requisitos de los sistemas informáticos de facturación (Orden HAC/1177/2024)."
         url="https://www.boe.es/diario_boe/txt.php?id=BOE-A-2024-22138"
       />
+
+      <SimulationDisclaimer />
+      <PrivacyLocalBadge />
+      <TerritorialScopeNotice />
 
       <div className="mt-10">
         <AffiliateCard partnerId="quipu" {...ctaQuipu} />
