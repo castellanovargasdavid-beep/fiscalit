@@ -1,5 +1,6 @@
 import { Cookie, Landmark, Lock, MonitorSmartphone, RefreshCw, Zap } from "lucide-react";
 import { ToolsExplorer } from "@/components/home/ToolsExplorer";
+import { BoeAlertSignup } from "@/components/BoeAlertSignup";
 import { buildOrganizationJsonLd, buildWebSiteJsonLd } from "@/lib/seo";
 
 const TRUST_BADGES = [
@@ -105,6 +106,10 @@ export default function Home() {
               </div>
             ))}
           </div>
+        </section>
+
+        <section className="mt-16">
+          <BoeAlertSignup />
         </section>
       </div>
     </>

@@ -9,6 +9,7 @@ import {
 import { SliderInput } from "@/components/ui/SliderInput";
 import { SplitBar } from "@/components/tools/SplitBar";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
+import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 import { formatEUR } from "@/lib/format";
@@ -41,9 +42,12 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
-      <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-        Calculadora de devolución por pluriactividad
-      </h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
+          Calculadora de devolución por pluriactividad
+        </h1>
+        <EmbedWidgetModal slug="pluriactividad-devolucion" toolTitle="Calculadora de devolución por pluriactividad" />
+      </div>
 
       <div className="mt-6 grid gap-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:grid-cols-2">
         <SliderInput

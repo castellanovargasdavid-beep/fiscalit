@@ -9,6 +9,7 @@ import { ScenarioActions } from "@/components/tools/ScenarioActions";
 import { SplitBar, type SplitBarSegment } from "@/components/tools/SplitBar";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { HighValueLeadCard } from "@/components/tools/HighValueLeadCard";
+import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 import { useSyncScenarioToUrl, useUrlSeededScenario } from "@/lib/useScenarioShare";
@@ -174,9 +175,12 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
-      <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-        Autónomo vs Sociedad Limitada
-      </h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
+          Autónomo vs Sociedad Limitada
+        </h1>
+        <EmbedWidgetModal slug="autonomo-vs-sl" toolTitle="Autónomo vs Sociedad Limitada" />
+      </div>
 
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <ScenarioPresets presets={PRESETS} onSelect={aplicarPreset} />

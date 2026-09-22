@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { AutonomoVsSLTool } from "@/components/tools/AutonomoVsSLTool";
+import { BoeAlertSignup } from "@/components/BoeAlertSignup";
 import type { FAQItem } from "@/components/FAQAccordion";
 import { buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd } from "@/lib/seo";
 
@@ -59,6 +60,9 @@ export default function AutonomoVsSLPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildFaqJsonLd(FAQ_ITEMS)) }}
       />
       <AutonomoVsSLTool faqItems={FAQ_ITEMS} />
+      <div className="mx-auto max-w-5xl px-4 pb-10 sm:px-6">
+        <BoeAlertSignup />
+      </div>
     </>
   );
 }

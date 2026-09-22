@@ -10,6 +10,12 @@ export const siteConfig = {
   whatsappNumber: "",
   /** URL de un servicio de formularios sin backend (Formspree, Resend, un webhook propio...) para los leads de alto valor. Vacío = se usa solo el email de contacto. */
   leadWebhookUrl: "",
+  /**
+   * Endpoint de un proveedor de newsletter sin backend propio (Buttondown,
+   * MailerLite, Formspree...) que acepte un POST con un campo `email`.
+   * Vacío = las altas caen a un mailto: al email de contacto.
+   */
+  newsletterEndpoint: "",
 };
 
 export const mainNav: { label: string; href: string }[] = [

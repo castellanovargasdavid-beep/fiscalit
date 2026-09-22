@@ -6,6 +6,7 @@ import { calcularRetencionIAE, type SeccionIAE, type TipoIVA } from "@/lib/calcu
 import { OptionGroup } from "@/components/ui/OptionGroup";
 import { SliderInput } from "@/components/ui/SliderInput";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
+import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 import { formatEUR } from "@/lib/format";
@@ -36,9 +37,12 @@ export function RetencionIAETool({ faqItems }: RetencionIAEToolProps) {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
-      <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-        Calculadora de retención IRPF en factura
-      </h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
+          Calculadora de retención IRPF en factura
+        </h1>
+        <EmbedWidgetModal slug="retencion-factura-iae" toolTitle="Calculadora de retención IRPF en factura" />
+      </div>
 
       <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <div className="grid gap-6 sm:grid-cols-2">

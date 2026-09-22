@@ -11,6 +11,8 @@ interface FAQAccordionProps {
 }
 
 export function FAQAccordion({ items, title = "Preguntas frecuentes" }: FAQAccordionProps) {
+  if (items.length === 0) return null;
+
   return (
     <section aria-labelledby="faq-heading" className="mt-16">
       <h2 id="faq-heading" className="text-xl font-semibold text-slate-900">

@@ -10,6 +10,7 @@ import {
 } from "@/lib/calculations/verifactu";
 import { OptionGroup } from "@/components/ui/OptionGroup";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
+import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 import { useIsClient } from "@/lib/hooks";
@@ -132,9 +133,12 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
-      <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-        Diagnóstico VeriFactu y Ley Crea y Crece
-      </h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
+          Diagnóstico VeriFactu y Ley Crea y Crece
+        </h1>
+        <EmbedWidgetModal slug="diagnostico-verifactu" toolTitle="Diagnóstico VeriFactu y Ley Crea y Crece" />
+      </div>
 
       <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <div>

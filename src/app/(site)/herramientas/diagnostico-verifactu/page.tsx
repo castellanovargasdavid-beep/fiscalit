@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { VerifactuTool } from "@/components/tools/VerifactuTool";
+import { BoeAlertSignup } from "@/components/BoeAlertSignup";
 import type { FAQItem } from "@/components/FAQAccordion";
 import { buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd } from "@/lib/seo";
 
@@ -58,6 +59,9 @@ export default function DiagnosticoVerifactuPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildFaqJsonLd(FAQ_ITEMS)) }}
       />
       <VerifactuTool faqItems={FAQ_ITEMS} />
+      <div className="mx-auto max-w-4xl px-4 pb-10 sm:px-6">
+        <BoeAlertSignup />
+      </div>
     </>
   );
 }

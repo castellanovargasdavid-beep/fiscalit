@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CuotaAutonomosTool } from "@/components/tools/CuotaAutonomosTool";
+import { BoeAlertSignup } from "@/components/BoeAlertSignup";
 import type { FAQItem } from "@/components/FAQAccordion";
 import { buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd } from "@/lib/seo";
 
@@ -58,6 +59,9 @@ export default function CalculadoraCuotaAutonomosPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildFaqJsonLd(FAQ_ITEMS)) }}
       />
       <CuotaAutonomosTool faqItems={FAQ_ITEMS} />
+      <div className="mx-auto max-w-4xl px-4 pb-10 sm:px-6">
+        <BoeAlertSignup />
+      </div>
     </>
   );
 }

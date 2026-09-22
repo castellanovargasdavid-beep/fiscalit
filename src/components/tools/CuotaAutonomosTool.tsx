@@ -11,6 +11,7 @@ import { SliderInput } from "@/components/ui/SliderInput";
 import { ScenarioPresets, type ScenarioPreset } from "@/components/ui/ScenarioPresets";
 import { ScenarioActions } from "@/components/tools/ScenarioActions";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
+import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 import { useSyncScenarioToUrl, useUrlSeededScenario } from "@/lib/useScenarioShare";
@@ -118,9 +119,15 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
-      <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-        Calculadora de cuota de autónomos por tramos
-      </h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
+          Calculadora de cuota de autónomos por tramos
+        </h1>
+        <EmbedWidgetModal
+          slug="calculadora-cuota-autonomos"
+          toolTitle="Calculadora de cuota de autónomos por tramos"
+        />
+      </div>
 
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <ScenarioPresets presets={PRESETS} onSelect={aplicarPreset} />
