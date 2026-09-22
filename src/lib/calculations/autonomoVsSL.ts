@@ -5,21 +5,28 @@ import {
   escalaGeneralIrpfPorComunidad,
   round2,
   type ComunidadAutonoma,
+  type TramoImpositivo,
 } from "./shared";
 
 export type { ComunidadAutonoma } from "./shared";
 
 export type TipoTributacionIS = "microempresa" | "general";
 
+/** Tipo general del Impuesto sobre Sociedades (art. 29.1 LIS). */
+export const TIPO_IMPUESTO_SOCIEDADES_GENERAL = 0.25;
+
 /**
- * Tipos del Impuesto sobre Sociedades. El tipo reducido de microempresas
- * (Ley 7/2024) aplica a entidades con cifra de negocio inferior al umbral;
- * revisa el porcentaje vigente cada ejercicio.
+ * Escala progresiva del tipo reducido de "microempresas" (cifra de negocio
+ * inferior al umbral) introducida por la Ley 7/2024, en su calendario de
+ * implantación para el ejercicio 2026: 19% hasta los primeros 50.000€ de
+ * base imponible, 21% al resto (art. 29 LIS). Revisa los porcentajes cada
+ * ejercicio: 2025 fue 21%/22% y 2027 tiene previsto un nuevo descenso a
+ * 17%/20%.
  */
-export const TIPO_IMPUESTO_SOCIEDADES: Record<TipoTributacionIS, number> = {
-  microempresa: 0.23,
-  general: 0.25,
-};
+export const ESCALA_IS_MICROEMPRESA_2026: TramoImpositivo[] = [
+  { desde: 0, hasta: 50_000, tipo: 0.19 },
+  { desde: 50_000, hasta: null, tipo: 0.21 },
+];
 
 /** Cifra de negocio anual por debajo de la cual aplica el tipo reducido de microempresas. */
 export const UMBRAL_FACTURACION_MICROEMPRESA = 1_000_000;
@@ -59,6 +66,12 @@ export interface ResultadoEscenarioAutonomo {
 
 export interface ResultadoEscenarioSL {
   tipoTributacionIS: TipoTributacionIS;
+  /**
+   * Tipo efectivo de Impuesto sobre Sociedades aplicado (cuota / base
+   * imponible). En "microempresa" surge de la escala progresiva 19%/21% y
+   * puede ser un tipo medio entre ambos tramos; en "general" coincide con
+   * el tipo fijo del 25%.
+   */
   tipoImpuestoSociedades: number;
   rendimientoNetoAnual: number;
   /** Cuota RETA societaria del administrador, tratada como gasto deducible de la sociedad. */
@@ -135,7 +148,6 @@ export function compararAutonomoVsSL(input: AutonomoVsSLInput): ComparativaAuton
   // --- Escenario Sociedad Limitada ---
   const tipoTributacionIS: TipoTributacionIS =
     input.ingresosAnuales <= UMBRAL_FACTURACION_MICROEMPRESA ? "microempresa" : "general";
-  const tipoImpuestoSociedades = TIPO_IMPUESTO_SOCIEDADES[tipoTributacionIS];
 
   const cuotaRetaSocietaria = calcularCuotaAutonomo(rendimientoNetoAnual, "societario");
   const cuotaRetaSocietariaAnual = cuotaRetaSocietaria.cuotaAnualMinimaEstimada;
@@ -149,7 +161,17 @@ export function compararAutonomoVsSL(input: AutonomoVsSLInput): ComparativaAuton
     0,
     rendimientoNetoAnual - input.salarioBrutoAdministrador - cuotaRetaSocietariaAnual,
   );
-  const cuotaImpuestoSociedades = round2(baseImponibleIS * tipoImpuestoSociedades);
+  const cuotaImpuestoSociedades = round2(
+    tipoTributacionIS === "microempresa"
+      ? calcularImpuestoProgresivo(baseImponibleIS, ESCALA_IS_MICROEMPRESA_2026)
+      : baseImponibleIS * TIPO_IMPUESTO_SOCIEDADES_GENERAL,
+  );
+  const tipoImpuestoSociedades =
+    baseImponibleIS > 0
+      ? round2(cuotaImpuestoSociedades / baseImponibleIS)
+      : tipoTributacionIS === "microempresa"
+        ? ESCALA_IS_MICROEMPRESA_2026[0].tipo
+        : TIPO_IMPUESTO_SOCIEDADES_GENERAL;
   const beneficioDespuesDeImpuestos = round2(baseImponibleIS - cuotaImpuestoSociedades);
 
   const dividendosBrutos = beneficioDespuesDeImpuestos;

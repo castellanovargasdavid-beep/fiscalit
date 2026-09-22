@@ -41,6 +41,23 @@ describe("calcularCuotaAutonomo (RETA-2026.1)", () => {
     expect(resultado.cuotaMensualMinima).toBe(265.1);
     expect(resultado.cuotaMensualMaxima).toBe(280.8);
   });
+
+  it("límite inferior de la tabla: rendimiento nulo cae en el tramo 1", () => {
+    const resultado = calcularCuotaAutonomo(0, "individual");
+    expect(resultado.rendimientoNetoMensual).toBe(0);
+    expect(resultado.tramoAsignado.tramo).toBe(1);
+    expect(resultado.cuotaMensualMinima).toBe(234.51);
+    expect(resultado.cuotaMensualMaxima).toBe(265.1);
+  });
+
+  it("límite superior de la tabla: el tramo 15 no tiene techo de rendimiento", () => {
+    const resultado = calcularCuotaAutonomo(1_000_000, "individual");
+    expect(resultado.rendimientoNetoMensual).toBe(77_500);
+    expect(resultado.tramoAsignado.tramo).toBe(15);
+    expect(resultado.tramoAsignado.rendimientoNetoMaximo).toBeNull();
+    expect(resultado.cuotaMensualMinima).toBe(509.8);
+    expect(resultado.cuotaMensualMaxima).toBe(1_291.49);
+  });
 });
 
 describe("compararAutonomoVsSL (SL-2026.1)", () => {
@@ -58,10 +75,12 @@ describe("compararAutonomoVsSL (SL-2026.1)", () => {
 
     expect(resultado.sociedadLimitada.tipoTributacionIS).toBe("microempresa");
     expect(resultado.sociedadLimitada.salarioNetoAdministrador).toBe(14_302.5);
-    expect(resultado.sociedadLimitada.cuotaImpuestoSociedades).toBe(5_802.49);
-    expect(resultado.sociedadLimitada.netoDisponible).toBe(29_768.81);
+    expect(resultado.sociedadLimitada.baseImponibleIS).toBe(25_228.2);
+    // Base imponible por debajo de 50.000€: tributa íntegramente al 19%.
+    expect(resultado.sociedadLimitada.cuotaImpuestoSociedades).toBe(4_793.36);
+    expect(resultado.sociedadLimitada.netoDisponible).toBe(30_566.02);
 
-    expect(resultado.diferenciaNeta).toBe(-1_763.46);
+    expect(resultado.diferenciaNeta).toBe(-966.25);
     expect(resultado.opcionMasVentajosa).toBe("autonomo");
   });
 
@@ -73,9 +92,11 @@ describe("compararAutonomoVsSL (SL-2026.1)", () => {
     });
 
     expect(resultado.autonomo.netoDisponible).toBe(104_733.82);
-    expect(resultado.sociedadLimitada.cuotaImpuestoSociedades).toBe(33_092.95);
-    expect(resultado.sociedadLimitada.netoDisponible).toBe(109_262.38);
-    expect(resultado.diferenciaNeta).toBe(4_528.56);
+    expect(resultado.sociedadLimitada.baseImponibleIS).toBe(143_882.4);
+    // 50.000€ al 19% + el resto (93.882,4€) al 21%.
+    expect(resultado.sociedadLimitada.cuotaImpuestoSociedades).toBe(29_215.3);
+    expect(resultado.sociedadLimitada.netoDisponible).toBe(112_248.17);
+    expect(resultado.diferenciaNeta).toBe(7_514.35);
     expect(resultado.opcionMasVentajosa).toBe("sociedad_limitada");
   });
 
@@ -92,6 +113,30 @@ describe("compararAutonomoVsSL (SL-2026.1)", () => {
     expect(resultado.sociedadLimitada.netoDisponible).toBe(12_022.5);
     expect(resultado.diferenciaNeta).toBe(2_597.89);
     expect(resultado.opcionMasVentajosa).toBe("sociedad_limitada");
+  });
+
+  it("salto de escalón del IS de microempresas: 19%/21% justo en los 50.000€ de base imponible", () => {
+    // rendimientoNetoAnual = 100.000€ (ingresos 120.000€ − gastos 20.000€);
+    // cuotaRetaSocietariaAnual en el tramo 15 es constante (6.117,6€), así que
+    // ajustamos el salario del administrador para fijar baseImponibleIS exacta.
+    const base = {
+      ingresosAnuales: 120_000,
+      gastosDeduciblesAnuales: 20_000,
+    };
+
+    const justoDebajo = compararAutonomoVsSL({ ...base, salarioBrutoAdministrador: 43_883.4 });
+    expect(justoDebajo.sociedadLimitada.baseImponibleIS).toBe(49_999);
+    expect(justoDebajo.sociedadLimitada.cuotaImpuestoSociedades).toBe(9_499.81);
+
+    const exactoEnElLimite = compararAutonomoVsSL({ ...base, salarioBrutoAdministrador: 43_882.4 });
+    expect(exactoEnElLimite.sociedadLimitada.baseImponibleIS).toBe(50_000);
+    // Los 50.000€ tributan íntegramente al 19% (el tramo "hasta 50.000€" es inclusivo).
+    expect(exactoEnElLimite.sociedadLimitada.cuotaImpuestoSociedades).toBe(9_500);
+
+    const justoEncima = compararAutonomoVsSL({ ...base, salarioBrutoAdministrador: 43_881.4 });
+    expect(justoEncima.sociedadLimitada.baseImponibleIS).toBe(50_001);
+    // El euro que supera los 50.000€ tributa al 21%: 9.500€ + 0,21€.
+    expect(justoEncima.sociedadLimitada.cuotaImpuestoSociedades).toBe(9_500.21);
   });
 });
 
@@ -238,9 +283,9 @@ describe("calcularPluriactividad (PLURI-2026.1)", () => {
       cotizacionRETAAnual: 4_000,
     });
 
-    expect(resultado.excesoCotizado).toBe(3_733.28);
+    expect(resultado.excesoCotizado).toBe(1_676.32);
     expect(resultado.tieneDerechoDevolucion).toBe(true);
-    expect(resultado.importeDevolucion).toBe(1_866.64);
+    expect(resultado.importeDevolucion).toBe(838.16);
   });
 
   it("el límite del 50% de las cuotas RETA topa la devolución", () => {
@@ -249,8 +294,32 @@ describe("calcularPluriactividad (PLURI-2026.1)", () => {
       cotizacionRETAAnual: 1_000,
     });
 
-    expect(resultado.excesoCotizado).toBe(5_733.28);
-    // El 50% del exceso (2.866,64 €) supera el 50% de la cuota RETA (500 €): topa en 500 €.
+    expect(resultado.excesoCotizado).toBe(3_676.32);
+    // El 50% del exceso (1.838,16 €) supera el 50% de la cuota RETA (500 €): topa en 500 €.
     expect(resultado.importeDevolucion).toBe(500);
+  });
+
+  it("justo en el tope legal de 2026 (17.323,68€) no hay derecho a devolución", () => {
+    const resultado = calcularPluriactividad({
+      cotizacionRegimenGeneralAnual: 12_323.68,
+      cotizacionRETAAnual: 5_000,
+    });
+
+    expect(resultado.totalCotizado).toBe(17_323.68);
+    expect(resultado.topeMaximoAnual).toBe(17_323.68);
+    expect(resultado.excesoCotizado).toBe(0);
+    expect(resultado.tieneDerechoDevolucion).toBe(false);
+    expect(resultado.importeDevolucion).toBe(0);
+  });
+
+  it("un euro por encima del tope legal ya genera derecho a devolución", () => {
+    const resultado = calcularPluriactividad({
+      cotizacionRegimenGeneralAnual: 12_323.68,
+      cotizacionRETAAnual: 5_001,
+    });
+
+    expect(resultado.excesoCotizado).toBe(1);
+    expect(resultado.tieneDerechoDevolucion).toBe(true);
+    expect(resultado.importeDevolucion).toBe(0.5);
   });
 });

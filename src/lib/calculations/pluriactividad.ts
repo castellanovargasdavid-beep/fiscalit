@@ -2,10 +2,12 @@ import { round2 } from "./shared";
 
 /**
  * Tope máximo anual de cotización por contingencias comunes a efectos de
- * pluriactividad (art. 313 LGSS). Se publica cada año mediante Resolución
- * de la Tesorería General de la Seguridad Social: actualízalo cada ejercicio.
+ * pluriactividad (art. 313 del Real Decreto Legislativo 8/2015, TRLGSS). Se
+ * publica cada año mediante Resolución de la Tesorería General de la
+ * Seguridad Social: para 2026 el límite conjunto es de 17.323,68€ (frente a
+ * los 16.672,66€ de 2025); actualízalo cada ejercicio.
  */
-export const TOPE_MAXIMO_PLURIACTIVIDAD_ANUAL = 15_266.72;
+export const TOPE_MAXIMO_PLURIACTIVIDAD_ANUAL = 17_323.68;
 
 /** Porcentaje del exceso cotizado que da derecho a devolución. */
 export const PORCENTAJE_DEVOLUCION_EXCESO = 0.5;

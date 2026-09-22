@@ -45,7 +45,7 @@ export default function TerminosPage() {
             situación particular, no responde por escrito consultas individualizadas sobre tu caso, y no asume
             frente a ti ninguna de las obligaciones (deber de diligencia profesional, responsabilidad civil
             profesional, secreto profesional reforzado...) propias de una gestoría o un despacho de asesoramiento.
-            Si necesitas una respuesta vinculante para tu caso concreto, contrata a un gestor o asesor colegiado.
+            Si necesitas una respuesta vinculante para tu caso concreto, contrata a un profesional cualificado.
           </p>
         </section>
 
@@ -61,7 +61,12 @@ export default function TerminosPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold text-slate-900">4. Exención de responsabilidad por cambios normativos</h2>
+          <h2 className="text-lg font-semibold text-slate-900">4. Alcance y límites de las simulaciones</h2>
+          <p className="mt-2">
+            FiscalIT es una plataforma divulgativa e informativa que ofrece simulaciones estimativas basadas en
+            supuestos matemáticos generales. El uso de sus herramientas no sustituye el juicio ni la contratación
+            de un profesional cualificado.
+          </p>
           <p className="mt-2">
             La normativa fiscal y laboral española cambia con frecuencia. Cada calculadora indica la fecha de su
             última revisión técnica (ver{" "}
@@ -72,18 +77,23 @@ export default function TerminosPage() {
             cambiado con posterioridad a esa fecha. Es tu responsabilidad verificar que sigues usando una
             calculadora actualizada, especialmente antes de tomar decisiones con impacto económico.
           </p>
+          <p className="mt-2">
+            FiscalIT no garantiza que las proyecciones coincidan con las liquidaciones, inspecciones o resoluciones
+            definitivas de la Agencia Tributaria o la Tesorería General de la Seguridad Social para situaciones
+            particulares.
+          </p>
         </section>
 
         <section>
           <h2 className="text-lg font-semibold text-slate-900">
-            5. Exención de responsabilidad por decisiones mercantiles
+            5. Responsabilidad sobre decisiones mercantiles
           </h2>
           <p className="mt-2">
             Decisiones como constituir una sociedad, darte de alta como autónomo, cambiar de tramo de cotización o
             adaptar tu sistema de facturación tienen consecuencias legales, fiscales y económicas que dependen de
             tu situación particular. Fiscalit no se hace responsable de las decisiones mercantiles, laborales o
             fiscales que adoptes basándote únicamente en el resultado de una calculadora, sin contrastarlo con un
-            gestor o asesor colegiado.
+            profesional cualificado.
           </p>
         </section>
 
