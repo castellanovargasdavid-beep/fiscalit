@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CuotaAutonomosTool } from "@/components/tools/CuotaAutonomosTool";
+import { RetaTechnicalGuide, RETA_LANDING_FAQ_ITEMS } from "@/components/tools/RetaTechnicalGuide";
 import { BoeAlertSignup } from "@/components/BoeAlertSignup";
 import type { FAQItem } from "@/components/FAQAccordion";
 import { buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd } from "@/lib/seo";
@@ -78,7 +79,12 @@ export default function CalculadoraCuotaAutonomosPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildFaqJsonLd(FAQ_ITEMS)) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildFaqJsonLd(RETA_LANDING_FAQ_ITEMS)) }}
+      />
       <CuotaAutonomosTool faqItems={FAQ_ITEMS} />
+      <RetaTechnicalGuide />
       <div className="mx-auto max-w-4xl px-4 pb-10 sm:px-6">
         <BoeAlertSignup />
       </div>

@@ -8,14 +8,16 @@ export interface FAQItem {
 interface FAQAccordionProps {
   items: FAQItem[];
   title?: string;
+  /** Id del <h2>, para poder usar el componente más de una vez en la misma página sin colisionar ids. */
+  headingId?: string;
 }
 
-export function FAQAccordion({ items, title = "Preguntas frecuentes" }: FAQAccordionProps) {
+export function FAQAccordion({ items, title = "Preguntas frecuentes", headingId = "faq-heading" }: FAQAccordionProps) {
   if (items.length === 0) return null;
 
   return (
-    <section aria-labelledby="faq-heading" className="mt-16">
-      <h2 id="faq-heading" className="text-xl font-semibold text-slate-900">
+    <section aria-labelledby={headingId} className="mt-16">
+      <h2 id={headingId} className="text-xl font-semibold text-slate-900">
         {title}
       </h2>
       <div className="mt-4 divide-y divide-slate-200">
