@@ -61,8 +61,8 @@ export const affiliates: Record<string, AffiliatePartner> = {
     description:
       "Sincroniza tus bancos, automatiza tus impuestos y lleva tu contabilidad al día sin hojas de cálculo.",
     ctaLabel: "Empezar con Quipu",
-    url: "https://getquipu.com/es/",
-    isLivePartner: false,
+    url: "https://getquipu.com/?via=david-castellano",
+    isLivePartner: true,
   },
   qonto: {
     id: "qonto",
