@@ -4,9 +4,12 @@ import { useMemo, useState } from "react";
 import { CheckCircle2 } from "lucide-react";
 import { compararAutonomoVsSL } from "@/lib/calculations/autonomoVsSL";
 import { SliderInput } from "@/components/ui/SliderInput";
+import { ScenarioPresets, type ScenarioPreset } from "@/components/ui/ScenarioPresets";
+import { ScenarioActions } from "@/components/tools/ScenarioActions";
 import { SplitBar, type SplitBarSegment } from "@/components/tools/SplitBar";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
+import { useSyncScenarioToUrl, useUrlSeededScenario } from "@/lib/useScenarioShare";
 import { formatEUR } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
@@ -19,10 +22,43 @@ interface DetalleLinea {
   value: number;
 }
 
+interface Escenario {
+  ingresosAnuales: number;
+  gastosDeduciblesAnuales: number;
+  salarioBrutoAdministrador: number;
+}
+
+const ESCENARIO_POR_DEFECTO: Escenario = {
+  ingresosAnuales: 60_000,
+  gastosDeduciblesAnuales: 12_000,
+  salarioBrutoAdministrador: 18_000,
+};
+
+const PRESETS: ScenarioPreset<Escenario>[] = [
+  {
+    label: "Freelance Tech (55k / 5k)",
+    values: { ingresosAnuales: 55_000, gastosDeduciblesAnuales: 5_000, salarioBrutoAdministrador: 16_000 },
+  },
+  {
+    label: "E-commerce / Micropyme (130k / 45k)",
+    values: { ingresosAnuales: 130_000, gastosDeduciblesAnuales: 45_000, salarioBrutoAdministrador: 24_000 },
+  },
+  {
+    label: "Profesional de Servicios (30k / 3k)",
+    values: { ingresosAnuales: 30_000, gastosDeduciblesAnuales: 3_000, salarioBrutoAdministrador: 12_000 },
+  },
+];
+
 export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
-  const [ingresosAnuales, setIngresosAnuales] = useState(60_000);
-  const [gastosDeduciblesAnuales, setGastosDeduciblesAnuales] = useState(12_000);
-  const [salarioBrutoAdministrador, setSalarioBrutoAdministrador] = useState(18_000);
+  const [escenario, setEscenario] = useState<Escenario>(ESCENARIO_POR_DEFECTO);
+  useUrlSeededScenario(ESCENARIO_POR_DEFECTO, setEscenario);
+  useSyncScenarioToUrl(escenario);
+
+  const { ingresosAnuales, gastosDeduciblesAnuales, salarioBrutoAdministrador } = escenario;
+
+  const aplicarPreset = (valores: Partial<Escenario>) => {
+    setEscenario((prev) => ({ ...prev, ...valores }));
+  };
 
   const resultado = useMemo(
     () =>
@@ -42,11 +78,16 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
         Autónomo vs Sociedad Limitada
       </h1>
 
-      <div className="mt-6 grid gap-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:grid-cols-3">
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <ScenarioPresets presets={PRESETS} onSelect={aplicarPreset} />
+        <ScenarioActions onReset={() => setEscenario(ESCENARIO_POR_DEFECTO)} />
+      </div>
+
+      <div className="mt-4 grid gap-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:grid-cols-3">
         <SliderInput
           label="Facturación bruta anual"
           value={ingresosAnuales}
-          onChange={setIngresosAnuales}
+          onChange={(value) => setEscenario((prev) => ({ ...prev, ingresosAnuales: value }))}
           min={0}
           max={300_000}
           step={1_000}
@@ -55,7 +96,7 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
         <SliderInput
           label="Gastos deducibles anuales"
           value={gastosDeduciblesAnuales}
-          onChange={setGastosDeduciblesAnuales}
+          onChange={(value) => setEscenario((prev) => ({ ...prev, gastosDeduciblesAnuales: value }))}
           min={0}
           max={150_000}
           step={500}
@@ -64,7 +105,7 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
         <SliderInput
           label="Sueldo anual como administrador (si creas SL)"
           value={salarioBrutoAdministrador}
-          onChange={setSalarioBrutoAdministrador}
+          onChange={(value) => setEscenario((prev) => ({ ...prev, salarioBrutoAdministrador: value }))}
           min={0}
           max={100_000}
           step={500}

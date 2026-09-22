@@ -8,8 +8,11 @@ import {
   type TipoAutonomo,
 } from "@/lib/calculations/cuotaAutonomos";
 import { SliderInput } from "@/components/ui/SliderInput";
+import { ScenarioPresets, type ScenarioPreset } from "@/components/ui/ScenarioPresets";
+import { ScenarioActions } from "@/components/tools/ScenarioActions";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
+import { useSyncScenarioToUrl, useUrlSeededScenario } from "@/lib/useScenarioShare";
 import { formatEUR } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
@@ -17,15 +20,48 @@ interface CuotaAutonomosToolProps {
   faqItems: FAQItem[];
 }
 
+interface Escenario {
+  ingresosAnuales: number;
+  gastosDeduciblesAnuales: number;
+  tipoAutonomo: TipoAutonomo;
+}
+
+const ESCENARIO_POR_DEFECTO: Escenario = {
+  ingresosAnuales: 30_000,
+  gastosDeduciblesAnuales: 6_000,
+  tipoAutonomo: "individual",
+};
+
+const PRESETS: ScenarioPreset<Escenario>[] = [
+  {
+    label: "Inicio de actividad / Bajos ingresos (15k)",
+    values: { ingresosAnuales: 15_000, gastosDeduciblesAnuales: 3_000 },
+  },
+  {
+    label: "Rendimiento medio consolidado (38k)",
+    values: { ingresosAnuales: 38_000, gastosDeduciblesAnuales: 7_000 },
+  },
+  {
+    label: "Alta facturación / Tramo superior (65k)",
+    values: { ingresosAnuales: 65_000, gastosDeduciblesAnuales: 12_000 },
+  },
+];
+
 const OPCIONES_TIPO: { value: TipoAutonomo; label: string }[] = [
   { value: "individual", label: "Autónomo individual" },
   { value: "societario", label: "Autónomo societario" },
 ];
 
 export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
-  const [ingresosAnuales, setIngresosAnuales] = useState(30_000);
-  const [gastosDeduciblesAnuales, setGastosDeduciblesAnuales] = useState(6_000);
-  const [tipoAutonomo, setTipoAutonomo] = useState<TipoAutonomo>("individual");
+  const [escenario, setEscenario] = useState<Escenario>(ESCENARIO_POR_DEFECTO);
+  useUrlSeededScenario(ESCENARIO_POR_DEFECTO, setEscenario);
+  useSyncScenarioToUrl(escenario);
+
+  const { ingresosAnuales, gastosDeduciblesAnuales, tipoAutonomo } = escenario;
+
+  const aplicarPreset = (valores: Partial<Escenario>) => {
+    setEscenario((prev) => ({ ...prev, ...valores }));
+  };
 
   const rendimientoNetoAnual = Math.max(0, ingresosAnuales - gastosDeduciblesAnuales);
 
@@ -40,12 +76,17 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
         Calculadora de cuota de autónomos por tramos
       </h1>
 
-      <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <ScenarioPresets presets={PRESETS} onSelect={aplicarPreset} />
+        <ScenarioActions onReset={() => setEscenario(ESCENARIO_POR_DEFECTO)} />
+      </div>
+
+      <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <div className="grid gap-6 sm:grid-cols-2">
           <SliderInput
             label="Ingresos brutos anuales"
             value={ingresosAnuales}
-            onChange={setIngresosAnuales}
+            onChange={(value) => setEscenario((prev) => ({ ...prev, ingresosAnuales: value }))}
             min={0}
             max={150_000}
             step={500}
@@ -54,7 +95,7 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
           <SliderInput
             label="Gastos deducibles anuales"
             value={gastosDeduciblesAnuales}
-            onChange={setGastosDeduciblesAnuales}
+            onChange={(value) => setEscenario((prev) => ({ ...prev, gastosDeduciblesAnuales: value }))}
             min={0}
             max={100_000}
             step={250}
@@ -69,7 +110,7 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
               <button
                 key={opcion.value}
                 type="button"
-                onClick={() => setTipoAutonomo(opcion.value)}
+                onClick={() => setEscenario((prev) => ({ ...prev, tipoAutonomo: opcion.value }))}
                 aria-pressed={tipoAutonomo === opcion.value}
                 className={cn(
                   "rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
