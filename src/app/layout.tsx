@@ -35,6 +35,9 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     images: ["/og-image.png"],
   },
+  verification: {
+    google: "eVpIlnBQoRZaHR7ahP9JhfhDJ7Szk6wbc_q2aWh4CKg",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
