@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { AlertTriangle, BookOpen, CheckCircle2, ClipboardCheck, RefreshCw, ShieldCheck } from "lucide-react";
 import { siteConfig } from "@/config/site";
+import { ENGINE_VERSIONS } from "@/config/engineVersions";
 import { buildPageMetadata } from "@/lib/seo";
 import { formatFechaISO } from "@/lib/format";
 
@@ -29,51 +30,6 @@ const FUENTES = [
     organismo: "TGSS (Tesorería General de la Seguridad Social)",
     detalle:
       "Tablas y tramos oficiales de cotización del RETA, tipos de cotización por contingencias comunes y resoluciones anuales que fijan el tope de cotización a efectos de la devolución por pluriactividad.",
-  },
-];
-
-interface FichaVersionMotor {
-  motor: string;
-  version: string;
-  disposiciones: string;
-}
-
-const FICHAS_VERSION: FichaVersionMotor[] = [
-  {
-    motor: "Autónomo vs Sociedad Limitada",
-    version: "SL-2026.1",
-    disposiciones:
-      "Real Decreto-ley 13/2022 (cotización RETA); Ley 7/2024, escala progresiva del tipo reducido de microempresas en el Impuesto sobre Sociedades para 2026 (19% hasta 50.000€ de base imponible, 21% al resto); Ley 35/2006 del IRPF.",
-  },
-  {
-    motor: "Calculadora de cuota de autónomos",
-    version: "RETA-2026.1",
-    disposiciones:
-      "Orden PJC/297/2026, de bases y tipos de cotización a la Seguridad Social para el ejercicio 2026; Real Decreto-ley 13/2022, nuevo sistema de cotización por rendimientos netos reales.",
-  },
-  {
-    motor: "Diagnóstico VeriFactu",
-    version: "VF-2027.1",
-    disposiciones:
-      "Real Decreto-ley 15/2025, ampliación de plazos de VeriFactu a 2027; Real Decreto 1007/2023 y Real Decreto 254/2025, Reglamento de facturación; Orden HAC/1177/2024, especificaciones técnicas.",
-  },
-  {
-    motor: "Kilometraje y dietas exentas",
-    version: "KM-2026.1",
-    disposiciones:
-      "Orden HFP/792/2023, revisión de dietas y gastos de locomoción (0,26 €/km exentos en rendimientos del trabajo); arts. 9 y 30.2.5ª de la Ley 35/2006 del IRPF; art. 22.4 del Reglamento del IRPF (Real Decreto 439/2007).",
-  },
-  {
-    motor: "Retención IRPF en factura / IAE",
-    version: "IAE-2026.1",
-    disposiciones:
-      "Art. 95 del Reglamento del IRPF (Real Decreto 439/2007), retención en factura de actividades profesionales; art. 82 del Texto Refundido de la Ley de Haciendas Locales (exención del IAE con cifra de negocio inferior a 1.000.000€); arts. 101 de la Ley 35/2006 del IRPF y 110.3 del Reglamento del IRPF.",
-  },
-  {
-    motor: "Devolución por pluriactividad",
-    version: "PLURI-2026.1",
-    disposiciones:
-      "Art. 313 del Real Decreto Legislativo 8/2015, Texto Refundido de la Ley General de la Seguridad Social; Resolución anual de la Tesorería General de la Seguridad Social, tope conjunto de cotización 2026 (17.323,68€).",
   },
 ];
 
@@ -143,7 +99,7 @@ export default function MetodologiaPage() {
               </tr>
             </thead>
             <tbody>
-              {FICHAS_VERSION.map((ficha) => (
+              {ENGINE_VERSIONS.map((ficha) => (
                 <tr key={ficha.version} className="border-b border-slate-100 align-top last:border-b-0">
                   <td className="px-4 py-3 font-medium text-slate-900">{ficha.motor}</td>
                   <td className="px-4 py-3 font-mono text-xs text-slate-600">{ficha.version}</td>
