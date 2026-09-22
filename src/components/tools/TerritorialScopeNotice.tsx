@@ -21,10 +21,11 @@ export function TerritorialScopeNotice({ className }: TerritorialScopeNoticeProp
     >
       <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-slate-400" aria-hidden="true" />
       <p>
-        <strong className="font-medium text-slate-600">Ámbito: Territorio Común (Península y Baleares).</strong>{" "}
-        Esta calculadora no contempla las especialidades forales del País Vasco y Navarra, ni los regímenes
-        tributarios especiales de Canarias (IGIC), Ceuta o Melilla (IPSI). Si operas en estos territorios, consulta
-        la normativa foral/insular aplicable.
+        <strong className="font-medium text-slate-600">
+          Ámbito de aplicación: Territorio Común (Península y Baleares).
+        </strong>{" "}
+        No contempla regímenes forales ni especialidades de Canarias (IGIC) o Ceuta/Melilla (IPSI). Si operas en
+        estos territorios, consulta la normativa foral/insular aplicable.
       </p>
     </div>
   );

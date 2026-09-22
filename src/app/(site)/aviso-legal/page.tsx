@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { AlertTriangle } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { buildPageMetadata } from "@/lib/seo";
 import { formatFechaISO } from "@/lib/format";
@@ -13,8 +12,6 @@ export const metadata: Metadata = buildPageMetadata({
   path: PATH,
 });
 
-const datosPendientes = !siteConfig.legalName || !siteConfig.taxId || !siteConfig.legalAddress;
-
 export default function AvisoLegalPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
@@ -23,18 +20,6 @@ export default function AvisoLegalPage() {
         Última actualización: {formatFechaISO(siteConfig.lastMethodologyReview)}
       </p>
 
-      {datosPendientes && (
-        <div className="mt-6 flex gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-5">
-          <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" aria-hidden="true" />
-          <p className="text-sm text-amber-800">
-            <strong>Nota interna:</strong> completa la identificación del titular (razón social, NIF/CIF y
-            domicilio) en <code className="rounded bg-amber-100 px-1 py-0.5 text-xs">src/config/site.ts</code>{" "}
-            antes de publicar este sitio: la LSSI-CE (art. 10) exige mostrar estos datos de forma permanente,
-            fácil y directamente accesible.
-          </p>
-        </div>
-      )}
-
       <div className="mt-8 space-y-8 text-sm leading-6 text-slate-600">
         <section>
           <h2 className="text-lg font-semibold text-slate-900">1. Datos identificativos</h2>
@@ -42,13 +27,9 @@ export default function AvisoLegalPage() {
             En cumplimiento del deber de información recogido en el artículo 10 de la Ley 34/2002, de Servicios de
             la Sociedad de la Información y de Comercio Electrónico (LSSI-CE), se informa de los siguientes datos:
             el sitio web <strong>fiscalit.es</strong> (en adelante, «Fiscalit») es un proyecto editorial de
-            carácter divulgativo cuyo titular es{" "}
-            <strong>{siteConfig.legalName || "[Pendiente de completar: razón social o nombre y apellidos]"}</strong>
-            , con NIF/CIF{" "}
-            <strong>{siteConfig.taxId || "[Pendiente de completar]"}</strong> y domicilio a efectos de
-            notificaciones en{" "}
-            <strong>{siteConfig.legalAddress || "[Pendiente de completar]"}</strong>. Para cualquier consulta,
-            puedes contactar en{" "}
+            carácter divulgativo cuyo titular es <strong>{siteConfig.legalName}</strong>, con NIF/CIF{" "}
+            <strong>{siteConfig.taxId}</strong> y domicilio a efectos de notificaciones en{" "}
+            <strong>{siteConfig.legalAddress}</strong>. Para cualquier consulta, puedes contactar en{" "}
             <a href={`mailto:${siteConfig.contactEmail}`} className="text-blue-700 underline underline-offset-2">
               {siteConfig.contactEmail}
             </a>
@@ -88,17 +69,18 @@ export default function AvisoLegalPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold text-slate-900">5. Exención de responsabilidad</h2>
+          <h2 className="text-lg font-semibold text-slate-900">5. Alcance y límites de las herramientas</h2>
           <p className="mt-2">
             Las herramientas de Fiscalit son simuladores orientativos y divulgativos: no constituyen
-            asesoramiento fiscal, laboral, contable ni jurídico individualizado ni vinculante, y no sustituyen el
-            análisis de un profesional colegiado. Fiscalit no garantiza la ausencia de errores en los contenidos
-            ni que estén permanentemente actualizados, si bien revisa la normativa aplicable periódicamente (ver{" "}
+            asesoramiento fiscal, laboral, contable ni jurídico individualizado ni vinculante. Fiscalit no
+            garantiza la ausencia de errores en los contenidos ni que estén permanentemente actualizados, si bien
+            revisa la normativa aplicable periódicamente (ver{" "}
             <a href="/metodologia" className="text-blue-700 underline underline-offset-2">
               metodología y fuentes
             </a>
-            ). Fiscalit no se hace responsable de los daños y perjuicios derivados del uso de la información y las
-            herramientas contenidas en este sitio, ni de las decisiones adoptadas a partir de sus resultados.
+            ). FiscalIT no garantiza que las simulaciones coincidan con las resoluciones definitivas de la AEAT o
+            la TGSS para situaciones particulares. La herramienta no sustituye la valoración individualizada de
+            un profesional cualificado.
           </p>
           <p className="mt-2">
             El sitio puede incluir enlaces a páginas de terceros (proveedores de software, gestorías,

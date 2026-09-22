@@ -1,4 +1,5 @@
 import { getAffiliate } from "@/config/affiliates";
+import { siteConfig } from "@/config/site";
 
 export interface CsvReportRow {
   label: string;
@@ -59,7 +60,7 @@ export function downloadScenarioCsv(data: CsvReportData): void {
   lines.push(
     csvRow(
       "Nota fiscal",
-      `Plantilla generada por FiscalIT.es. Gestiona tus facturas con Holded (Prueba gratis: ${holded.url})`,
+      `Plantilla generada por FiscalIT.es. Gestiona tus facturas con Holded (Prueba gratis: ${siteConfig.url}/go/${holded.id})`,
     ),
   );
 

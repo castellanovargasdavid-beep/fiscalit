@@ -32,8 +32,9 @@ export function PrintHeader({ toolTitle }: PrintHeaderProps) {
         <p className="shrink-0 text-sm text-slate-500">{fecha}</p>
       </div>
       <p className="mt-2 text-xs leading-5 text-slate-500">
-        {toolTitle} · Estimación fiscal orientativa para el ejercicio 2026. No sustituye el asesoramiento de un
-        gestor o asesor colegiado.
+        {toolTitle} · Estimación fiscal orientativa para el ejercicio 2026. Ámbito: Territorio Común (Península y
+        Baleares); no aplica a regímenes forales ni a Canarias, Ceuta o Melilla. No sustituye la valoración de un
+        profesional cualificado.
       </p>
     </div>
   );

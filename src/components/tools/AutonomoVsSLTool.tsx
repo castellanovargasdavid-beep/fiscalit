@@ -21,6 +21,7 @@ import { useSyncScenarioToUrl, useUrlSeededScenario } from "@/lib/useScenarioSha
 import { downloadScenarioPdf } from "@/lib/generateScenarioPdf";
 import { downloadScenarioCsv } from "@/lib/exportCsv";
 import { getAffiliate } from "@/config/affiliates";
+import { siteConfig } from "@/config/site";
 import { formatEUR } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
@@ -192,7 +193,7 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
         partnerName: partner.name,
         badgeText: ctaRecomendacion.promoBadgeText ?? partner.tagline,
         ctaLabel: partner.ctaLabel,
-        url: partner.url,
+        url: `${siteConfig.url}/go/${partner.id}`,
       },
     });
   };

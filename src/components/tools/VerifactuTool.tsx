@@ -12,6 +12,7 @@ import { OptionGroup } from "@/components/ui/OptionGroup";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
 import { PrivacyLocalBadge } from "@/components/tools/PrivacyLocalBadge";
+import { TerritorialScopeNotice } from "@/components/tools/TerritorialScopeNotice";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
@@ -237,6 +238,7 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
 
       <SimulationDisclaimer />
       <PrivacyLocalBadge />
+      <TerritorialScopeNotice />
 
       <div className={cn("mt-8 rounded-2xl border p-6 print:break-inside-avoid", EstiloEstado.border, EstiloEstado.bg)}>
         <div className="flex items-start gap-4">

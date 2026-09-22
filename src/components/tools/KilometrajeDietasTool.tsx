@@ -10,6 +10,7 @@ import { SliderInput } from "@/components/ui/SliderInput";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
 import { PrivacyLocalBadge } from "@/components/tools/PrivacyLocalBadge";
+import { TerritorialScopeNotice } from "@/components/tools/TerritorialScopeNotice";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
@@ -161,6 +162,7 @@ export function KilometrajeDietasTool({ faqItems }: KilometrajeDietasToolProps) 
 
       <SimulationDisclaimer />
       <PrivacyLocalBadge />
+      <TerritorialScopeNotice />
 
       <div className="mt-8 rounded-2xl border border-emerald-600 bg-emerald-600 p-6 text-white shadow-sm print:break-inside-avoid">
         <p className="text-sm text-emerald-100">Total exento de IRPF</p>

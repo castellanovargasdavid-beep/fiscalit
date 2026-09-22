@@ -95,9 +95,11 @@ export async function downloadScenarioPdf(data: PdfReportData): Promise<void> {
   cursorY += 5;
   doc.setFont("helvetica", "italic");
   doc.setFontSize(8.5);
-  doc.text("Estimación fiscal orientativa para el ejercicio 2026. No sustituye el asesoramiento", marginX, cursorY);
+  doc.text("Estimación fiscal orientativa para el ejercicio 2026. Ámbito: Territorio Común (Península y", marginX, cursorY);
   cursorY += 4;
-  doc.text("de un gestor o asesor colegiado.", marginX, cursorY);
+  doc.text("Baleares); no aplica a regímenes forales ni a Canarias, Ceuta o Melilla. No sustituye la", marginX, cursorY);
+  cursorY += 4;
+  doc.text("valoración de un profesional cualificado.", marginX, cursorY);
   cursorY += 9;
 
   if (data.highlight) {

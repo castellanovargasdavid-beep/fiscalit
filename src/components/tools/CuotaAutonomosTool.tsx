@@ -13,6 +13,7 @@ import { ScenarioActions } from "@/components/tools/ScenarioActions";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
 import { PrivacyLocalBadge } from "@/components/tools/PrivacyLocalBadge";
+import { TerritorialScopeNotice } from "@/components/tools/TerritorialScopeNotice";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
@@ -22,6 +23,7 @@ import { useSyncScenarioToUrl, useUrlSeededScenario } from "@/lib/useScenarioSha
 import { downloadScenarioPdf } from "@/lib/generateScenarioPdf";
 import { downloadScenarioCsv } from "@/lib/exportCsv";
 import { getAffiliate } from "@/config/affiliates";
+import { siteConfig } from "@/config/site";
 import { formatEUR } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
@@ -122,7 +124,7 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
         partnerName: partner.name,
         badgeText: ctaHolded.promoBadgeText,
         ctaLabel: partner.ctaLabel,
-        url: partner.url,
+        url: `${siteConfig.url}/go/${partner.id}`,
       },
     });
   };
@@ -205,6 +207,7 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
 
       <SimulationDisclaimer />
       <PrivacyLocalBadge />
+      <TerritorialScopeNotice />
 
       <div className="mt-8 grid gap-4 sm:grid-cols-4 print:break-inside-avoid">
         <StatCard label="Tramo asignado" value={`Tramo ${resultado.tramoAsignado.tramo} / 15`} destacado />

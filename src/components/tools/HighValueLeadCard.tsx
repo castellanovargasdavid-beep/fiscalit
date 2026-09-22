@@ -123,6 +123,11 @@ export function HighValueLeadCard({ facturacionAnual, className }: HighValueLead
                 className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-500"
               />
 
+              <p className="col-span-full text-xs text-slate-500">
+                Al enviar, tus datos de contacto y la facturación de arriba se remiten de forma segura para
+                gestionar tu solicitud. El resto de la calculadora nunca sale de tu navegador.
+              </p>
+
               <div className="col-span-full flex flex-wrap items-center gap-3">
                 <button
                   type="submit"

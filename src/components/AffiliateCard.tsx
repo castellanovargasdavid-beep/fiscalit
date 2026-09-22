@@ -84,7 +84,7 @@ export function AffiliateCard({
             </div>
 
             <a
-              href={partner.url}
+              href={`/go/${partner.id}`}
               target="_blank"
               rel="noopener noreferrer sponsored"
               className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-full bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"

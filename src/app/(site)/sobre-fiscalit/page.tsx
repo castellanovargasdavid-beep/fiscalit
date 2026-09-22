@@ -74,9 +74,9 @@ export default function SobreFiscalitPage() {
             <p className="mt-1 text-sm leading-6 text-amber-800/90">
               Fiscalit es una herramienta de estimación y apoyo técnico, no un servicio de asesoramiento fiscal,
               laboral ni jurídico. Los resultados se basan en los datos que introduces y en una interpretación
-              general de la normativa vigente, pero no sustituyen el análisis personalizado de un gestor o
-              asesor colegiado. Antes de tomar decisiones vinculantes (presentar impuestos, darte de alta,
-              constituir una sociedad...), te recomendamos siempre contrastar el resultado con un profesional.
+              general de la normativa vigente, pero no sustituyen el análisis personalizado de un profesional
+              cualificado. Antes de tomar decisiones vinculantes (presentar impuestos, darte de alta, constituir
+              una sociedad...), te recomendamos siempre contrastar el resultado con un profesional cualificado.
             </p>
           </div>
         </div>

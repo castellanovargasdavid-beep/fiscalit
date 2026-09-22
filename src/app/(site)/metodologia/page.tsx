@@ -193,7 +193,7 @@ export default function MetodologiaPage() {
           Por eso cada resultado va acompañado del aviso «herramienta de simulación orientativa y divulgativa»:
           es una guía para entender el orden de magnitud y la mecánica de cada cálculo, no una liquidación
           vinculante. Antes de tomar decisiones con impacto económico o legal, contrasta siempre el resultado con
-          un gestor o asesor colegiado.
+          un profesional cualificado.
         </p>
       </section>
 

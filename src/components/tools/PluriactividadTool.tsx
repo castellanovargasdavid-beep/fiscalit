@@ -11,6 +11,7 @@ import { SplitBar } from "@/components/tools/SplitBar";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
 import { PrivacyLocalBadge } from "@/components/tools/PrivacyLocalBadge";
+import { TerritorialScopeNotice } from "@/components/tools/TerritorialScopeNotice";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
@@ -85,6 +86,7 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
 
       <SimulationDisclaimer />
       <PrivacyLocalBadge />
+      <TerritorialScopeNotice />
 
       <div
         className={cn(
