@@ -50,7 +50,7 @@ export const tools: Tool[] = [
     category: "fiscal",
     icon: Scale,
     keywords: ["autonomo", "sl", "sociedad limitada", "sociedad", "impuesto de sociedades", "neto"],
-    ctaLabel: "Comparar ahora",
+    ctaLabel: "Comparar opciones",
     featured: true,
   },
   {
@@ -72,7 +72,7 @@ export const tools: Tool[] = [
     category: "facturacion",
     icon: ShieldCheck,
     keywords: ["verifactu", "factura", "crea y crece", "aeat", "software facturacion", "sancion"],
-    ctaLabel: "Comprobar plazos",
+    ctaLabel: "Comprobar requisitos",
   },
   {
     slug: "calculadora-kilometraje-dietas",
@@ -83,7 +83,7 @@ export const tools: Tool[] = [
     category: "fiscal",
     icon: Car,
     keywords: ["kilometraje", "dietas", "km", "desplazamiento", "manutencion", "exento", "empleados", "administradores"],
-    ctaLabel: "Calcular exención",
+    ctaLabel: "Calcular deducción",
   },
   {
     slug: "retencion-factura-iae",

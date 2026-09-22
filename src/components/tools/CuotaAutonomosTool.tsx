@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import {
   TABLA_TRAMOS_RETA,
@@ -11,9 +12,6 @@ import { SliderInput } from "@/components/ui/SliderInput";
 import { ScenarioPresets, type ScenarioPreset } from "@/components/ui/ScenarioPresets";
 import { ScenarioActions } from "@/components/tools/ScenarioActions";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
-import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
-import { PrivacyLocalBadge } from "@/components/tools/PrivacyLocalBadge";
-import { TerritorialScopeNotice } from "@/components/tools/TerritorialScopeNotice";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
@@ -205,15 +203,31 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
         </div>
       </div>
 
-      <SimulationDisclaimer />
-      <PrivacyLocalBadge />
-      <TerritorialScopeNotice />
+      <p className="mt-4 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-slate-500 print:hidden">
+        <span aria-hidden="true">🔒</span>
+        <span>Proceso 100% en local · Territorio Común · Simulación orientativa ·</span>
+        <Link
+          href="/metodologia"
+          className="font-medium text-blue-600 underline underline-offset-2 hover:text-blue-800"
+        >
+          Metodología
+        </Link>
+      </p>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-4 print:break-inside-avoid">
-        <StatCard label="Tramo asignado" value={`Tramo ${resultado.tramoAsignado.tramo} / 15`} destacado />
-        <StatCard label="Rendimiento neto mensual" value={formatEUR(resultado.rendimientoNetoMensual)} />
-        <StatCard label="Cuota mensual mínima" value={formatEUR(resultado.cuotaMensualMinima)} />
-        <StatCard label="Cuota mensual máxima" value={formatEUR(resultado.cuotaMensualMaxima)} />
+      <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm print:break-inside-avoid">
+        <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+          Cuota mensual estimada:{" "}
+          <span className="text-blue-700">{formatEUR(resultado.cuotaMensualMinima, true)}/mes</span>
+        </h2>
+        <p className="mt-2 text-sm text-slate-600">
+          Tramo {resultado.tramoAsignado.tramo}/15 · Rendimiento neto estimado:{" "}
+          {formatEUR(resultado.rendimientoNetoMensual)}/mes
+        </p>
+        <p className="mt-2 text-xs text-slate-400">
+          Rango de cotización del tramo: {formatEUR(resultado.tramoAsignado.baseMinima, true)} –{" "}
+          {formatEUR(resultado.tramoAsignado.baseMaxima, true)} €/mes de base · Cuota máxima si eliges la base más
+          alta: {formatEUR(resultado.cuotaMensualMaxima, true)}/mes
+        </p>
       </div>
 
       <p className="mt-4 text-sm text-slate-500">
@@ -275,28 +289,6 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
       <RelatedToolsMesh slugs={["retencion-factura-iae", "autonomo-vs-sl"]} />
 
       <FAQAccordion items={faqItems} title="Escenarios frecuentes y supuestos normativos" />
-    </div>
-  );
-}
-
-function StatCard({
-  label,
-  value,
-  destacado,
-}: {
-  label: string;
-  value: string;
-  destacado?: boolean;
-}) {
-  return (
-    <div
-      className={cn(
-        "rounded-xl border p-4 shadow-sm",
-        destacado ? "border-blue-600 bg-blue-600 text-white" : "border-slate-200 bg-white",
-      )}
-    >
-      <p className={cn("text-xs", destacado ? "text-blue-100" : "text-slate-500")}>{label}</p>
-      <p className={cn("mt-1 text-lg font-semibold", destacado ? "text-white" : "text-slate-900")}>{value}</p>
     </div>
   );
 }
