@@ -35,11 +35,11 @@ export function RetencionIAETool({ faqItems }: RetencionIAEToolProps) {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
-      <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-50">
+      <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
         Calculadora de retención IRPF en factura
       </h1>
 
-      <div className="mt-6 rounded-2xl border border-zinc-200 p-6 dark:border-zinc-800">
+      <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <div className="grid gap-6 sm:grid-cols-2">
           <OptionGroup
             label="Sección IAE de tu actividad"
@@ -97,45 +97,40 @@ export function RetencionIAETool({ faqItems }: RetencionIAEToolProps) {
       </div>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-[220px_1fr]">
-        <div className="flex flex-col items-center justify-center rounded-2xl border border-zinc-900 bg-zinc-900 p-6 text-center text-white dark:border-zinc-50 dark:bg-zinc-50 dark:text-zinc-900">
-          <p className="text-xs text-zinc-300 dark:text-zinc-600">Retención IRPF a aplicar</p>
+        <div className="flex flex-col items-center justify-center rounded-2xl border border-blue-600 bg-blue-600 p-6 text-center text-white shadow-sm">
+          <p className="text-xs text-blue-100">Retención IRPF a aplicar</p>
           <p className="mt-1 text-4xl font-semibold">{(resultado.tipoRetencionIRPF * 100).toFixed(0)}%</p>
         </div>
-        <div className="flex items-center rounded-2xl border border-zinc-200 p-6 dark:border-zinc-800">
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">{resultado.motivoRetencion}</p>
+        <div className="flex items-center rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <p className="text-sm text-slate-600">{resultado.motivoRetencion}</p>
         </div>
       </div>
 
-      <div className="mt-6 rounded-2xl border border-zinc-200 p-6 dark:border-zinc-800">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-500">
-          Factura proforma
-        </h2>
-        <div className="mt-4 space-y-2 font-mono text-sm">
+      <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-100 p-6 shadow-sm">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">Factura proforma</h2>
+        <div className="mt-4 space-y-2 font-mono text-sm text-slate-800">
           <div className="flex justify-between">
-            <span className="text-zinc-600 dark:text-zinc-400">Base imponible</span>
-            <span className="text-zinc-900 dark:text-zinc-50">{formatEUR(resultado.baseImponible, true)}</span>
+            <span className="text-slate-500">Base imponible</span>
+            <span>{formatEUR(resultado.baseImponible, true)}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-zinc-600 dark:text-zinc-400">+ Cuota de IVA ({resultado.tipoIVA}%)</span>
-            <span className="text-zinc-900 dark:text-zinc-50">{formatEUR(resultado.importeIVA, true)}</span>
+            <span className="text-slate-500">+ Cuota de IVA ({resultado.tipoIVA}%)</span>
+            <span>{formatEUR(resultado.importeIVA, true)}</span>
           </div>
-          <div className="flex justify-between text-rose-600 dark:text-rose-400">
+          <div className="flex justify-between text-rose-600">
             <span>− Retención IRPF ({(resultado.tipoRetencionIRPF * 100).toFixed(0)}%)</span>
             <span>−{formatEUR(resultado.importeRetencionIRPF, true)}</span>
           </div>
-          <div className="mt-2 flex justify-between border-t border-dashed border-zinc-300 pt-2 text-base font-semibold text-zinc-900 dark:border-zinc-700 dark:text-zinc-50">
+          <div className="mt-2 flex justify-between border-t border-dashed border-slate-300 pt-2 text-base font-semibold text-emerald-600">
             <span>= Total líquido a cobrar</span>
             <span>{formatEUR(resultado.totalLiquidoAPercibir, true)}</span>
           </div>
         </div>
       </div>
 
-      <div className="mt-6 flex gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-5 dark:border-amber-900 dark:bg-amber-950/30">
-        <AlertTriangle
-          className="mt-0.5 h-5 w-5 shrink-0 text-amber-600 dark:text-amber-400"
-          aria-hidden="true"
-        />
-        <p className="text-sm text-amber-800 dark:text-amber-300">
+      <div className="mt-6 flex gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-5">
+        <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" aria-hidden="true" />
+        <p className="text-sm text-amber-800">
           <strong>Importante:</strong> la retención de IRPF solo se aplica cuando el cliente es otra empresa o
           autónomo en España. Si facturas a un particular (B2C) o a un cliente extranjero, nunca debes aplicar
           retención de IRPF.

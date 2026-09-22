@@ -36,11 +36,11 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
-      <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-50">
+      <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
         Calculadora de cuota de autónomos por tramos
       </h1>
 
-      <div className="mt-6 rounded-2xl border border-zinc-200 p-6 dark:border-zinc-800">
+      <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <div className="grid gap-6 sm:grid-cols-2">
           <SliderInput
             label="Ingresos brutos anuales"
@@ -63,8 +63,8 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
         </div>
 
         <div className="mt-6">
-          <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Tipo de autónomo</p>
-          <div className="mt-2 inline-flex rounded-full border border-zinc-200 p-1 dark:border-zinc-800">
+          <p className="text-sm font-medium text-slate-700">Tipo de autónomo</p>
+          <div className="mt-2 inline-flex rounded-full border border-slate-200 p-1">
             {OPCIONES_TIPO.map((opcion) => (
               <button
                 key={opcion.value}
@@ -74,8 +74,8 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
                 className={cn(
                   "rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
                   tipoAutonomo === opcion.value
-                    ? "bg-zinc-900 text-white dark:bg-zinc-50 dark:text-zinc-900"
-                    : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50",
+                    ? "bg-blue-600 text-white"
+                    : "text-slate-600 hover:text-slate-900",
                 )}
               >
                 {opcion.label}
@@ -92,26 +92,24 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
         <StatCard label="Cuota mensual máxima" value={formatEUR(resultado.cuotaMensualMaxima)} />
       </div>
 
-      <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-500">
+      <p className="mt-4 text-sm text-slate-500">
         Deducción de gastos de difícil justificación aplicada:{" "}
-        <strong className="text-zinc-700 dark:text-zinc-300">
-          {tipoAutonomo === "individual" ? "7%" : "3%"}
-        </strong>{" "}
-        — rendimiento neto computable: {formatEUR(resultado.rendimientoNetoComputable)}/año.
+        <strong className="text-slate-700">{tipoAutonomo === "individual" ? "7%" : "3%"}</strong> —
+        rendimiento neto computable: {formatEUR(resultado.rendimientoNetoComputable)}/año.
       </p>
 
-      <details className="group mt-8 rounded-2xl border border-zinc-200 p-5 dark:border-zinc-800">
-        <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-medium text-zinc-900 dark:text-zinc-50">
+      <details className="group mt-8 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-medium text-slate-900">
           Ver los 15 tramos oficiales de cotización
           <ChevronDown
-            className="h-4 w-4 shrink-0 text-zinc-400 transition-transform group-open:rotate-180"
+            className="h-4 w-4 shrink-0 text-slate-400 transition-transform group-open:rotate-180"
             aria-hidden="true"
           />
         </summary>
         <div className="mt-4 overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead>
-              <tr className="border-b border-zinc-200 text-zinc-500 dark:border-zinc-800 dark:text-zinc-500">
+              <tr className="border-b border-slate-200 text-slate-500">
                 <th className="py-2 pr-4 font-medium">Tramo</th>
                 <th className="py-2 pr-4 font-medium">Rendimiento neto mensual</th>
                 <th className="py-2 pr-4 font-medium">Base mínima</th>
@@ -123,9 +121,8 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
                 <tr
                   key={tramo.tramo}
                   className={cn(
-                    "border-b border-zinc-100 dark:border-zinc-900",
-                    tramo.tramo === resultado.tramoAsignado.tramo &&
-                      "bg-zinc-100 font-medium dark:bg-zinc-800",
+                    "border-b border-slate-100",
+                    tramo.tramo === resultado.tramoAsignado.tramo && "bg-blue-50 font-medium",
                   )}
                 >
                   <td className="py-2 pr-4">{tramo.tramo}</td>
@@ -163,21 +160,12 @@ function StatCard({
   return (
     <div
       className={cn(
-        "rounded-xl border p-4",
-        destacado
-          ? "border-zinc-900 bg-zinc-900 text-white dark:border-zinc-50 dark:bg-zinc-50 dark:text-zinc-900"
-          : "border-zinc-200 dark:border-zinc-800",
+        "rounded-xl border p-4 shadow-sm",
+        destacado ? "border-blue-600 bg-blue-600 text-white" : "border-slate-200 bg-white",
       )}
     >
-      <p
-        className={cn(
-          "text-xs",
-          destacado ? "text-zinc-300 dark:text-zinc-600" : "text-zinc-500 dark:text-zinc-500",
-        )}
-      >
-        {label}
-      </p>
-      <p className="mt-1 text-lg font-semibold">{value}</p>
+      <p className={cn("text-xs", destacado ? "text-blue-100" : "text-slate-500")}>{label}</p>
+      <p className={cn("mt-1 text-lg font-semibold", destacado ? "text-white" : "text-slate-900")}>{value}</p>
     </div>
   );
 }

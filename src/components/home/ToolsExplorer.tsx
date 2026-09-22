@@ -49,7 +49,7 @@ export function ToolsExplorer() {
 
       <div className="relative">
         <Search
-          className="pointer-events-none absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-zinc-400"
+          className="pointer-events-none absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-slate-400"
           aria-hidden="true"
         />
         <input
@@ -58,7 +58,7 @@ export function ToolsExplorer() {
           onChange={(event) => setBusqueda(event.target.value)}
           placeholder="Busca por tarea: cuota, factura, sl, dietas, iva, verifactu, pluriactividad..."
           aria-label="Buscar herramienta"
-          className="w-full rounded-full border border-zinc-200 bg-white py-3 pr-4 pl-11 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-400 focus:outline-none dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50 dark:placeholder:text-zinc-600"
+          className="w-full rounded-full border border-slate-300 bg-white py-3 pr-4 pl-11 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
         />
       </div>
 
@@ -85,15 +85,13 @@ export function ToolsExplorer() {
           ))}
         </div>
       ) : (
-        <div className="mt-6 flex flex-col items-center gap-3 rounded-2xl border border-dashed border-zinc-200 px-6 py-16 text-center dark:border-zinc-800">
-          <SearchX className="h-8 w-8 text-zinc-400" aria-hidden="true" />
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
-            No hay ninguna herramienta que coincida con tu búsqueda.
-          </p>
+        <div className="mt-6 flex flex-col items-center gap-3 rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
+          <SearchX className="h-8 w-8 text-slate-400" aria-hidden="true" />
+          <p className="text-sm text-slate-600">No hay ninguna herramienta que coincida con tu búsqueda.</p>
           <button
             type="button"
             onClick={limpiarFiltros}
-            className="mt-1 rounded-full bg-zinc-900 px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
+            className="mt-1 rounded-full bg-blue-600 px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-blue-700"
           >
             Limpiar filtros
           </button>
@@ -120,8 +118,8 @@ function FiltroPill({
       className={cn(
         "rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors",
         activo
-          ? "border-zinc-900 bg-zinc-900 text-white dark:border-zinc-50 dark:bg-zinc-50 dark:text-zinc-900"
-          : "border-zinc-200 text-zinc-600 hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:border-zinc-700 dark:hover:text-zinc-50",
+          ? "border-blue-600 bg-blue-600 text-white"
+          : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-900",
       )}
     >
       {label}

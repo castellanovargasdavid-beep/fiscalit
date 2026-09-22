@@ -27,12 +27,10 @@ export function SliderInput({
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between gap-2">
-        <label htmlFor={id} className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+        <label htmlFor={id} className="text-sm font-medium text-slate-700">
           {label}
         </label>
-        <span className="text-sm font-semibold whitespace-nowrap text-zinc-900 dark:text-zinc-50">
-          {display}
-        </span>
+        <span className="text-sm font-semibold whitespace-nowrap text-slate-900">{display}</span>
       </div>
       <input
         id={id}
@@ -42,7 +40,7 @@ export function SliderInput({
         step={step}
         value={value}
         onChange={(event) => onChange(Number(event.target.value))}
-        className="h-2 w-full cursor-pointer accent-zinc-900 dark:accent-zinc-50"
+        className="h-2 w-full cursor-pointer accent-blue-600"
       />
       <input
         type="number"
@@ -52,7 +50,7 @@ export function SliderInput({
         value={value}
         onChange={(event) => onChange(Number(event.target.value) || 0)}
         aria-label={`${label} (valor exacto)`}
-        className="w-full rounded-lg border border-zinc-200 px-3 py-1.5 text-sm text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-50"
+        className="w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
       />
     </div>
   );

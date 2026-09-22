@@ -8,7 +8,5 @@ export const siteConfig = {
 
 export const mainNav: { label: string; href: string }[] = [
   { label: "Inicio", href: "/" },
-  { label: "Herramientas", href: "/herramientas" },
-  { label: "Blog", href: "/blog" },
-  { label: "Sobre Fiscalit", href: "/sobre-fiscalit" },
+  { label: "Herramientas", href: "/#herramientas" },
 ];

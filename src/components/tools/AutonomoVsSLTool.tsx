@@ -38,11 +38,11 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
-      <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-50">
+      <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
         Autónomo vs Sociedad Limitada
       </h1>
 
-      <div className="mt-6 grid gap-6 rounded-2xl border border-zinc-200 p-6 sm:grid-cols-3 dark:border-zinc-800">
+      <div className="mt-6 grid gap-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:grid-cols-3">
         <SliderInput
           label="Facturación bruta anual"
           value={ingresosAnuales}
@@ -127,26 +127,15 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
       <div
         className={cn(
           "mt-6 rounded-2xl border p-5 text-center",
-          opcionMasVentajosa === "equivalente"
-            ? "border-zinc-200 dark:border-zinc-800"
-            : "border-emerald-200 bg-emerald-50 dark:border-emerald-900 dark:bg-emerald-950/30",
+          opcionMasVentajosa === "equivalente" ? "border-slate-200 bg-white" : "border-emerald-200 bg-emerald-50",
         )}
       >
         {opcionMasVentajosa === "equivalente" ? (
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
-            Ambas opciones te dejan un neto disponible prácticamente igual.
-          </p>
+          <p className="text-sm text-slate-600">Ambas opciones te dejan un neto disponible prácticamente igual.</p>
         ) : (
-          <p className="text-sm text-zinc-700 dark:text-zinc-300">
-            Te conviene ser{" "}
-            <strong className="text-zinc-900 dark:text-zinc-50">
-              {opcionMasVentajosa === "autonomo" ? "Autónomo" : "Sociedad Limitada"}
-            </strong>
-            : ganas{" "}
-            <strong className="text-emerald-600 dark:text-emerald-400">
-              {formatEUR(Math.abs(diferenciaNeta))}
-            </strong>{" "}
-            más al año.
+          <p className="text-sm text-slate-700">
+            Te conviene ser <strong className="text-slate-900">{opcionMasVentajosa === "autonomo" ? "Autónomo" : "Sociedad Limitada"}</strong>
+            : ganas <strong className="text-emerald-600">{formatEUR(Math.abs(diferenciaNeta))}</strong> más al año.
           </p>
         )}
       </div>
@@ -172,40 +161,32 @@ function ResultCard({ titulo, neto, esGanador, segments, detalle }: ResultCardPr
   return (
     <div
       className={cn(
-        "rounded-2xl border p-6",
-        esGanador ? "border-zinc-900 dark:border-zinc-50" : "border-zinc-200 dark:border-zinc-800",
+        "rounded-2xl border bg-white p-6 shadow-sm",
+        esGanador ? "border-blue-300 ring-1 ring-blue-100" : "border-slate-200",
       )}
     >
       <div className="flex items-center justify-between gap-2">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">{titulo}</h2>
+        <h2 className="text-lg font-semibold text-slate-900">{titulo}</h2>
         {esGanador && (
-          <span className="inline-flex items-center gap-1 rounded-full bg-zinc-900 px-2.5 py-1 text-xs font-medium text-white dark:bg-zinc-50 dark:text-zinc-900">
+          <span className="inline-flex items-center gap-1 rounded-full bg-blue-600 px-2.5 py-1 text-xs font-medium text-white">
             <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
             Más ventajoso
           </span>
         )}
       </div>
 
-      <p className="mt-4 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
-        {formatEUR(neto)}
-      </p>
-      <p className="text-sm text-zinc-500 dark:text-zinc-500">Neto disponible al año</p>
+      <p className="mt-4 text-3xl font-semibold tracking-tight text-emerald-600">{formatEUR(neto)}</p>
+      <p className="text-sm text-slate-500">Neto disponible al año</p>
 
       <div className="mt-4">
         <SplitBar segments={segments} />
       </div>
 
-      <ul className="mt-4 space-y-1.5 text-sm text-zinc-600 dark:text-zinc-400">
+      <ul className="mt-4 space-y-1.5 text-sm text-slate-600">
         {detalle.map((linea) => (
           <li key={linea.label} className="flex justify-between gap-4">
             <span>{linea.label}</span>
-            <span
-              className={
-                linea.value < 0
-                  ? "text-rose-600 dark:text-rose-400"
-                  : "text-zinc-900 dark:text-zinc-50"
-              }
-            >
+            <span className={linea.value < 0 ? "text-rose-600" : "text-slate-900"}>
               {linea.value < 0 ? "−" : ""}
               {formatEUR(Math.abs(linea.value))}
             </span>

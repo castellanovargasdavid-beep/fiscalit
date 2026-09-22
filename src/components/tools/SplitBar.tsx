@@ -14,7 +14,7 @@ export function SplitBar({ segments }: SplitBarProps) {
 
   return (
     <div>
-      <div className="flex h-3 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
+      <div className="flex h-3 w-full overflow-hidden rounded-full bg-slate-100">
         {segments.map((segment) => {
           const porcentaje = total > 0 ? (Math.max(0, segment.value) / total) * 100 : 0;
           if (porcentaje <= 0) return null;
@@ -28,7 +28,7 @@ export function SplitBar({ segments }: SplitBarProps) {
           );
         })}
       </div>
-      <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-zinc-600 dark:text-zinc-400">
+      <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-600">
         {segments.map((segment) => (
           <span key={segment.label} className="flex items-center gap-1.5">
             <span className={`h-2 w-2 rounded-full ${segment.className}`} aria-hidden="true" />

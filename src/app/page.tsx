@@ -40,46 +40,40 @@ export default function Home() {
       />
 
       <section className="max-w-2xl">
-        <h1 className="text-4xl font-semibold tracking-tight text-zinc-900 sm:text-5xl dark:text-zinc-50">
+        <h1 className="text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
           Herramientas de cálculo fiscal, laboral y cotizaciones sin complicaciones
         </h1>
-        <p className="mt-4 text-lg leading-8 text-zinc-600 dark:text-zinc-400">
+        <p className="mt-4 text-lg leading-8 text-slate-600">
           Calculadoras gratuitas y privadas para autónomos y micropymes en España: se ejecutan 100% en tu
           navegador y están adaptadas a la normativa vigente.
         </p>
 
         <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
           {TRUST_BADGES.map((badge) => (
-            <li
-              key={badge.label}
-              className="flex items-center gap-1.5 text-sm font-medium text-zinc-600 dark:text-zinc-400"
-            >
-              <badge.icon className="h-4 w-4 text-zinc-400 dark:text-zinc-500" aria-hidden="true" />
+            <li key={badge.label} className="flex items-center gap-1.5 text-sm font-medium text-slate-600">
+              <badge.icon className="h-4 w-4 text-emerald-600" aria-hidden="true" />
               {badge.label}
             </li>
           ))}
         </ul>
       </section>
 
-      <section className="mt-12">
+      <section id="herramientas" className="mt-12 scroll-mt-24">
         <ToolsExplorer />
       </section>
 
       <section aria-labelledby="por-que-heading" className="mt-24">
-        <h2
-          id="por-que-heading"
-          className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50"
-        >
+        <h2 id="por-que-heading" className="text-2xl font-semibold tracking-tight text-slate-900">
           Por qué usar estas calculadoras
         </h2>
         <div className="mt-6 grid gap-6 sm:grid-cols-3">
           {VALUE_PROPS.map((prop) => (
-            <div key={prop.title} className="rounded-2xl border border-zinc-200 p-5 dark:border-zinc-800">
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+            <div key={prop.title} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
                 <prop.icon className="h-5 w-5" aria-hidden="true" />
               </span>
-              <h3 className="mt-4 font-semibold text-zinc-900 dark:text-zinc-50">{prop.title}</h3>
-              <p className="mt-1.5 text-sm leading-6 text-zinc-600 dark:text-zinc-400">{prop.description}</p>
+              <h3 className="mt-4 font-semibold text-slate-900">{prop.title}</h3>
+              <p className="mt-1.5 text-sm leading-6 text-slate-600">{prop.description}</p>
             </div>
           ))}
         </div>

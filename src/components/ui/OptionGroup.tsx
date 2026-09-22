@@ -26,7 +26,7 @@ export function OptionGroup<T extends string>({
 }: OptionGroupProps<T>) {
   return (
     <div role="radiogroup" aria-label={label}>
-      <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300">{label}</p>
+      <p className="text-sm font-medium text-slate-700">{label}</p>
       <div
         className={cn(
           "mt-2 grid gap-2",
@@ -47,19 +47,14 @@ export function OptionGroup<T extends string>({
               className={cn(
                 "rounded-xl border p-3 text-left text-sm transition-colors",
                 selected
-                  ? "border-zinc-900 bg-zinc-900 text-white dark:border-zinc-50 dark:bg-zinc-50 dark:text-zinc-900"
-                  : "border-zinc-200 text-zinc-700 hover:border-zinc-300 dark:border-zinc-800 dark:text-zinc-300 dark:hover:border-zinc-700",
+                  ? "border-blue-600 bg-blue-600 text-white"
+                  : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50",
               )}
             >
               <span className="block font-medium">{option.label}</span>
               {option.description && (
                 <span
-                  className={cn(
-                    "mt-0.5 block text-xs",
-                    selected
-                      ? "text-zinc-300 dark:text-zinc-600"
-                      : "text-zinc-500 dark:text-zinc-500",
-                  )}
+                  className={cn("mt-0.5 block text-xs", selected ? "text-blue-100" : "text-slate-500")}
                 >
                   {option.description}
                 </span>

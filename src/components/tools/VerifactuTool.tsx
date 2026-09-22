@@ -33,21 +33,21 @@ const ESTILOS_SEMAFORO: Record<
 > = {
   verde: {
     icon: CheckCircle2,
-    border: "border-emerald-200 dark:border-emerald-900",
-    bg: "bg-emerald-50 dark:bg-emerald-950/30",
-    texto: "text-emerald-700 dark:text-emerald-400",
+    border: "border-emerald-200",
+    bg: "bg-emerald-50",
+    texto: "text-emerald-700",
   },
   amarillo: {
     icon: Clock,
-    border: "border-amber-200 dark:border-amber-900",
-    bg: "bg-amber-50 dark:bg-amber-950/30",
-    texto: "text-amber-700 dark:text-amber-400",
+    border: "border-amber-200",
+    bg: "bg-amber-50",
+    texto: "text-amber-700",
   },
   rojo: {
     icon: AlertTriangle,
-    border: "border-rose-200 dark:border-rose-900",
-    bg: "bg-rose-50 dark:bg-rose-950/30",
-    texto: "text-rose-700 dark:text-rose-400",
+    border: "border-rose-200",
+    bg: "bg-rose-50",
+    texto: "text-rose-700",
   },
 };
 
@@ -123,14 +123,14 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
-      <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-50">
+      <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
         Diagnóstico VeriFactu y Ley Crea y Crece
       </h1>
 
-      <div className="mt-6 rounded-2xl border border-zinc-200 p-6 dark:border-zinc-800">
+      <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <div>
-          <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Calculando para</p>
-          <div className="mt-2 inline-flex rounded-full border border-zinc-200 p-1 dark:border-zinc-800">
+          <p className="text-sm font-medium text-slate-700">Calculando para</p>
+          <div className="mt-2 inline-flex rounded-full border border-slate-200 p-1">
             {(
               [
                 { value: "autonomo", label: "Autónomo" },
@@ -145,8 +145,8 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
                 className={cn(
                   "rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
                   tipoContribuyente === opcion.value
-                    ? "bg-zinc-900 text-white dark:bg-zinc-50 dark:text-zinc-900"
-                    : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50",
+                    ? "bg-blue-600 text-white"
+                    : "text-slate-600 hover:text-slate-900",
                 )}
               >
                 {opcion.label}
@@ -207,50 +207,41 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
           <IconoEstado className={cn("h-8 w-8 shrink-0", EstiloEstado.texto)} aria-hidden="true" />
           <div>
             <p className={cn("text-lg font-semibold", EstiloEstado.texto)}>{estado.titulo}</p>
-            <p className="mt-1 text-sm text-zinc-700 dark:text-zinc-300">{estado.mensaje}</p>
+            <p className="mt-1 text-sm text-slate-700">{estado.mensaje}</p>
           </div>
         </div>
 
-        <dl className="mt-5 grid gap-4 border-t border-zinc-900/10 pt-5 sm:grid-cols-2 dark:border-zinc-50/10">
+        <dl className="mt-5 grid gap-4 border-t border-slate-900/10 pt-5 sm:grid-cols-2">
           <div>
-            <dt className="text-xs text-zinc-500 dark:text-zinc-500">
+            <dt className="text-xs text-slate-500">
               Fecha límite VeriFactu ({tipoContribuyente === "autonomo" ? "autónomos" : "sociedades"})
             </dt>
-            <dd className="mt-0.5 text-sm font-medium text-zinc-900 dark:text-zinc-50">
+            <dd className="mt-0.5 text-sm font-medium text-slate-900">
               {formatearFecha(resultado.fechaLimiteVerifactu)}
             </dd>
           </div>
           {resultado.obligadoFacturaElectronicaB2B && resultado.notaFacturaElectronicaB2B && (
             <div>
-              <dt className="text-xs text-zinc-500 dark:text-zinc-500">
-                Factura electrónica B2B (Ley Crea y Crece)
-              </dt>
-              <dd className="mt-0.5 text-sm font-medium text-zinc-900 dark:text-zinc-50">
-                {resultado.notaFacturaElectronicaB2B}
-              </dd>
+              <dt className="text-xs text-slate-500">Factura electrónica B2B (Ley Crea y Crece)</dt>
+              <dd className="mt-0.5 text-sm font-medium text-slate-900">{resultado.notaFacturaElectronicaB2B}</dd>
             </div>
           )}
         </dl>
       </div>
 
-      <div className="mt-6 rounded-2xl border border-zinc-200 p-6 dark:border-zinc-800">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-500">
-          Checklist técnico
-        </h2>
+      <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">Checklist técnico</h2>
         <ul className="mt-4 space-y-3">
           {resultado.checklist.map((item) => (
             <li key={item.id} className="flex items-start gap-3">
               {item.cumplido ? (
-                <CheckCircle2
-                  className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400"
-                  aria-hidden="true"
-                />
+                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" aria-hidden="true" />
               ) : (
-                <Circle className="mt-0.5 h-4 w-4 shrink-0 text-zinc-300 dark:text-zinc-700" aria-hidden="true" />
+                <Circle className="mt-0.5 h-4 w-4 shrink-0 text-slate-300" aria-hidden="true" />
               )}
               <div>
-                <p className="text-sm font-medium text-zinc-900 dark:text-zinc-50">{item.titulo}</p>
-                <p className="text-sm text-zinc-500 dark:text-zinc-500">{item.descripcion}</p>
+                <p className="text-sm font-medium text-slate-900">{item.titulo}</p>
+                <p className="text-sm text-slate-500">{item.descripcion}</p>
               </div>
             </li>
           ))}

@@ -76,11 +76,11 @@ export function KilometrajeDietasTool({ faqItems }: KilometrajeDietasToolProps) 
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
-      <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-50">
+      <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
         Calculadora de kilometraje y dietas exentas
       </h1>
 
-      <div className="mt-6 rounded-2xl border border-zinc-200 p-6 dark:border-zinc-800">
+      <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <SliderInput
           label="Kilómetros recorridos en vehículo propio (0,26 €/km)"
           value={kilometros}
@@ -127,48 +127,42 @@ export function KilometrajeDietasTool({ faqItems }: KilometrajeDietasToolProps) 
         </div>
       </div>
 
-      <div className="mt-8 rounded-2xl border border-zinc-900 bg-zinc-900 p-6 text-white dark:border-zinc-50 dark:bg-zinc-50 dark:text-zinc-900">
-        <p className="text-sm text-zinc-300 dark:text-zinc-600">Total exento de IRPF</p>
+      <div className="mt-8 rounded-2xl border border-emerald-600 bg-emerald-600 p-6 text-white shadow-sm">
+        <p className="text-sm text-emerald-100">Total exento de IRPF</p>
         <p className="mt-1 text-4xl font-semibold tracking-tight">{formatEUR(resultado.totalExentoIRPF)}</p>
       </div>
 
-      <div className="mt-6 rounded-2xl border border-zinc-200 p-6 dark:border-zinc-800">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-500">
-          Desglose
-        </h2>
+      <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">Desglose</h2>
         {resultado.resumen.length === 0 ? (
-          <p className="mt-3 text-sm text-zinc-500 dark:text-zinc-500">
-            Introduce kilómetros o días de dieta para ver el desglose.
-          </p>
+          <p className="mt-3 text-sm text-slate-500">Introduce kilómetros o días de dieta para ver el desglose.</p>
         ) : (
-          <ul className="mt-3 divide-y divide-zinc-100 dark:divide-zinc-900">
+          <ul className="mt-3 divide-y divide-slate-100">
             {resultado.resumen.map((linea) => (
               <li key={linea.concepto} className="flex items-center justify-between gap-4 py-2.5 text-sm">
-                <span className="text-zinc-600 dark:text-zinc-400">{linea.concepto}</span>
-                <span className="font-medium whitespace-nowrap text-zinc-900 dark:text-zinc-50">
+                <span className="text-slate-600">{linea.concepto}</span>
+                <span className="font-medium whitespace-nowrap text-slate-900">
                   {formatEUR(linea.importeExento)}
                 </span>
               </li>
             ))}
           </ul>
         )}
-        <div className="mt-3 flex items-center justify-between gap-4 border-t border-zinc-200 pt-3 text-sm font-semibold text-zinc-900 dark:border-zinc-800 dark:text-zinc-50">
+        <div className="mt-3 flex items-center justify-between gap-4 border-t border-slate-200 pt-3 text-sm font-semibold text-slate-900">
           <span>Kilometraje</span>
           <span>{formatEUR(resultado.totalExentoKilometraje)}</span>
         </div>
-        <div className="mt-1 flex items-center justify-between gap-4 text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+        <div className="mt-1 flex items-center justify-between gap-4 text-sm font-semibold text-slate-900">
           <span>Dietas</span>
           <span>{formatEUR(resultado.totalExentoDietas)}</span>
         </div>
       </div>
 
-      <div className="mt-6 flex gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-5 dark:border-amber-900 dark:bg-amber-950/30">
-        <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600 dark:text-amber-400" aria-hidden="true" />
+      <div className="mt-6 flex gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-5">
+        <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" aria-hidden="true" />
         <div>
-          <p className="text-sm font-semibold text-amber-800 dark:text-amber-300">
-            Documentación obligatoria para la AEAT
-          </p>
-          <ul className="mt-2 list-disc space-y-1 pl-4 text-sm text-amber-800/90 dark:text-amber-300/90">
+          <p className="text-sm font-semibold text-amber-800">Documentación obligatoria para la AEAT</p>
+          <ul className="mt-2 list-disc space-y-1 pl-4 text-sm text-amber-800/90">
             {DOCUMENTACION_OBLIGATORIA.map((item) => (
               <li key={item}>{item}</li>
             ))}
