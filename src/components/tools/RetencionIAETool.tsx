@@ -174,7 +174,12 @@ export function RetencionIAETool({ faqItems }: RetencionIAEToolProps) {
       />
 
       <div className="mt-10">
-        <AffiliateCard partnerId="taxdown" />
+        <AffiliateCard
+          partnerId="taxdown"
+          analysis={`Con una base imponible de ${formatEUR(resultado.baseImponible, true)} y una retención del ${(resultado.tipoRetencionIRPF * 100).toFixed(0)}%, tu líquido a cobrar es ${formatEUR(resultado.totalLiquidoAPercibir, true)}.`}
+          keyPoint="Esa retención es un anticipo de tu IRPF anual, no un gasto perdido: si no declaras bien tus deducciones en la renta, puedes estar dejando dinero sobre la mesa que ya has adelantado a Hacienda."
+          nextStepIntro="Para asegurarte de recuperar cada deducción a la que tienes derecho, un servicio como"
+        />
       </div>
 
       <FAQAccordion items={faqItems} />

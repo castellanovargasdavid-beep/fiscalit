@@ -116,16 +116,27 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
 
   const { autonomo, sociedadLimitada, diferenciaNeta, opcionMasVentajosa } = resultado;
 
-  const ctaGestoria =
+  const ctaRecomendacion =
     opcionMasVentajosa === "sociedad_limitada"
       ? {
-          dynamicHeadline: `Bajo estos supuestos, el capital neto disponible estimado es ${formatEUR(Math.abs(diferenciaNeta))} superior como Sociedad Limitada, antes de costes mercantiles y contables. Si valoras dar el paso, constituye tu SL con Ayuda T Pymes en 48h.`,
+          partnerId: "ayuda-t-pymes" as const,
+          analysis: `Con estos números, tu capital neto disponible estimado como Sociedad Limitada es ${formatEUR(Math.abs(diferenciaNeta))} superior al de autónomo, antes de costes mercantiles y contables.`,
+          keyPoint:
+            "Constituir una SL implica trámites notariales y registrales, y una contabilidad más exigente (Impuesto de Sociedades, libros mercantiles, cuentas anuales) que no se gestiona igual que en el régimen de autónomos.",
+          nextStepIntro:
+            "Para dar el paso sin errores, una gestoría especializada en constitución de sociedades como",
           promoBadgeText: "Cupón exclusivo: -20% en tu primer año",
         }
       : {
-          dynamicHeadline:
-            "Si de momento sigues como autónomo, no dejes deducciones sin aplicar: optimiza tu contabilidad con Ayuda T Pymes.",
-          promoBadgeText: "Primera consulta gratuita",
+          partnerId: "quipu" as const,
+          analysis:
+            opcionMasVentajosa === "autonomo"
+              ? `Con estos números, seguir como autónomo te deja ${formatEUR(Math.abs(diferenciaNeta))} más de capital neto disponible que crear una SL, sin asumir sus costes mercantiles y contables.`
+              : "Con estos números, ambas opciones te dejan un capital neto disponible prácticamente igual, así que de momento no compensa asumir los costes mercantiles y contables de una SL.",
+          keyPoint:
+            "Como autónomo, cada gasto deducible que se te escape es dinero que pagas de más en IRPF: llevar la contabilidad al día marca la diferencia entre aprovechar todas las deducciones o no.",
+          nextStepIntro: "Para no dejar deducciones sin aplicar, un software de contabilidad automática como",
+          promoBadgeText: undefined as string | undefined,
         };
 
   const conclusion =
@@ -168,7 +179,7 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
   ];
 
   const handleDownloadPdf = () => {
-    const partner = getAffiliate("ayuda-t-pymes");
+    const partner = getAffiliate(ctaRecomendacion.partnerId);
     return downloadScenarioPdf({
       toolTitle: "Autónomo vs Sociedad Limitada",
       highlight: conclusion,
@@ -176,7 +187,7 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
       sections: reportSections,
       promo: {
         partnerName: partner.name,
-        badgeText: ctaGestoria.promoBadgeText,
+        badgeText: ctaRecomendacion.promoBadgeText ?? partner.tagline,
         ctaLabel: partner.ctaLabel,
         url: partner.url,
       },
@@ -382,7 +393,13 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
       {ingresosAnuales > UMBRAL_LEAD_ALTO_VALOR && <HighValueLeadCard facturacionAnual={ingresosAnuales} />}
 
       <div className="mt-10">
-        <AffiliateCard partnerId="ayuda-t-pymes" {...ctaGestoria} />
+        <AffiliateCard
+          partnerId={ctaRecomendacion.partnerId}
+          analysis={ctaRecomendacion.analysis}
+          keyPoint={ctaRecomendacion.keyPoint}
+          nextStepIntro={ctaRecomendacion.nextStepIntro}
+          promoBadgeText={ctaRecomendacion.promoBadgeText}
+        />
       </div>
 
       <FAQAccordion items={faqItems} />

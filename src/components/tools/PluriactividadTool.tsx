@@ -154,7 +154,24 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
       />
 
       <div className="mt-10">
-        <AffiliateCard partnerId="ayuda-t-pymes" />
+        <AffiliateCard
+          partnerId="ayuda-t-pymes"
+          analysis={
+            resultado.tieneDerechoDevolucion
+              ? `Según tus cifras, tienes derecho a una devolución estimada de ${formatEUR(resultado.importeDevolucion)} por exceso de cotización en pluriactividad.`
+              : "Con tus cifras actuales, tu cotización conjunta no supera el tope legal, así que no te corresponde devolución por pluriactividad este ejercicio."
+          }
+          keyPoint={
+            resultado.tieneDerechoDevolucion
+              ? "La TGSS abona esta devolución de oficio, pero si el importe no cuadra con lo esperado o no la recibes en plazo, hay que reclamarla activamente, algo que pocas gestorías revisan por defecto."
+              : "Eso puede cambiar si tu salario o tu cuota RETA suben: conviene revisar esta comprobación cada año, sobre todo si cambias de convenio o de tramo de cotización."
+          }
+          nextStepIntro={
+            resultado.tieneDerechoDevolucion
+              ? "Para comprobar que la recibes correctamente y no se te olvida reclamarla, una gestoría como"
+              : "Para llevar el seguimiento sin tener que estar pendiente tú mismo, una gestoría como"
+          }
+        />
       </div>
 
       <FAQAccordion items={faqItems} />

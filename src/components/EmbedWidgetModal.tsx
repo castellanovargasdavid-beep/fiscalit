@@ -15,7 +15,7 @@ interface EmbedWidgetModalProps {
 
 function buildEmbedCode(slug: string): string {
   const embedUrl = `${siteConfig.url}/embed/${slug}`;
-  return `<iframe src="${embedUrl}" width="100%" height="600" frameborder="0"></iframe><p style="font-size:12px;color:#666;text-align:right;">Calculadora facilitada por <a href="${siteConfig.url}" target="_blank" rel="noopener">FiscalIT.es</a></p>`;
+  return `<iframe src="${embedUrl}" width="100%" height="600" frameborder="0"></iframe><p style="font-size:12px;color:#666;text-align:right;">Calculadora facilitada por <a href="${siteConfig.url}" target="_blank" rel="noopener sponsored">FiscalIT.es</a></p>`;
 }
 
 /** Botón discreto + modal accesible (`<dialog>` nativo) para copiar el código de inserción de una calculadora. */

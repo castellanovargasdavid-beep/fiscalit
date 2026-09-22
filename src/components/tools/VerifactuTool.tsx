@@ -128,10 +128,18 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
   const ctaQuipu =
     estado.nivel !== "verde"
       ? {
-          dynamicHeadline: "Adapta tu facturación a VeriFactu antes de tu fecha límite con Quipu.",
+          analysis: `Tu sistema de facturación actual todavía no cumple los requisitos técnicos de VeriFactu para tu fecha límite (${formatearFecha(resultado.fechaLimiteVerifactu)}).`,
+          keyPoint:
+            "Adaptar el software de facturación no es instantáneo: migrar datos, formar al equipo y verificar el nuevo sistema lleva semanas, no días. Cuanto antes empieces, menos riesgo de llegar justo a tu fecha límite.",
+          nextStepIntro: "Para migrar sin sobresaltos, un software ya certificado como",
           promoBadgeText: "Migración asistida incluida",
         }
-      : {};
+      : {
+          analysis: "Tu sistema de facturación ya cumple los requisitos técnicos de VeriFactu.",
+          keyPoint:
+            "Cumplir hoy no es cumplir para siempre: la normativa de facturación electrónica sigue evolviendo (Ley Crea y Crece, nuevos formatos), y tu proveedor debe mantenerse al día contigo.",
+          nextStepIntro: "Si quieres una solución que se actualiza sola ante cada cambio normativo, plataformas como",
+        };
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">

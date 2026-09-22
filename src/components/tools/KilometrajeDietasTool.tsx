@@ -208,7 +208,12 @@ export function KilometrajeDietasTool({ faqItems }: KilometrajeDietasToolProps) 
       />
 
       <div className="mt-10">
-        <AffiliateCard partnerId="qonto" />
+        <AffiliateCard
+          partnerId="qonto"
+          analysis={`Este cálculo suma ${formatEUR(resultado.totalExentoIRPF)} en conceptos exentos de IRPF por kilometraje y dietas.`}
+          keyPoint="Para que Hacienda no cuestione esa exención necesitas justificar cada desplazamiento con tickets, facturas y movimientos claramente diferenciados de tus gastos personales."
+          nextStepIntro="Una cuenta profesional separada de tu cuenta personal, como"
+        />
       </div>
 
       <FAQAccordion items={faqItems} />

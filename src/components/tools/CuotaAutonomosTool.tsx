@@ -78,7 +78,10 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
   );
 
   const ctaHolded = {
-    dynamicHeadline: `Estás en el Tramo ${resultado.tramoAsignado.tramo}/15: lleva tus gastos e ingresos al céntimo con Holded para no pagar de más a la TGSS.`,
+    analysis: `Tu rendimiento neto te sitúa en el tramo ${resultado.tramoAsignado.tramo}/15, con una cuota mensual estimada entre ${formatEUR(resultado.cuotaMensualMinima)} y ${formatEUR(resultado.cuotaMensualMaxima)}.`,
+    keyPoint:
+      "Ese tramo depende directamente de cómo registres tus ingresos y gastos: un descuadre o un gasto sin apuntar puede subirte a un tramo superior sin que te des cuenta hasta la regularización anual.",
+    nextStepIntro: "Para llevar tus cifras al céntimo y no pagar de más a la TGSS, un ERP como",
     promoBadgeText: "Prueba gratis 30 días",
   };
 
