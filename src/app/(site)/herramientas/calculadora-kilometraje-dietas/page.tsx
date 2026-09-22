@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { KilometrajeDietasTool } from "@/components/tools/KilometrajeDietasTool";
+import {
+  KilometrajeTechnicalGuide,
+  KILOMETRAJE_LANDING_FAQ_ITEMS,
+} from "@/components/tools/KilometrajeTechnicalGuide";
 import { BoeAlertSignup } from "@/components/BoeAlertSignup";
 import type { FAQItem } from "@/components/FAQAccordion";
 import { buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd } from "@/lib/seo";
@@ -74,7 +78,14 @@ export default function CalculadoraKilometrajeDietasPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildFaqJsonLd(FAQ_ITEMS)) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(buildFaqJsonLd(KILOMETRAJE_LANDING_FAQ_ITEMS)),
+        }}
+      />
       <KilometrajeDietasTool faqItems={FAQ_ITEMS} />
+      <KilometrajeTechnicalGuide />
       <div className="mx-auto max-w-4xl px-4 pb-10 sm:px-6">
         <BoeAlertSignup />
       </div>
