@@ -16,6 +16,18 @@ export const siteConfig = {
    * Vacío = las altas caen a un mailto: al email de contacto.
    */
   newsletterEndpoint: "",
+  /** Titular del sitio (razón social o nombre y apellidos). Rellena antes de publicar el Aviso Legal. */
+  legalName: "",
+  /** NIF/CIF del titular. Rellena antes de publicar el Aviso Legal. */
+  taxId: "",
+  /** Domicilio a efectos de notificaciones (LSSI-CE art. 10). Rellena antes de publicar el Aviso Legal. */
+  legalAddress: "",
+  /**
+   * Fecha (ISO) de la última revisión técnica global de la metodología y
+   * las fuentes normativas de todas las calculadoras. Actualízala cada vez
+   * que se revisen las herramientas contra un cambio normativo.
+   */
+  lastMethodologyReview: "2026-09-22",
 };
 
 export const mainNav: { label: string; href: string }[] = [

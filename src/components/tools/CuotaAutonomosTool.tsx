@@ -11,6 +11,7 @@ import { SliderInput } from "@/components/ui/SliderInput";
 import { ScenarioPresets, type ScenarioPreset } from "@/components/ui/ScenarioPresets";
 import { ScenarioActions } from "@/components/tools/ScenarioActions";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
+import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
@@ -196,6 +197,8 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
           </div>
         </div>
       </div>
+
+      <SimulationDisclaimer />
 
       <div className="mt-8 grid gap-4 sm:grid-cols-4 print:break-inside-avoid">
         <StatCard label="Tramo asignado" value={`Tramo ${resultado.tramoAsignado.tramo} / 15`} destacado />

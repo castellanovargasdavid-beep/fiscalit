@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { AlertTriangle, Handshake, Landmark, Lock, Target } from "lucide-react";
 import { buildOrganizationJsonLd, buildPageMetadata } from "@/lib/seo";
 
@@ -22,7 +23,7 @@ const PRINCIPIOS = [
     icon: Lock,
     title: "Privacidad por diseño",
     description:
-      "Todos los cálculos se ejecutan dentro de tu propio navegador, en tu dispositivo. No enviamos ni almacenamos tus cifras económicas en ningún servidor: ni tu facturación, ni tus gastos, ni tu salario pasan por nuestras bases de datos, porque no existen bases de datos donde guardarlos.",
+      "Cálculo 100% en local: los datos financieros que introduces (facturación, gastos, salario...) no se envían a ningún servidor ni se almacenan en bases de datos. Todo el cálculo ocurre dentro de tu propio navegador.",
   },
   {
     icon: Landmark,
@@ -79,6 +80,21 @@ export default function SobreFiscalitPage() {
             </p>
           </div>
         </div>
+
+        <nav aria-label="Documentos legales" className="mt-6 flex flex-wrap gap-x-4 gap-y-2 text-sm">
+          <Link href="/metodologia" className="text-blue-700 underline underline-offset-2 hover:text-blue-800">
+            Metodología y fuentes
+          </Link>
+          <Link href="/aviso-legal" className="text-blue-700 underline underline-offset-2 hover:text-blue-800">
+            Aviso legal
+          </Link>
+          <Link href="/privacidad" className="text-blue-700 underline underline-offset-2 hover:text-blue-800">
+            Privacidad
+          </Link>
+          <Link href="/cookies" className="text-blue-700 underline underline-offset-2 hover:text-blue-800">
+            Cookies
+          </Link>
+        </nav>
       </div>
     </>
   );

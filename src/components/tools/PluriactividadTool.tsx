@@ -9,6 +9,7 @@ import {
 import { SliderInput } from "@/components/ui/SliderInput";
 import { SplitBar } from "@/components/tools/SplitBar";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
+import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
@@ -79,6 +80,8 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
         conceptos (cese de actividad, formación, contingencias profesionales...), por lo que el importe exacto de
         devolución puede variar respecto a esta estimación.
       </p>
+
+      <SimulationDisclaimer />
 
       <div
         className={cn(

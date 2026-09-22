@@ -5,7 +5,7 @@ import { buildOrganizationJsonLd, buildWebSiteJsonLd } from "@/lib/seo";
 
 const TRUST_BADGES = [
   { icon: Cookie, label: "Cero cookies invasivas", color: "text-emerald-600" },
-  { icon: MonitorSmartphone, label: "100% en tu navegador", color: "text-blue-600" },
+  { icon: MonitorSmartphone, label: "Cálculo 100% en local", color: "text-blue-600" },
   { icon: RefreshCw, label: "Normativa actualizada", color: "text-emerald-600" },
 ];
 
@@ -14,7 +14,7 @@ const VALUE_PROPS = [
     icon: Lock,
     title: "Privacidad total",
     description:
-      "Tus cifras no se envían a ningún servidor ni se guardan en bases de datos. Todo el cálculo ocurre en tu dispositivo.",
+      "Cálculo 100% en local: los datos financieros que introduces no se envían a ningún servidor ni se almacenan en bases de datos.",
   },
   {
     icon: Zap,

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ExternalLink, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -11,7 +12,11 @@ interface LegalSourceBadgeProps {
   className?: string;
 }
 
-/** Franja de rigor legal (E-E-A-T): badge de vigencia + enlace a la fuente normativa oficial en boe.es. */
+/**
+ * Franja de rigor legal (E-E-A-T), situada justo debajo del resultado:
+ * badge de vigencia normativa + enlace a la fuente oficial en boe.es +
+ * enlace a la metodología y fuentes aplicadas en todo el sitio.
+ */
 export function LegalSourceBadge({ fuente, url, ejercicioFiscal = 2026, className }: LegalSourceBadgeProps) {
   return (
     <div
@@ -22,7 +27,7 @@ export function LegalSourceBadge({ fuente, url, ejercicioFiscal = 2026, classNam
     >
       <span className="inline-flex w-fit shrink-0 items-center gap-1.5 rounded-full bg-blue-600 px-2.5 py-1 text-xs font-medium text-white">
         <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
-        Verificado para el ejercicio fiscal {ejercicioFiscal}
+        Normativa revisada: Ejercicio {ejercicioFiscal} / Actualización BOE
       </span>
       <p className="text-slate-600">
         {fuente}{" "}
@@ -34,7 +39,14 @@ export function LegalSourceBadge({ fuente, url, ejercicioFiscal = 2026, classNam
         >
           Ver fuente oficial (BOE)
           <ExternalLink className="h-3 w-3" aria-hidden="true" />
-        </a>
+        </a>{" "}
+        ·{" "}
+        <Link
+          href="/metodologia"
+          className="font-medium text-blue-700 underline underline-offset-2 hover:text-blue-800 print:hidden"
+        >
+          Metodología y fuentes
+        </Link>
       </p>
     </div>
   );

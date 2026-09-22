@@ -6,6 +6,7 @@ import { calcularRetencionIAE, type SeccionIAE, type TipoIVA } from "@/lib/calcu
 import { OptionGroup } from "@/components/ui/OptionGroup";
 import { SliderInput } from "@/components/ui/SliderInput";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
+import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
@@ -103,6 +104,8 @@ export function RetencionIAETool({ faqItems }: RetencionIAEToolProps) {
           />
         </div>
       </div>
+
+      <SimulationDisclaimer />
 
       <div className="mt-8 grid gap-4 sm:grid-cols-[220px_1fr] print:break-inside-avoid">
         <div className="flex flex-col items-center justify-center rounded-2xl border border-blue-600 bg-blue-600 p-6 text-center text-white shadow-sm">

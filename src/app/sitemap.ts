@@ -26,5 +26,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.5,
     },
+    {
+      url: `${siteConfig.url}/metodologia`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
+    ...(["/aviso-legal", "/privacidad", "/cookies"] as const).map((path) => ({
+      url: `${siteConfig.url}${path}`,
+      lastModified,
+      changeFrequency: "yearly" as const,
+      priority: 0.2,
+    })),
   ];
 }

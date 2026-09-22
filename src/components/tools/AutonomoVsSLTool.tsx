@@ -9,6 +9,7 @@ import { ScenarioActions } from "@/components/tools/ScenarioActions";
 import { SplitBar, type SplitBarSegment } from "@/components/tools/SplitBar";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { HighValueLeadCard } from "@/components/tools/HighValueLeadCard";
+import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
@@ -296,6 +297,8 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
           />
         </div>
       </details>
+
+      <SimulationDisclaimer />
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2 print:break-inside-avoid">
         <ResultCard

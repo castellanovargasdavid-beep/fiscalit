@@ -10,6 +10,7 @@ import {
 } from "@/lib/calculations/verifactu";
 import { OptionGroup } from "@/components/ui/OptionGroup";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
+import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
@@ -223,6 +224,8 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
           />
         </div>
       </div>
+
+      <SimulationDisclaimer />
 
       <div className={cn("mt-8 rounded-2xl border p-6 print:break-inside-avoid", EstiloEstado.border, EstiloEstado.bg)}>
         <div className="flex items-start gap-4">
