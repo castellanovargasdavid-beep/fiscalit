@@ -38,6 +38,9 @@ export const metadata: Metadata = {
   verification: {
     google: "eVpIlnBQoRZaHR7ahP9JhfhDJ7Szk6wbc_q2aWh4CKg",
   },
+  other: {
+    "impact-site-verification": "9460ae1e-5a55-401b-98c3-b30d99021941",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
