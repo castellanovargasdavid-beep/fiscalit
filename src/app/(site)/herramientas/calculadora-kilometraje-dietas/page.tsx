@@ -7,9 +7,9 @@ import { buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd } from "@/
 const PATH = "/herramientas/calculadora-kilometraje-dietas";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Simulador de Kilometraje y Dietas Exentas (Empleados y Administradores)",
+  title: "Calculadora de Gastos de Locomoción (0,26 €/km) y Dietas Exentas en IRPF",
   description:
-    "Calcula las asignaciones exentas de IRPF por kilometraje (0,26 €/km) y dietas de manutención que una empresa paga a trabajadores y administradores, con y sin pernocta.",
+    "Calcula el importe exento de IRPF de tus gastos de locomoción (0,26 €/km) y dietas de manutención, con y sin pernocta, para empleados y administradores.",
   path: PATH,
 });
 
@@ -21,6 +21,16 @@ const WEB_APPLICATION_JSON_LD = buildWebApplicationJsonLd({
 });
 
 const FAQ_ITEMS: FAQItem[] = [
+  {
+    question: "¿Cuáles son los importes exentos de dieta con y sin pernocta?",
+    answer:
+      "En desplazamientos dentro de España, la dieta de manutención exenta es de 53,34 €/día con pernocta y 26,67 €/día sin pernocta. En el extranjero sube a 91,35 €/día con pernocta y 48,08 €/día sin pernocta (Orden HFP/792/2023).",
+  },
+  {
+    question: "¿El importe exento por kilometraje tiene algún límite en euros?",
+    answer:
+      "No hay un tope máximo en la asignación: se calcula multiplicando los kilómetros justificados por la tarifa vigente de 0,26 €/km, sin importar cuántos kilómetros acumules. Lo que sí exige la norma es que el desplazamiento esté justificado por motivos de trabajo, no que se trate del trayecto habitual entre tu domicilio y tu centro de trabajo.",
+  },
   {
     question: "Soy autónomo persona física: ¿puedo deducir 0,26 €/km por usar mi coche?",
     answer:

@@ -7,9 +7,9 @@ import { buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd } from "@/
 const PATH = "/herramientas/diagnostico-verifactu";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Diagnóstico VeriFactu 2027: ¿Cumple tu Sistema de Facturación?",
+  title: "Test VeriFactu 2027: Diagnóstico Preventivo de Sistemas de Facturación y AEAT",
   description:
-    "Responde 4 preguntas y descubre si tu sistema de facturación cumple ya los requisitos técnicos de VeriFactu, tu fecha límite legal (2027) y el checklist que te falta.",
+    "Responde el test VeriFactu y haz un diagnóstico preventivo de tu sistema de facturación: comprueba si cumple los requisitos técnicos exigidos por la AEAT antes de la entrada en vigor de 2027.",
   path: PATH,
 });
 
@@ -21,6 +21,21 @@ const WEB_APPLICATION_JSON_LD = buildWebApplicationJsonLd({
 });
 
 const FAQ_ITEMS: FAQItem[] = [
+  {
+    question: "¿Cuál es mi fecha límite exacta si soy autónomo frente a si tengo una sociedad?",
+    answer:
+      "La fecha límite depende del tipo de contribuyente: 1 de enero de 2027 para los contribuyentes del Impuesto sobre Sociedades (sociedades) y 1 de julio de 2027 para autónomos y el resto de obligados tributarios. Son seis meses de diferencia, así que comprueba cuál te aplica antes de fijar tu plan de migración.",
+  },
+  {
+    question: "¿Qué ocurre si ya tengo un software de facturación pero no genera QR tributario?",
+    answer:
+      "Un software que no genera el código QR ni la leyenda «Factura verificable en la sede electrónica de la AEAT» no cumple los requisitos técnicos de VeriFactu, aunque sea un programa informático moderno: te falta también el registro de facturación con huella encadenada y, salvo que sea un sistema VeriFactu, el envío inmediato de registros a la AEAT. Revisa con tu proveedor si tiene prevista la certificación.",
+  },
+  {
+    question: "¿La factura electrónica B2B de la Ley Crea y Crece es lo mismo que VeriFactu?",
+    answer:
+      "No, son obligaciones distintas que conviven: VeriFactu exige que tu sistema informático registre y remita las facturas de forma íntegra y verificable ante la AEAT; la Ley Crea y Crece exige, además, emitir la factura en formato electrónico estructurado cuando factures a otras empresas o profesionales (B2B), con plazos de adaptación aparte (1 o 2 años según tu volumen de facturación).",
+  },
   {
     question: "¿Cuándo es obligatorio VeriFactu y qué pasa si no cumplo a partir de esa fecha?",
     answer:

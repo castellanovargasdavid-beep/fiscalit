@@ -7,9 +7,9 @@ import { buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd } from "@/
 const PATH = "/herramientas/autonomo-vs-sl";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Autónomo vs Sociedad Limitada 2026: ¿Qué te Conviene Más?",
+  title: "Simulador Autónomo vs SL: Comparativa de Disponible Neto, IS e IRPF",
   description:
-    "Descubre en segundos si te compensa más ser autónomo o crear una SL. Compara tu neto real con IRPF, cuota RETA e Impuesto de Sociedades. Calculadora 100% gratis.",
+    "Simula tu disponible neto como autónomo o como Sociedad Limitada, con el desglose de IRPF, cuota RETA e Impuesto sobre Sociedades de cada escenario, para decidir con cifras reales.",
   path: PATH,
 });
 
@@ -22,9 +22,24 @@ const WEB_APPLICATION_JSON_LD = buildWebApplicationJsonLd({
 
 const FAQ_ITEMS: FAQItem[] = [
   {
+    question: "¿Cómo tributa el Impuesto de Sociedades si mi base imponible supera los 50.000 €?",
+    answer:
+      "Si tu SL es una microempresa (cifra de negocio inferior a 1.000.000 €), el Impuesto sobre Sociedades de 2026 aplica una escala progresiva sobre la base imponible: el 19% a los primeros 50.000 € y el 21% al resto. No es un salto de tipo íntegro: solo el exceso sobre 50.000 € tributa al 21%, el resto sigue al 19% (Ley 7/2024).",
+  },
+  {
+    question: "¿Qué pasa si destino todo el beneficio a la nómina del administrador?",
+    answer:
+      "Si el salario bruto del administrador absorbe todo el rendimiento (descontada la cuota RETA societaria), la base imponible del Impuesto de Sociedades queda en 0 € y no hay cuota que pagar ni dividendos que repartir: todo el disponible sale vía nómina, sujeta a su propio IRPF.",
+  },
+  {
+    question: "¿Cuándo se aplica el tipo general del 25% en vez del reducido de microempresas?",
+    answer:
+      "El tipo reducido (19%/21%) solo está pensado para sociedades con una cifra de negocio anual inferior a 1.000.000 €. Si tus ingresos superan ese umbral, toda la base imponible del Impuesto sobre Sociedades tributa al tipo general del 25%, sin el tramo reducido.",
+  },
+  {
     question: "¿Cuándo interesa pasar de autónomo a Sociedad Limitada?",
     answer:
-      "Suele compensar cuando el rendimiento neto anual supera aproximadamente los 60.000-65.000 €, ya que el Impuesto sobre Sociedades (23-25%) queda por debajo de los tipos marginales de IRPF que soportarías como autónomo a partir de ese nivel de ingresos.",
+      "Depende de tu rendimiento neto y de cuánto necesites disponer cada año: al tributar la SL con un Impuesto sobre Sociedades del 19%/21% (microempresas) frente a los tipos marginales de IRPF que puedes alcanzar como autónomo, puede compensar a partir de ciertos niveles de ingresos, sobre todo si reinviertes beneficios en el negocio. Esta calculadora estima el neto disponible en ambos escenarios con tus propias cifras.",
   },
   {
     question: "¿Cuánto cuesta crear una Sociedad Limitada en España?",
@@ -34,7 +49,7 @@ const FAQ_ITEMS: FAQItem[] = [
   {
     question: "¿Qué impuestos paga una Sociedad Limitada en España?",
     answer:
-      "Principalmente el Impuesto sobre Sociedades (23% para microempresas con cifra de negocio inferior a 1.000.000 €, 25% en general), el IVA de su actividad y las retenciones e IRPF de la nómina del administrador. Los dividendos que reparte tributan además en la base del ahorro del IRPF de cada socio.",
+      "Principalmente el Impuesto sobre Sociedades (19%/21% escala progresiva para microempresas con cifra de negocio inferior a 1.000.000 €, 25% en general), el IVA de su actividad y las retenciones e IRPF de la nómina del administrador. Los dividendos que reparte tributan además en la base del ahorro del IRPF de cada socio.",
   },
   {
     question: "¿Puedo ser autónomo y tener una Sociedad Limitada a la vez?",

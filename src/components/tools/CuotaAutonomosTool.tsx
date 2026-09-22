@@ -12,9 +12,11 @@ import { ScenarioPresets, type ScenarioPreset } from "@/components/ui/ScenarioPr
 import { ScenarioActions } from "@/components/tools/ScenarioActions";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
+import { PrivacyLocalBadge } from "@/components/tools/PrivacyLocalBadge";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
+import { RelatedToolsMesh } from "@/components/RelatedToolsMesh";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 import { useSyncScenarioToUrl, useUrlSeededScenario } from "@/lib/useScenarioShare";
 import { downloadScenarioPdf } from "@/lib/generateScenarioPdf";
@@ -139,7 +141,7 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-          Calculadora de cuota de autónomos por tramos
+          Simulador de cuota de autónomos: tramos RETA según tus rendimientos netos
         </h1>
         <EmbedWidgetModal
           slug="calculadora-cuota-autonomos"
@@ -202,6 +204,7 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
       </div>
 
       <SimulationDisclaimer />
+      <PrivacyLocalBadge />
 
       <div className="mt-8 grid gap-4 sm:grid-cols-4 print:break-inside-avoid">
         <StatCard label="Tramo asignado" value={`Tramo ${resultado.tramoAsignado.tramo} / 15`} destacado />
@@ -266,7 +269,9 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
         <AffiliateCard partnerId="holded" {...ctaHolded} />
       </div>
 
-      <FAQAccordion items={faqItems} />
+      <RelatedToolsMesh slugs={["retencion-factura-iae", "autonomo-vs-sl"]} />
+
+      <FAQAccordion items={faqItems} title="Escenarios frecuentes y supuestos normativos" />
     </div>
   );
 }

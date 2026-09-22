@@ -9,9 +9,11 @@ import {
 import { SliderInput } from "@/components/ui/SliderInput";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
+import { PrivacyLocalBadge } from "@/components/tools/PrivacyLocalBadge";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
+import { RelatedToolsMesh } from "@/components/RelatedToolsMesh";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 import { formatEUR } from "@/lib/format";
 
@@ -84,7 +86,7 @@ export function KilometrajeDietasTool({ faqItems }: KilometrajeDietasToolProps) 
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-          Simulador de gastos de desplazamiento y dietas exentas (empleados y administradores)
+          Calculadora de gastos de locomoción (0,26 €/km) y dietas exentas en IRPF
         </h1>
         <EmbedWidgetModal
           slug="calculadora-kilometraje-dietas"
@@ -158,6 +160,7 @@ export function KilometrajeDietasTool({ faqItems }: KilometrajeDietasToolProps) 
       </div>
 
       <SimulationDisclaimer />
+      <PrivacyLocalBadge />
 
       <div className="mt-8 rounded-2xl border border-emerald-600 bg-emerald-600 p-6 text-white shadow-sm print:break-inside-avoid">
         <p className="text-sm text-emerald-100">Total exento de IRPF</p>
@@ -216,7 +219,9 @@ export function KilometrajeDietasTool({ faqItems }: KilometrajeDietasToolProps) 
         />
       </div>
 
-      <FAQAccordion items={faqItems} />
+      <RelatedToolsMesh slugs={["calculadora-cuota-autonomos", "autonomo-vs-sl"]} />
+
+      <FAQAccordion items={faqItems} title="Escenarios frecuentes y supuestos normativos" />
     </div>
   );
 }

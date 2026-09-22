@@ -7,9 +7,9 @@ import { buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd } from "@/
 const PATH = "/herramientas/retencion-factura-iae";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Calculadora Retención IRPF en Factura 2026: 0%, 7% o 15%",
+  title: "Simulador de Factura con IRPF (7% o 15%), IVA y Regla del 70% en Modelo 130",
   description:
-    "Descubre en segundos qué porcentaje de retención IRPF debes aplicar según tu epígrafe del IAE y simula tu factura proforma completa con IVA incluido.",
+    "Simula tu factura con la retención de IRPF correcta (7% o 15% según tu epígrafe del IAE), el IVA aplicable y comprueba si cumples la regla del 70% que te exime del Modelo 130.",
   path: PATH,
 });
 
@@ -22,14 +22,29 @@ const WEB_APPLICATION_JSON_LD = buildWebApplicationJsonLd({
 
 const FAQ_ITEMS: FAQItem[] = [
   {
+    question: "¿Cuándo puedo aplicar legalmente el 7% de retención reducida?",
+    answer:
+      "Puedes aplicar el 7% en lugar del 15% durante el año en que te das de alta como autónomo en actividad profesional (Sección 2 del IAE) y los dos siguientes, siempre que no hayas ejercido esa misma actividad en el año anterior a tu fecha de alta.",
+  },
+  {
+    question: "¿Qué autónomos están exentos de presentar el Modelo 130?",
+    answer:
+      "Quedas exento de ingresar cuota en el Modelo 130 si al menos el 70% de tus ingresos del ejercicio anterior llevaron retención o ingreso a cuenta (art. 110.3 del Reglamento del IRPF). Aun estando exento de ingresar, en muchos casos sigue existiendo la obligación formal de presentar el modelo, aunque salga a cero.",
+  },
+  {
+    question: "¿La Sección 1 del IAE (actividad empresarial) lleva retención en factura?",
+    answer:
+      "No. Las actividades empresariales de la Sección 1 del IAE (comercio, industria, hostelería, la mayoría de servicios sin cualificación profesional específica) nunca llevan retención de IRPF en factura, con independencia del importe facturado. Solo las actividades profesionales de la Sección 2 llevan retención (7% o 15%).",
+  },
+  {
+    question: "¿Qué tipos de IVA puedo aplicar en mi factura?",
+    answer:
+      "Los tipos vigentes en España son el 21% (general), el 10% y el 4% (reducidos para determinados bienes y servicios) y el 0% para operaciones exentas o no sujetas. El tipo de IVA es independiente del porcentaje de retención de IRPF: se calculan por separado sobre la misma base imponible.",
+  },
+  {
     question: "¿Cuál es la diferencia entre Sección 1 y Sección 2 del IAE?",
     answer:
       "La Sección 1 (actividades empresariales) agrupa comercio, industria, hostelería y servicios que no requieren una cualificación profesional específica, y sus facturas no llevan retención de IRPF. La Sección 2 (actividades profesionales) agrupa servicios que exigen una titulación o cualificación —consultoría, diseño, abogacía, arquitectura...— y sus facturas sí llevan retención.",
-  },
-  {
-    question: "¿Cuándo puedo facturar con la retención reducida del 7%?",
-    answer:
-      "Puedes aplicar el 7% en lugar del 15% durante el año en que te das de alta como autónomo y los dos siguientes, siempre que no hayas ejercido esa misma actividad profesional en el año anterior a tu fecha de alta.",
   },
   {
     question: "¿Qué pasa si facturo sin aplicar retención por error?",

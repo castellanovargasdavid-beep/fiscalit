@@ -7,9 +7,9 @@ import { buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd } from "@/
 const PATH = "/herramientas/pluriactividad-devolucion";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Calculadora Devolución Pluriactividad Seguridad Social",
+  title: "Simulador de Reintegro por Exceso de Cotización en Pluriactividad (Art. 313 TRLGSS)",
   description:
-    "Comprueba gratis si tienes derecho a que la Seguridad Social te devuelva de oficio el exceso cotizado entre Régimen General y RETA, y estima el importe.",
+    "Simula tu derecho al reintegro por exceso de cotización en pluriactividad (art. 313 TRLGSS) entre Régimen General y RETA, y estima el importe a recuperar.",
   path: PATH,
 });
 
@@ -21,6 +21,21 @@ const WEB_APPLICATION_JSON_LD = buildWebApplicationJsonLd({
 });
 
 const FAQ_ITEMS: FAQItem[] = [
+  {
+    question: "¿Cuál es el tope de cotización conjunta para 2026?",
+    answer:
+      "Para 2026, el tope máximo anual de cotización conjunta por contingencias comunes (Régimen General + RETA) es de 17.323,68 €. Si entre ambos regímenes superas esa cifra en el año, tienes derecho a la devolución del exceso.",
+  },
+  {
+    question: "¿Qué pasa si el 50% del exceso supera el 50% de mis cuotas RETA?",
+    answer:
+      "La devolución nunca puede superar el 50% de lo que has cotizado en RETA por contingencias comunes en el ejercicio: si el 50% de tu exceso cotizado es mayor que ese límite, la Seguridad Social te devuelve solo hasta ese 50% de tu cuota RETA, no el importe íntegro calculado sobre el exceso.",
+  },
+  {
+    question: "¿Qué cotizaciones cuentan para calcular el exceso de pluriactividad?",
+    answer:
+      "Solo las cuotas por contingencias comunes ingresadas en el Régimen General (cuenta ajena) y en el RETA (cuenta propia) durante el mismo ejercicio. Otros conceptos de tu cuota, como el cese de actividad, la formación profesional o las contingencias profesionales, no entran en este cálculo.",
+  },
   {
     question: "¿Cuándo paga la Seguridad Social la devolución por pluriactividad?",
     answer:

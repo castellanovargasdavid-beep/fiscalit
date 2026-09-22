@@ -40,66 +40,74 @@ export function ScenarioActions({ onReset, onDownloadPdf, onDownloadCsv }: Scena
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-2 print:hidden">
-      <button
-        type="button"
-        onClick={() => void copyShareLink()}
-        aria-live="polite"
-        className={cn(
-          "inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors",
-          copied
-            ? "border-emerald-200 bg-emerald-50 text-emerald-700"
-            : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-900",
-        )}
-      >
-        {copied ? (
-          <Check className="h-3.5 w-3.5" aria-hidden="true" />
-        ) : (
-          <Link2 className="h-3.5 w-3.5" aria-hidden="true" />
-        )}
-        {copied ? "¡Enlace copiado!" : "Compartir simulación"}
-      </button>
-
-      {onDownloadPdf && (
+    <div className="print:hidden">
+      <div className="flex flex-wrap items-center gap-2">
         <button
           type="button"
-          onClick={() => void handleDownloadPdf()}
-          disabled={generatingPdf}
-          className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:border-slate-300 hover:text-slate-900 disabled:cursor-wait disabled:opacity-60"
-        >
-          {generatingPdf ? (
-            <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
-          ) : (
-            <Download className="h-3.5 w-3.5" aria-hidden="true" />
+          onClick={() => void copyShareLink()}
+          aria-live="polite"
+          className={cn(
+            "inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors",
+            copied
+              ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+              : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-900",
           )}
-          {generatingPdf ? "Generando PDF…" : "Descargar informe (PDF)"}
+        >
+          {copied ? (
+            <Check className="h-3.5 w-3.5" aria-hidden="true" />
+          ) : (
+            <Link2 className="h-3.5 w-3.5" aria-hidden="true" />
+          )}
+          {copied ? "¡Enlace copiado!" : "Compartir simulación"}
         </button>
-      )}
 
-      {onDownloadCsv && (
+        {onDownloadPdf && (
+          <button
+            type="button"
+            onClick={() => void handleDownloadPdf()}
+            disabled={generatingPdf}
+            className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:border-slate-300 hover:text-slate-900 disabled:cursor-wait disabled:opacity-60"
+          >
+            {generatingPdf ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
+            ) : (
+              <Download className="h-3.5 w-3.5" aria-hidden="true" />
+            )}
+            {generatingPdf ? "Generando PDF…" : "Descargar informe (PDF)"}
+          </button>
+        )}
+
+        {onDownloadCsv && (
+          <button
+            type="button"
+            onClick={() => void handleDownloadCsv()}
+            disabled={generatingCsv}
+            className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:border-slate-300 hover:text-slate-900 disabled:cursor-wait disabled:opacity-60"
+          >
+            {generatingCsv ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
+            ) : (
+              <FileSpreadsheet className="h-3.5 w-3.5" aria-hidden="true" />
+            )}
+            {generatingCsv ? "Generando CSV…" : "Descargar Excel/CSV"}
+          </button>
+        )}
+
         <button
           type="button"
-          onClick={() => void handleDownloadCsv()}
-          disabled={generatingCsv}
-          className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:border-slate-300 hover:text-slate-900 disabled:cursor-wait disabled:opacity-60"
+          onClick={onReset}
+          className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:border-slate-300 hover:text-slate-900"
         >
-          {generatingCsv ? (
-            <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
-          ) : (
-            <FileSpreadsheet className="h-3.5 w-3.5" aria-hidden="true" />
-          )}
-          {generatingCsv ? "Generando CSV…" : "Descargar Excel/CSV"}
+          <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
+          Restablecer
         </button>
-      )}
+      </div>
 
-      <button
-        type="button"
-        onClick={onReset}
-        className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:border-slate-300 hover:text-slate-900"
-      >
-        <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
-        Restablecer
-      </button>
+      {(onDownloadPdf || onDownloadCsv) && (
+        <p className="mt-2 text-xs text-slate-500">
+          📄 Generar informe técnico para tu asesor o archivo personal (PDF/CSV oficial)
+        </p>
+      )}
     </div>
   );
 }

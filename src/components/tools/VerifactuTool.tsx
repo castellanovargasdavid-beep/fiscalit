@@ -11,9 +11,11 @@ import {
 import { OptionGroup } from "@/components/ui/OptionGroup";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
+import { PrivacyLocalBadge } from "@/components/tools/PrivacyLocalBadge";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
+import { RelatedToolsMesh } from "@/components/RelatedToolsMesh";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 import { useIsClient } from "@/lib/hooks";
 import { cn } from "@/lib/utils";
@@ -147,7 +149,7 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-          Diagnóstico VeriFactu y Ley Crea y Crece
+          Test VeriFactu 2027: diagnóstico preventivo ante la AEAT
         </h1>
         <EmbedWidgetModal slug="diagnostico-verifactu" toolTitle="Diagnóstico VeriFactu y Ley Crea y Crece" />
       </div>
@@ -234,6 +236,7 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
       </div>
 
       <SimulationDisclaimer />
+      <PrivacyLocalBadge />
 
       <div className={cn("mt-8 rounded-2xl border p-6 print:break-inside-avoid", EstiloEstado.border, EstiloEstado.bg)}>
         <div className="flex items-start gap-4">
@@ -290,7 +293,9 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
         <AffiliateCard partnerId="quipu" {...ctaQuipu} />
       </div>
 
-      <FAQAccordion items={faqItems} />
+      <RelatedToolsMesh slugs={["retencion-factura-iae", "autonomo-vs-sl"]} />
+
+      <FAQAccordion items={faqItems} title="Escenarios frecuentes y supuestos normativos" />
     </div>
   );
 }

@@ -7,9 +7,9 @@ import { buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd } from "@/
 const PATH = "/herramientas/calculadora-cuota-autonomos";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Calculadora Cuota Autónomos 2026: Tramos y Rendimiento Neto",
+  title: "Simulador Cuota Autónomos 2026: Tramos RETA según Rendimientos Netos",
   description:
-    "Calcula tu cuota de autónomos exacta por tramos de rendimiento neto real. Descubre tu tramo RETA (1 a 15) y la cuota mensual mínima y máxima al instante.",
+    "Simula tu cuota de autónomos en el tramo RETA exacto según tus rendimientos netos reales. Consulta la base mínima y máxima de cada uno de los 15 tramos de cotización 2026.",
   path: PATH,
 });
 
@@ -20,6 +20,26 @@ const WEB_APPLICATION_JSON_LD = buildWebApplicationJsonLd({
 });
 
 const FAQ_ITEMS: FAQItem[] = [
+  {
+    question: "¿Cómo tributo si mis rendimientos netos son inferiores al Salario Mínimo?",
+    answer:
+      "No existe un tramo por debajo del tramo 1: cualquier rendimiento neto mensual de 0 € hasta 670 € (incluido un rendimiento muy bajo o incluso nulo) se ubica en el tramo 1, con una base de cotización mínima de 751,63 €/mes en 2026. La cuota no baja de ese suelo aunque factures menos que el Salario Mínimo Interprofesional.",
+  },
+  {
+    question: "¿Cómo afecta la deducción por gastos genéricos del 7% (3% societarios)?",
+    answer:
+      "Antes de ubicar tu rendimiento neto en la tabla de tramos, se aplica una deducción adicional por gastos de difícil justificación: un 7% si eres autónomo individual o un 3% si eres autónomo societario. Esa deducción reduce el rendimiento neto computable y, por tanto, puede bajarte de tramo respecto a tu rendimiento neto real sin deducir.",
+  },
+  {
+    question: "Soy autónomo societario: ¿puedo cotizar por el tramo 1?",
+    answer:
+      "No. Aunque tu rendimiento neto mensual, tras la deducción del 3%, caiga dentro del rango del tramo 1 (hasta 670 €), la normativa reserva ese tramo a autónomos por cuenta propia: el sistema te reubica automáticamente en el tramo 2, con una base de cotización algo superior.",
+  },
+  {
+    question: "¿Hay un límite de cuota aunque mis ingresos sean muy altos?",
+    answer:
+      "Sí, de facto: el tramo 15 (rendimiento neto mensual desde 6.000 € en adelante, sin límite superior) tiene una base de cotización fija. Por mucho que tu rendimiento siga subiendo, la cuota no crece más allá de la que corresponde a la base máxima de ese tramo.",
+  },
   {
     question: "¿Cómo se calcula la cuota de autónomos actualmente?",
     answer:

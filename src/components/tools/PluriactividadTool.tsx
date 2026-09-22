@@ -10,9 +10,11 @@ import { SliderInput } from "@/components/ui/SliderInput";
 import { SplitBar } from "@/components/tools/SplitBar";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
+import { PrivacyLocalBadge } from "@/components/tools/PrivacyLocalBadge";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
+import { RelatedToolsMesh } from "@/components/RelatedToolsMesh";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 import { formatEUR } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -48,7 +50,7 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-          Calculadora de devolución por pluriactividad
+          Simulador de reintegro por exceso de cotización en pluriactividad (art. 313 TRLGSS)
         </h1>
         <EmbedWidgetModal slug="pluriactividad-devolucion" toolTitle="Calculadora de devolución por pluriactividad" />
       </div>
@@ -82,6 +84,7 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
       </p>
 
       <SimulationDisclaimer />
+      <PrivacyLocalBadge />
 
       <div
         className={cn(
@@ -174,7 +177,9 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
         />
       </div>
 
-      <FAQAccordion items={faqItems} />
+      <RelatedToolsMesh slugs={["calculadora-cuota-autonomos", "autonomo-vs-sl"]} />
+
+      <FAQAccordion items={faqItems} title="Escenarios frecuentes y supuestos normativos" />
     </div>
   );
 }

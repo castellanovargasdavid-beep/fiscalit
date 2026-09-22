@@ -10,10 +10,12 @@ import { SplitBar, type SplitBarSegment } from "@/components/tools/SplitBar";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { HighValueLeadCard } from "@/components/tools/HighValueLeadCard";
 import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
+import { PrivacyLocalBadge } from "@/components/tools/PrivacyLocalBadge";
 import { TerritorialScopeNotice } from "@/components/tools/TerritorialScopeNotice";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
+import { RelatedToolsMesh } from "@/components/RelatedToolsMesh";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 import { useSyncScenarioToUrl, useUrlSeededScenario } from "@/lib/useScenarioShare";
 import { downloadScenarioPdf } from "@/lib/generateScenarioPdf";
@@ -209,7 +211,7 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-          Autónomo vs Sociedad Limitada
+          Simulador Autónomo vs SL: comparativa de disponible neto, IS e IRPF
         </h1>
         <EmbedWidgetModal slug="autonomo-vs-sl" toolTitle="Autónomo vs Sociedad Limitada" />
       </div>
@@ -311,6 +313,7 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
       </details>
 
       <SimulationDisclaimer />
+      <PrivacyLocalBadge />
       <TerritorialScopeNotice />
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2 print:break-inside-avoid">
@@ -404,7 +407,9 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
         />
       </div>
 
-      <FAQAccordion items={faqItems} />
+      <RelatedToolsMesh slugs={["pluriactividad-devolucion", "calculadora-cuota-autonomos"]} />
+
+      <FAQAccordion items={faqItems} title="Escenarios frecuentes y supuestos normativos" />
     </div>
   );
 }

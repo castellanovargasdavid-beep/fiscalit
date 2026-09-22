@@ -7,10 +7,12 @@ import { OptionGroup } from "@/components/ui/OptionGroup";
 import { SliderInput } from "@/components/ui/SliderInput";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
+import { PrivacyLocalBadge } from "@/components/tools/PrivacyLocalBadge";
 import { TerritorialScopeNotice } from "@/components/tools/TerritorialScopeNotice";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
+import { RelatedToolsMesh } from "@/components/RelatedToolsMesh";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 import { formatEUR } from "@/lib/format";
 
@@ -44,7 +46,7 @@ export function RetencionIAETool({ faqItems }: RetencionIAEToolProps) {
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-          Calculadora de retención IRPF en factura
+          Simulador de factura con IRPF (7% o 15%), IVA y regla del 70% en el Modelo 130
         </h1>
         <EmbedWidgetModal slug="retencion-factura-iae" toolTitle="Calculadora de retención IRPF en factura" />
       </div>
@@ -107,6 +109,7 @@ export function RetencionIAETool({ faqItems }: RetencionIAEToolProps) {
       </div>
 
       <SimulationDisclaimer />
+      <PrivacyLocalBadge />
       <TerritorialScopeNotice />
 
       <div className="mt-8 grid gap-4 sm:grid-cols-[220px_1fr] print:break-inside-avoid">
@@ -184,7 +187,9 @@ export function RetencionIAETool({ faqItems }: RetencionIAEToolProps) {
         />
       </div>
 
-      <FAQAccordion items={faqItems} />
+      <RelatedToolsMesh slugs={["diagnostico-verifactu", "calculadora-cuota-autonomos"]} />
+
+      <FAQAccordion items={faqItems} title="Escenarios frecuentes y supuestos normativos" />
     </div>
   );
 }
