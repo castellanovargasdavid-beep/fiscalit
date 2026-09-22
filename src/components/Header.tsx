@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, X, Calculator } from "lucide-react";
+import { Menu, TrendingUp, X } from "lucide-react";
 import { mainNav } from "@/config/site";
 
 export function Header() {
@@ -11,9 +11,17 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/80 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <Link href="/" className="flex items-center gap-2 font-semibold text-slate-900">
-          <Calculator className="h-5 w-5 text-blue-600" aria-hidden="true" />
-          <span>Fiscalit</span>
+        <Link href="/" className="group flex items-center gap-2.5 transition-all duration-150 hover:opacity-95">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 via-blue-500 to-indigo-600 shadow-sm shadow-blue-500/20 ring-1 ring-black/5">
+            <TrendingUp className="h-5 w-5 text-white" aria-hidden="true" />
+          </span>
+          <span className="flex items-center">
+            <span className="text-lg font-extrabold tracking-tight text-slate-900">Fiscal</span>
+            <span className="text-lg font-black tracking-tight text-blue-600">it</span>
+            <span className="ml-1 rounded-md border border-slate-200/80 bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold tracking-wider text-slate-400 uppercase">
+              .es
+            </span>
+          </span>
         </Link>
 
         <nav
