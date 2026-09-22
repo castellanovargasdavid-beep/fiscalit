@@ -10,6 +10,8 @@ import { SplitBar, type SplitBarSegment } from "@/components/tools/SplitBar";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 import { useSyncScenarioToUrl, useUrlSeededScenario } from "@/lib/useScenarioShare";
+import { downloadScenarioPdf } from "@/lib/generateScenarioPdf";
+import { getAffiliate } from "@/config/affiliates";
 import { formatEUR } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
@@ -72,6 +74,68 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
 
   const { autonomo, sociedadLimitada, diferenciaNeta, opcionMasVentajosa } = resultado;
 
+  const ctaGestoria =
+    opcionMasVentajosa === "sociedad_limitada"
+      ? {
+          dynamicHeadline: `Ahorra esos ${formatEUR(Math.abs(diferenciaNeta))} al año: constituye tu SL con Ayuda T Pymes en 48h.`,
+          dynamicSavingAmount: Math.abs(diferenciaNeta),
+          promoBadgeText: "Cupón exclusivo: -20% en tu primer año",
+        }
+      : {
+          dynamicHeadline:
+            "Te compensa seguir siendo autónomo: no dejes deducciones sin aplicar y optimiza tu contabilidad con Ayuda T Pymes.",
+          promoBadgeText: "Primera consulta gratuita",
+        };
+
+  const conclusion =
+    opcionMasVentajosa === "equivalente"
+      ? "Ambas opciones te dejan un neto disponible prácticamente igual."
+      : `Te conviene ser ${opcionMasVentajosa === "autonomo" ? "Autónomo" : "Sociedad Limitada"}: ganas ${formatEUR(Math.abs(diferenciaNeta))} más al año.`;
+
+  const handleDownloadPdf = () => {
+    const partner = getAffiliate("ayuda-t-pymes");
+    return downloadScenarioPdf({
+      toolTitle: "Autónomo vs Sociedad Limitada",
+      highlight: conclusion,
+      fileName: "fiscalit-autonomo-vs-sl",
+      sections: [
+        {
+          title: "Datos introducidos",
+          rows: [
+            { label: "Facturación bruta anual", value: formatEUR(ingresosAnuales) },
+            { label: "Gastos deducibles anuales", value: formatEUR(gastosDeduciblesAnuales) },
+            { label: "Sueldo anual como administrador", value: formatEUR(salarioBrutoAdministrador) },
+          ],
+        },
+        {
+          title: "Resultado — Autónomo",
+          rows: [
+            { label: "Rendimiento neto", value: formatEUR(autonomo.rendimientoNetoAnual) },
+            { label: "Cuota RETA anual", value: formatEUR(autonomo.cuotaRetaAnual) },
+            { label: "IRPF", value: formatEUR(autonomo.cuotaIRPF) },
+            { label: "Neto disponible al año", value: formatEUR(autonomo.netoDisponible) },
+          ],
+        },
+        {
+          title: "Resultado — Sociedad Limitada",
+          rows: [
+            { label: "Salario neto administrador", value: formatEUR(sociedadLimitada.salarioNetoAdministrador) },
+            { label: "Impuesto sobre Sociedades", value: formatEUR(sociedadLimitada.cuotaImpuestoSociedades) },
+            { label: "Cuota RETA societaria", value: formatEUR(sociedadLimitada.cuotaRetaSocietariaAnual) },
+            { label: "Dividendos netos", value: formatEUR(sociedadLimitada.dividendosNetos) },
+            { label: "Neto disponible al año", value: formatEUR(sociedadLimitada.netoDisponible) },
+          ],
+        },
+      ],
+      promo: {
+        partnerName: partner.name,
+        badgeText: ctaGestoria.promoBadgeText,
+        ctaLabel: partner.ctaLabel,
+        url: partner.url,
+      },
+    });
+  };
+
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
       <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
@@ -80,7 +144,7 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
 
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <ScenarioPresets presets={PRESETS} onSelect={aplicarPreset} />
-        <ScenarioActions onReset={() => setEscenario(ESCENARIO_POR_DEFECTO)} />
+        <ScenarioActions onReset={() => setEscenario(ESCENARIO_POR_DEFECTO)} onDownloadPdf={handleDownloadPdf} />
       </div>
 
       <div className="mt-4 grid gap-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:grid-cols-3">
@@ -172,7 +236,7 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
         )}
       >
         {opcionMasVentajosa === "equivalente" ? (
-          <p className="text-sm text-slate-600">Ambas opciones te dejan un neto disponible prácticamente igual.</p>
+          <p className="text-sm text-slate-600">{conclusion}</p>
         ) : (
           <p className="text-sm text-slate-700">
             Te conviene ser <strong className="text-slate-900">{opcionMasVentajosa === "autonomo" ? "Autónomo" : "Sociedad Limitada"}</strong>
@@ -182,7 +246,7 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
       </div>
 
       <div className="mt-10">
-        <AffiliateCard partnerId="ayuda-t-pymes" />
+        <AffiliateCard partnerId="ayuda-t-pymes" {...ctaGestoria} />
       </div>
 
       <FAQAccordion items={faqItems} />

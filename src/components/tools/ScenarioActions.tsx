@@ -1,16 +1,30 @@
 "use client";
 
-import { Check, Link2, RotateCcw } from "lucide-react";
+import { useState } from "react";
+import { Check, Download, Link2, Loader2, RotateCcw } from "lucide-react";
 import { useCopyShareLink } from "@/lib/useScenarioShare";
 import { cn } from "@/lib/utils";
 
 interface ScenarioActionsProps {
   onReset: () => void;
+  /** Genera y descarga el informe en PDF de la simulación actual. Si se omite, el botón no se muestra. */
+  onDownloadPdf?: () => void | Promise<void>;
 }
 
-/** Barra de acción contextual: compartir la simulación actual (vía URL) y restablecer los valores por defecto. */
-export function ScenarioActions({ onReset }: ScenarioActionsProps) {
+/** Barra de acción contextual: compartir la simulación (vía URL), descargar el informe en PDF y restablecer los valores por defecto. */
+export function ScenarioActions({ onReset, onDownloadPdf }: ScenarioActionsProps) {
   const { copied, copyShareLink } = useCopyShareLink();
+  const [generatingPdf, setGeneratingPdf] = useState(false);
+
+  const handleDownloadPdf = async () => {
+    if (!onDownloadPdf || generatingPdf) return;
+    setGeneratingPdf(true);
+    try {
+      await onDownloadPdf();
+    } finally {
+      setGeneratingPdf(false);
+    }
+  };
 
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -32,6 +46,23 @@ export function ScenarioActions({ onReset }: ScenarioActionsProps) {
         )}
         {copied ? "¡Enlace copiado!" : "Compartir simulación"}
       </button>
+
+      {onDownloadPdf && (
+        <button
+          type="button"
+          onClick={() => void handleDownloadPdf()}
+          disabled={generatingPdf}
+          className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:border-slate-300 hover:text-slate-900 disabled:cursor-wait disabled:opacity-60"
+        >
+          {generatingPdf ? (
+            <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
+          ) : (
+            <Download className="h-3.5 w-3.5" aria-hidden="true" />
+          )}
+          {generatingPdf ? "Generando PDF…" : "Descargar informe (PDF)"}
+        </button>
+      )}
+
       <button
         type="button"
         onClick={onReset}

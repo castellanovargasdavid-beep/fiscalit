@@ -121,6 +121,14 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
   const EstiloEstado = ESTILOS_SEMAFORO[estado.nivel];
   const IconoEstado = EstiloEstado.icon;
 
+  const ctaQuipu =
+    estado.nivel !== "verde"
+      ? {
+          dynamicHeadline: "Evita sanciones de hasta 50.000 €: adapta tu facturación a VeriFactu con Quipu.",
+          promoBadgeText: "Migración asistida incluida",
+        }
+      : {};
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
       <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
@@ -249,7 +257,7 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
       </div>
 
       <div className="mt-10">
-        <AffiliateCard partnerId="quipu" />
+        <AffiliateCard partnerId="quipu" {...ctaQuipu} />
       </div>
 
       <FAQAccordion items={faqItems} />
