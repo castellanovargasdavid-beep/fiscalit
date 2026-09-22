@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { toolsNav, siteConfig } from "@/config/site";
+import { siteConfig } from "@/config/site";
+import { tools } from "@/config/tools";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -21,13 +22,13 @@ export function Footer() {
             Herramientas
           </p>
           <ul className="mt-3 space-y-2">
-            {toolsNav.map((tool) => (
+            {tools.map((tool) => (
               <li key={tool.href}>
                 <Link
                   href={tool.href}
                   className="text-sm text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
                 >
-                  {tool.label}
+                  {tool.title}
                 </Link>
               </li>
             ))}
