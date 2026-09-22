@@ -1,9 +1,24 @@
+/**
+ * Normaliza la URL base del sitio: fuerza `https://` (por si el entorno de
+ * build trae un `NEXT_PUBLIC_SITE_URL` mal configurado con `http://`) y
+ * retira cualquier barra final. Sin esto, un valor como `http://fiscalit.es/`
+ * en las variables de entorno de Vercel se cuela en `siteConfig.url` y
+ * rompe todo lo que lo usa como prefijo (sitemap.xml, robots.txt,
+ * canonical, og:image, los redirects /go/[partner]...): al concatenar con
+ * un href que ya empieza por "/" (p. ej. "/herramientas/...") queda una
+ * doble barra, y con http:// en vez de https:// el propio enlace es
+ * inseguro.
+ */
+export function normalizeSiteUrl(rawUrl: string): string {
+  return rawUrl.replace(/^http:\/\//, "https://").replace(/\/+$/, "");
+}
+
 export const siteConfig = {
   name: "Fiscalit",
   description:
     "Herramientas fiscales gratuitas para autónomos y micropymes en España: calculadoras, generadores y guías para llevar tu negocio sin sorpresas de Hacienda.",
   /** Dominio canónico del sitio, sin barra final. Sobrescribible vía NEXT_PUBLIC_SITE_URL en el entorno de build. */
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://fiscalit.es",
+  url: normalizeSiteUrl(process.env.NEXT_PUBLIC_SITE_URL ?? "https://fiscalit.es"),
   /**
    * Email de contacto para leads de alto valor (auditoría gratuita) y para
    * el resto de avisos legales. Sobrescribible vía NEXT_PUBLIC_CONTACT_EMAIL
