@@ -28,6 +28,13 @@ export const siteConfig = {
    * que se revisen las herramientas contra un cambio normativo.
    */
   lastMethodologyReview: "2026-09-22",
+  /**
+   * Endpoint de un proveedor de analítica de eventos (no de cifras).
+   * Vacío = `trackEvent()` es un no-op: Fiscalit no usa hoy ninguna
+   * herramienta de analítica. Si se configura, ver `src/lib/analytics.ts`
+   * para la única forma permitida de enviarle eventos.
+   */
+  analyticsEndpoint: "",
 };
 
 export const mainNav: { label: string; href: string }[] = [

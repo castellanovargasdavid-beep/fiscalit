@@ -60,12 +60,18 @@ export function Footer() {
                 Cookies
               </Link>
             </li>
+            <li>
+              <Link href="/terminos" className="text-sm text-slate-600 transition-colors hover:text-slate-900">
+                Términos y condiciones
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>
 
       <div className="border-t border-slate-200 px-4 py-6 text-center text-xs text-slate-500 sm:px-6">
-        © {year} Fiscalit. Todos los derechos reservados.
+        <p>Herramientas de simulación válidas para el territorio común español.</p>
+        <p className="mt-1">© {year} Fiscalit. Todos los derechos reservados.</p>
       </div>
     </footer>
   );
