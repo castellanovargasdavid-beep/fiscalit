@@ -67,8 +67,8 @@ export default function Home() {
         />
 
         <div className="relative mx-auto max-w-6xl px-4 pt-16 pb-10 sm:px-6 sm:pt-24 sm:pb-14">
-          <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-10">
-            <section className="max-w-2xl">
+          <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
+            <section className="max-w-xl lg:col-span-7">
               <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
                 <Zap className="h-3 w-3" aria-hidden="true" />
                 Suite Fiscal 2026 para Autónomos y Pymes
@@ -98,7 +98,9 @@ export default function Home() {
               </ul>
             </section>
 
-            <HeroProductMockup />
+            <div className="lg:col-span-5">
+              <HeroProductMockup />
+            </div>
           </div>
 
           <div id="herramientas" className="mt-16 scroll-mt-24">

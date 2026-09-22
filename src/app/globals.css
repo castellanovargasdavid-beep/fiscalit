@@ -13,24 +13,23 @@
 }
 
 /*
- * Animación de flotación suave para la maqueta de producto de la Hero
- * (HeroProductMockup): solo `transform`/`opacity` (composición en GPU, sin
- * repintado de layout) y con `motion-reduce:animate-none` aplicado en el
- * propio componente para respetar `prefers-reduced-motion`.
+ * Carrusel vertical continuo de la maqueta de producto de la Hero
+ * (HeroProductMockup): el track duplica su lista de tarjetas y se traslada
+ * -50% (la altura de una sola copia) en bucle lineal, así que el loop no da
+ * saltos. Solo anima `transform` (composición en GPU, sin repintado de
+ * layout) y respeta `prefers-reduced-motion` vía `motion-reduce:animate-none`
+ * en el propio componente.
  */
 @theme {
-  --animate-float-1: float-card 6s ease-in-out infinite;
-  --animate-float-2: float-card 7s ease-in-out infinite;
-  --animate-float-3: float-card 8s ease-in-out infinite;
+  --animate-marquee-vertical: marquee-vertical 24s linear infinite;
 }
 
-@keyframes float-card {
-  0%,
-  100% {
-    transform: translateY(-4px);
+@keyframes marquee-vertical {
+  from {
+    transform: translateY(0);
   }
-  50% {
-    transform: translateY(4px);
+  to {
+    transform: translateY(-50%);
   }
 }
 
