@@ -9,6 +9,7 @@ import {
 import { SliderInput } from "@/components/ui/SliderInput";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { CompactSimulationNotice } from "@/components/tools/CompactSimulationNotice";
+import { CalculationTransparencyDetails } from "@/components/tools/CalculationTransparencyDetails";
 import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
 import { PrivacyLocalBadge } from "@/components/tools/PrivacyLocalBadge";
 import { TerritorialScopeNotice } from "@/components/tools/TerritorialScopeNotice";
@@ -86,15 +87,9 @@ export function KilometrajeDietasTool({ faqItems }: KilometrajeDietasToolProps) 
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
       <PrintHeader toolTitle="Calculadora de kilometraje y dietas exentas" />
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-          Calculadora de gastos de locomoción (0,26 €/km) y dietas exentas en IRPF
-        </h1>
-        <EmbedWidgetModal
-          slug="calculadora-kilometraje-dietas"
-          toolTitle="Simulador de gastos de desplazamiento y dietas exentas (empleados y administradores)"
-        />
-      </div>
+      <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
+        Calculadora de gastos de locomoción (0,26 €/km) y dietas exentas en IRPF
+      </h1>
 
       <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
         Calcula las asignaciones por kilometraje y dietas de manutención exentas de IRPF que una empresa puede
@@ -168,6 +163,12 @@ export function KilometrajeDietasTool({ faqItems }: KilometrajeDietasToolProps) 
         <h2 className="mt-1 text-4xl font-bold tracking-tight">{formatEUR(resultado.totalExentoIRPF)}</h2>
       </div>
 
+      <CalculationTransparencyDetails
+        metodologia="0,26 €/km × kilómetros justificados, más las dietas de manutención según los días con o sin pernocta en España o en el extranjero."
+        fuenteNormativa="Orden HFP/792/2023"
+        fuenteUrl="https://www.boe.es/buscar/doc.php?id=BOE-A-2023-16461"
+      />
+
       <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm print:break-inside-avoid">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">Desglose</h2>
         {resultado.resumen.length === 0 ? (
@@ -227,6 +228,13 @@ export function KilometrajeDietasTool({ faqItems }: KilometrajeDietasToolProps) 
       <RelatedToolsMesh slugs={["calculadora-cuota-autonomos", "autonomo-vs-sl"]} />
 
       <FAQAccordion items={faqItems} title="Escenarios frecuentes y supuestos normativos" />
+
+      <div className="mt-8 flex justify-center print:hidden">
+        <EmbedWidgetModal
+          slug="calculadora-kilometraje-dietas"
+          toolTitle="Simulador de gastos de desplazamiento y dietas exentas (empleados y administradores)"
+        />
+      </div>
     </div>
   );
 }

@@ -12,6 +12,7 @@ import { ScenarioPresets, type ScenarioPreset } from "@/components/ui/ScenarioPr
 import { ScenarioActions } from "@/components/tools/ScenarioActions";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { CompactSimulationNotice } from "@/components/tools/CompactSimulationNotice";
+import { CalculationTransparencyDetails } from "@/components/tools/CalculationTransparencyDetails";
 import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
 import { PrivacyLocalBadge } from "@/components/tools/PrivacyLocalBadge";
 import { TerritorialScopeNotice } from "@/components/tools/TerritorialScopeNotice";
@@ -82,11 +83,11 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
     [rendimientoNetoAnual, tipoAutonomo],
   );
 
-  const ctaHolded = {
+  const ctaQuipu = {
     analysis: `Tu rendimiento neto te sitúa en el tramo ${resultado.tramoAsignado.tramo}/15, con una cuota mensual estimada entre ${formatEUR(resultado.cuotaMensualMinima)} y ${formatEUR(resultado.cuotaMensualMaxima)}.`,
     keyPoint:
       "Ese tramo depende directamente de cómo registres tus ingresos y gastos: un descuadre o un gasto sin apuntar puede subirte a un tramo superior sin que te des cuenta hasta la regularización anual.",
-    nextStepIntro: "Para llevar tus cifras al céntimo y no pagar de más a la TGSS, un ERP como",
+    nextStepIntro: "Para llevar tus cifras al céntimo y no pagar de más a la TGSS, un software de contabilidad automática como",
     promoBadgeText: "Prueba gratis 30 días",
   };
 
@@ -115,7 +116,7 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
   ];
 
   const handleDownloadPdf = () => {
-    const partner = getAffiliate("holded");
+    const partner = getAffiliate("quipu");
     return downloadScenarioPdf({
       toolTitle: "Calculadora de cuota de autónomos por tramos",
       highlight: `Tramo asignado: ${resultado.tramoAsignado.tramo}/15 — cuota mensual entre ${formatEUR(resultado.cuotaMensualMinima)} y ${formatEUR(resultado.cuotaMensualMaxima)}.`,
@@ -123,7 +124,7 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
       sections: reportSections,
       promo: {
         partnerName: partner.name,
-        badgeText: ctaHolded.promoBadgeText,
+        badgeText: ctaQuipu.promoBadgeText,
         ctaLabel: partner.ctaLabel,
         url: `${siteConfig.url}/go/${partner.id}`,
       },
@@ -142,15 +143,9 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
       <PrintHeader toolTitle="Calculadora de cuota de autónomos por tramos" />
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-          Simulador de cuota de autónomos: tramos RETA según tus rendimientos netos
-        </h1>
-        <EmbedWidgetModal
-          slug="calculadora-cuota-autonomos"
-          toolTitle="Calculadora de cuota de autónomos por tramos"
-        />
-      </div>
+      <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
+        Simulador de cuota de autónomos: tramos RETA según tus rendimientos netos
+      </h1>
 
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <ScenarioPresets presets={PRESETS} onSelect={aplicarPreset} />
@@ -213,6 +208,13 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
           Cuota mensual estimada:{" "}
           <span className="text-blue-700">{formatEUR(resultado.cuotaMensualMinima, true)}/mes</span>
         </h2>
+
+        <CalculationTransparencyDetails
+          metodologia={`Tramo ${resultado.tramoAsignado.tramo}/15 según tu rendimiento neto mensual (${formatEUR(resultado.rendimientoNetoMensual)}), tras aplicar la deducción del ${tipoAutonomo === "individual" ? "7%" : "3%"} por gastos de difícil justificación.`}
+          fuenteNormativa="Real Decreto-ley 13/2022 y tablas de cotización del BOE núm. 180"
+          fuenteUrl="https://www.boe.es/buscar/act.php?id=BOE-A-2022-12482"
+        />
+
         <p className="mt-2 text-sm text-slate-600">
           Tramo {resultado.tramoAsignado.tramo}/15 · Rendimiento neto estimado:{" "}
           {formatEUR(resultado.rendimientoNetoMensual)}/mes
@@ -281,12 +283,19 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
       <TerritorialScopeNotice />
 
       <div className="mt-10">
-        <AffiliateCard partnerId="holded" {...ctaHolded} />
+        <AffiliateCard partnerId="quipu" {...ctaQuipu} />
       </div>
 
       <RelatedToolsMesh slugs={["retencion-factura-iae", "autonomo-vs-sl"]} />
 
       <FAQAccordion items={faqItems} title="Escenarios frecuentes y supuestos normativos" />
+
+      <div className="mt-8 flex justify-center print:hidden">
+        <EmbedWidgetModal
+          slug="calculadora-cuota-autonomos"
+          toolTitle="Calculadora de cuota de autónomos por tramos"
+        />
+      </div>
     </div>
   );
 }

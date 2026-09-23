@@ -10,6 +10,7 @@ import { SliderInput } from "@/components/ui/SliderInput";
 import { SplitBar } from "@/components/tools/SplitBar";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { CompactSimulationNotice } from "@/components/tools/CompactSimulationNotice";
+import { CalculationTransparencyDetails } from "@/components/tools/CalculationTransparencyDetails";
 import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
 import { PrivacyLocalBadge } from "@/components/tools/PrivacyLocalBadge";
 import { TerritorialScopeNotice } from "@/components/tools/TerritorialScopeNotice";
@@ -50,12 +51,9 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
       <PrintHeader toolTitle="Calculadora de devolución por pluriactividad" />
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-          Simulador de reintegro por exceso de cotización en pluriactividad (art. 313 TRLGSS)
-        </h1>
-        <EmbedWidgetModal slug="pluriactividad-devolucion" toolTitle="Calculadora de devolución por pluriactividad" />
-      </div>
+      <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
+        Simulador de reintegro por exceso de cotización en pluriactividad (art. 313 TRLGSS)
+      </h1>
 
       <div className="mt-6 grid gap-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:grid-cols-2">
         <SliderInput
@@ -102,8 +100,15 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
         >
           {resultado.tieneDerechoDevolucion ? `Sí — ${formatEUR(resultado.importeDevolucion)}` : "No"}
         </h2>
+
+        <CalculationTransparencyDetails
+          metodologia="Compara tu cotización conjunta anual (Régimen General + RETA) con el tope legal; el exceso sobre ese tope, hasta un máximo del 50% de tu cuota RETA, genera derecho a devolución."
+          fuenteNormativa="Art. 313 del Texto Refundido de la Ley General de la Seguridad Social"
+          fuenteUrl="https://www.boe.es/buscar/act.php?id=BOE-A-2015-11724#a313"
+        />
+
         {resultado.tieneDerechoDevolucion && (
-          <p className="mt-1 text-sm text-emerald-700">Importe estimado a devolver</p>
+          <p className="mt-2 text-sm text-emerald-700">Importe estimado a devolver</p>
         )}
       </div>
 
@@ -182,6 +187,10 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
       <RelatedToolsMesh slugs={["calculadora-cuota-autonomos", "autonomo-vs-sl"]} />
 
       <FAQAccordion items={faqItems} title="Escenarios frecuentes y supuestos normativos" />
+
+      <div className="mt-8 flex justify-center print:hidden">
+        <EmbedWidgetModal slug="pluriactividad-devolucion" toolTitle="Calculadora de devolución por pluriactividad" />
+      </div>
     </div>
   );
 }

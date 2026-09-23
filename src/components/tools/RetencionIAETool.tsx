@@ -7,6 +7,7 @@ import { OptionGroup } from "@/components/ui/OptionGroup";
 import { SliderInput } from "@/components/ui/SliderInput";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { CompactSimulationNotice } from "@/components/tools/CompactSimulationNotice";
+import { CalculationTransparencyDetails } from "@/components/tools/CalculationTransparencyDetails";
 import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
 import { PrivacyLocalBadge } from "@/components/tools/PrivacyLocalBadge";
 import { TerritorialScopeNotice } from "@/components/tools/TerritorialScopeNotice";
@@ -45,12 +46,9 @@ export function RetencionIAETool({ faqItems }: RetencionIAEToolProps) {
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
       <PrintHeader toolTitle="Calculadora de retención IRPF en factura" />
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-          Simulador de factura con IRPF (7% o 15%), IVA y regla del 70% en el Modelo 130
-        </h1>
-        <EmbedWidgetModal slug="retencion-factura-iae" toolTitle="Calculadora de retención IRPF en factura" />
-      </div>
+      <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
+        Simulador de factura con IRPF (7% o 15%), IVA y regla del 70% en el Modelo 130
+      </h1>
 
       <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <div className="grid gap-6 sm:grid-cols-2">
@@ -121,6 +119,12 @@ export function RetencionIAETool({ faqItems }: RetencionIAEToolProps) {
         </div>
       </div>
 
+      <CalculationTransparencyDetails
+        metodologia="Retención según tu sección del IAE (Empresarial o Profesional) y si estás en el año de alta o en los 2 siguientes (7% reducido) o no (15% general)."
+        fuenteNormativa="Art. 95 del Reglamento del IRPF (RD 439/2007)"
+        fuenteUrl="https://www.boe.es/buscar/act.php?id=BOE-A-2007-6820#a95"
+      />
+
       <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-100 p-6 shadow-sm print:break-inside-avoid">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">Factura proforma</h2>
         <div className="mt-4 space-y-2 font-mono text-sm text-slate-800">
@@ -183,16 +187,20 @@ export function RetencionIAETool({ faqItems }: RetencionIAEToolProps) {
 
       <div className="mt-10">
         <AffiliateCard
-          partnerId="taxdown"
+          partnerId="quipu"
           analysis={`Con una base imponible de ${formatEUR(resultado.baseImponible, true)} y una retención del ${(resultado.tipoRetencionIRPF * 100).toFixed(0)}%, tu líquido a cobrar es ${formatEUR(resultado.totalLiquidoAPercibir, true)}.`}
-          keyPoint="Esa retención es un anticipo de tu IRPF anual, no un gasto perdido: si no declaras bien tus deducciones en la renta, puedes estar dejando dinero sobre la mesa que ya has adelantado a Hacienda."
-          nextStepIntro="Para asegurarte de recuperar cada deducción a la que tienes derecho, un servicio como"
+          keyPoint="Esa retención es un anticipo de tu IRPF anual, no un gasto perdido: si no registras bien cada factura y su retención, puedes estar dejando dinero sobre la mesa a la hora de la Renta."
+          nextStepIntro="Para que ninguna factura ni retención se te escape, un software de contabilidad automática como"
         />
       </div>
 
       <RelatedToolsMesh slugs={["diagnostico-verifactu", "calculadora-cuota-autonomos"]} />
 
       <FAQAccordion items={faqItems} title="Escenarios frecuentes y supuestos normativos" />
+
+      <div className="mt-8 flex justify-center print:hidden">
+        <EmbedWidgetModal slug="retencion-factura-iae" toolTitle="Calculadora de retención IRPF en factura" />
+      </div>
     </div>
   );
 }

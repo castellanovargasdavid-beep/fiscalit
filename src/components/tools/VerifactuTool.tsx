@@ -11,6 +11,7 @@ import {
 import { OptionGroup } from "@/components/ui/OptionGroup";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { CompactSimulationNotice } from "@/components/tools/CompactSimulationNotice";
+import { CalculationTransparencyDetails } from "@/components/tools/CalculationTransparencyDetails";
 import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
 import { PrivacyLocalBadge } from "@/components/tools/PrivacyLocalBadge";
 import { TerritorialScopeNotice } from "@/components/tools/TerritorialScopeNotice";
@@ -129,32 +130,29 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
   const EstiloEstado = ESTILOS_SEMAFORO[estado.nivel];
   const IconoEstado = EstiloEstado.icon;
 
-  const ctaQuipu =
+  const ctaHolded =
     estado.nivel !== "verde"
       ? {
           analysis: `Tu sistema de facturación actual todavía no cumple los requisitos técnicos de VeriFactu para tu fecha límite (${formatearFecha(resultado.fechaLimiteVerifactu)}).`,
           keyPoint:
             "Adaptar el software de facturación no es instantáneo: migrar datos, formar al equipo y verificar el nuevo sistema lleva semanas, no días. Cuanto antes empieces, menos riesgo de llegar justo a tu fecha límite.",
-          nextStepIntro: "Para migrar sin sobresaltos, un software ya certificado como",
+          nextStepIntro: "Para migrar sin sobresaltos, un ERP ya certificado como",
           promoBadgeText: "Migración asistida incluida",
         }
       : {
           analysis: "Tu sistema de facturación ya cumple los requisitos técnicos de VeriFactu.",
           keyPoint:
             "Cumplir hoy no es cumplir para siempre: la normativa de facturación electrónica sigue evolviendo (Ley Crea y Crece, nuevos formatos), y tu proveedor debe mantenerse al día contigo.",
-          nextStepIntro: "Si quieres una solución que se actualiza sola ante cada cambio normativo, plataformas como",
+          nextStepIntro: "Si quieres un ERP que se actualiza solo ante cada cambio normativo, plataformas como",
         };
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
       <PrintHeader toolTitle="Diagnóstico VeriFactu y Ley Crea y Crece" />
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-          Test VeriFactu 2027: diagnóstico preventivo ante la AEAT
-        </h1>
-        <EmbedWidgetModal slug="diagnostico-verifactu" toolTitle="Diagnóstico VeriFactu y Ley Crea y Crece" />
-      </div>
+      <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
+        Test VeriFactu 2027: diagnóstico preventivo ante la AEAT
+      </h1>
 
       <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
         Comprueba si tu sistema actual cumple ya los requisitos técnicos de facturación exigidos por el Reglamento
@@ -244,7 +242,14 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
           <IconoEstado className={cn("h-8 w-8 shrink-0", EstiloEstado.texto)} aria-hidden="true" />
           <div>
             <h2 className={cn("text-2xl font-bold sm:text-3xl", EstiloEstado.texto)}>{estado.titulo}</h2>
-            <p className="mt-1 text-sm text-slate-700">{estado.mensaje}</p>
+
+            <CalculationTransparencyDetails
+              metodologia="Checklist técnico sobre los requisitos del Reglamento de sistemas informáticos de facturación (SIF), contrastado con tu sistema actual, tipo de cliente y volumen de facturación."
+              fuenteNormativa="Reglamento de requisitos de los sistemas informáticos de facturación (Orden HAC/1177/2024)"
+              fuenteUrl="https://www.boe.es/diario_boe/txt.php?id=BOE-A-2024-22138"
+            />
+
+            <p className="mt-2 text-sm text-slate-700">{estado.mensaje}</p>
           </div>
         </div>
 
@@ -295,12 +300,16 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
       <TerritorialScopeNotice />
 
       <div className="mt-10">
-        <AffiliateCard partnerId="quipu" {...ctaQuipu} />
+        <AffiliateCard partnerId="holded" {...ctaHolded} />
       </div>
 
       <RelatedToolsMesh slugs={["retencion-factura-iae", "autonomo-vs-sl"]} />
 
       <FAQAccordion items={faqItems} title="Escenarios frecuentes y supuestos normativos" />
+
+      <div className="mt-8 flex justify-center print:hidden">
+        <EmbedWidgetModal slug="diagnostico-verifactu" toolTitle="Diagnóstico VeriFactu y Ley Crea y Crece" />
+      </div>
     </div>
   );
 }
