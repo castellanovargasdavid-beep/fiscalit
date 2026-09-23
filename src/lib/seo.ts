@@ -18,6 +18,41 @@ export function buildFaqJsonLd(items: FAQItem[]) {
   };
 }
 
+/**
+ * Combina varias listas de FAQItem en una sola, descartando repeticiones
+ * exactas de pregunta (conserva la primera aparición): permite consolidar,
+ * por ejemplo, el FAQ propio de una herramienta con el de su guía técnica en
+ * un único bloque `FAQPage` sin preguntas duplicadas para Google.
+ */
+export function mergeFaqItems(...lists: FAQItem[][]): FAQItem[] {
+  const vistas = new Set<string>();
+  return lists.flat().filter((item) => {
+    if (vistas.has(item.question)) return false;
+    vistas.add(item.question);
+    return true;
+  });
+}
+
+export interface BreadcrumbItem {
+  name: string;
+  /** Ruta relativa, p. ej. "/herramientas/autonomo-vs-sl" o "/#herramientas". */
+  path: string;
+}
+
+/** Genera el schema.org BreadcrumbList de una página a partir de su ruta de navegación (Inicio → Herramientas → [Herramienta]). */
+export function buildBreadcrumbSchema(items: BreadcrumbItem[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: `${siteConfig.url}${item.path}`,
+    })),
+  };
+}
+
 interface WebApplicationJsonLdInput {
   name: string;
   description: string;

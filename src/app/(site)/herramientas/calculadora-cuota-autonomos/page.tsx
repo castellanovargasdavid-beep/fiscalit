@@ -3,7 +3,7 @@ import { CuotaAutonomosTool } from "@/components/tools/CuotaAutonomosTool";
 import { RetaTechnicalGuide, RETA_LANDING_FAQ_ITEMS } from "@/components/tools/RetaTechnicalGuide";
 import { BoeAlertSignup } from "@/components/BoeAlertSignup";
 import type { FAQItem } from "@/components/FAQAccordion";
-import { buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd } from "@/lib/seo";
+import { buildBreadcrumbSchema, buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd, mergeFaqItems } from "@/lib/seo";
 
 const PATH = "/herramientas/calculadora-cuota-autonomos";
 
@@ -19,6 +19,12 @@ const WEB_APPLICATION_JSON_LD = buildWebApplicationJsonLd({
   description: "Descubre tu tramo de cotización RETA y la cuota mensual según tu rendimiento neto real.",
   path: PATH,
 });
+
+const BREADCRUMB_JSON_LD = buildBreadcrumbSchema([
+  { name: "Inicio", path: "/" },
+  { name: "Herramientas", path: "/#herramientas" },
+  { name: WEB_APPLICATION_JSON_LD.name, path: PATH },
+]);
 
 const FAQ_ITEMS: FAQItem[] = [
   {
@@ -77,11 +83,13 @@ export default function CalculadoraCuotaAutonomosPage() {
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildFaqJsonLd(FAQ_ITEMS)) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(BREADCRUMB_JSON_LD) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildFaqJsonLd(RETA_LANDING_FAQ_ITEMS)) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(buildFaqJsonLd(mergeFaqItems(FAQ_ITEMS, RETA_LANDING_FAQ_ITEMS))),
+        }}
       />
       <CuotaAutonomosTool faqItems={FAQ_ITEMS} />
       <RetaTechnicalGuide />

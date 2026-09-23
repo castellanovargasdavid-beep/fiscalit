@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { RetencionIAETool } from "@/components/tools/RetencionIAETool";
 import { BoeAlertSignup } from "@/components/BoeAlertSignup";
 import type { FAQItem } from "@/components/FAQAccordion";
-import { buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd } from "@/lib/seo";
+import { buildBreadcrumbSchema, buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd } from "@/lib/seo";
 
 const PATH = "/herramientas/retencion-factura-iae";
 
@@ -19,6 +19,12 @@ const WEB_APPLICATION_JSON_LD = buildWebApplicationJsonLd({
     "Averigua si tu factura lleva retención (0%, 7% o 15%) según tu epígrafe del IAE y simula el líquido a cobrar.",
   path: PATH,
 });
+
+const BREADCRUMB_JSON_LD = buildBreadcrumbSchema([
+  { name: "Inicio", path: "/" },
+  { name: "Herramientas", path: "/#herramientas" },
+  { name: WEB_APPLICATION_JSON_LD.name, path: PATH },
+]);
 
 const FAQ_ITEMS: FAQItem[] = [
   {
@@ -84,6 +90,10 @@ export default function RetencionFacturaIAEPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(WEB_APPLICATION_JSON_LD) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(BREADCRUMB_JSON_LD) }}
       />
       <script
         type="application/ld+json"

@@ -6,7 +6,7 @@ import {
 } from "@/components/tools/KilometrajeTechnicalGuide";
 import { BoeAlertSignup } from "@/components/BoeAlertSignup";
 import type { FAQItem } from "@/components/FAQAccordion";
-import { buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd } from "@/lib/seo";
+import { buildBreadcrumbSchema, buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd, mergeFaqItems } from "@/lib/seo";
 
 const PATH = "/herramientas/calculadora-kilometraje-dietas";
 
@@ -23,6 +23,12 @@ const WEB_APPLICATION_JSON_LD = buildWebApplicationJsonLd({
     "Calcula el importe exento de IRPF por kilometraje y dietas de manutención para empleados y administradores en sus desplazamientos.",
   path: PATH,
 });
+
+const BREADCRUMB_JSON_LD = buildBreadcrumbSchema([
+  { name: "Inicio", path: "/" },
+  { name: "Herramientas", path: "/#herramientas" },
+  { name: WEB_APPLICATION_JSON_LD.name, path: PATH },
+]);
 
 const FAQ_ITEMS: FAQItem[] = [
   {
@@ -76,12 +82,12 @@ export default function CalculadoraKilometrajeDietasPage() {
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildFaqJsonLd(FAQ_ITEMS)) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(BREADCRUMB_JSON_LD) }}
       />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(buildFaqJsonLd(KILOMETRAJE_LANDING_FAQ_ITEMS)),
+          __html: JSON.stringify(buildFaqJsonLd(mergeFaqItems(FAQ_ITEMS, KILOMETRAJE_LANDING_FAQ_ITEMS))),
         }}
       />
       <KilometrajeDietasTool faqItems={FAQ_ITEMS} />

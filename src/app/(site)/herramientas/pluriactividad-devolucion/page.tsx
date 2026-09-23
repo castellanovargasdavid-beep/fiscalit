@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { PluriactividadTool } from "@/components/tools/PluriactividadTool";
 import { BoeAlertSignup } from "@/components/BoeAlertSignup";
 import type { FAQItem } from "@/components/FAQAccordion";
-import { buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd } from "@/lib/seo";
+import { buildBreadcrumbSchema, buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd } from "@/lib/seo";
 
 const PATH = "/herramientas/pluriactividad-devolucion";
 
@@ -19,6 +19,12 @@ const WEB_APPLICATION_JSON_LD = buildWebApplicationJsonLd({
     "Comprueba si tienes derecho a que la Seguridad Social te devuelva el exceso cotizado entre Régimen General y RETA.",
   path: PATH,
 });
+
+const BREADCRUMB_JSON_LD = buildBreadcrumbSchema([
+  { name: "Inicio", path: "/" },
+  { name: "Herramientas", path: "/#herramientas" },
+  { name: WEB_APPLICATION_JSON_LD.name, path: PATH },
+]);
 
 const FAQ_ITEMS: FAQItem[] = [
   {
@@ -69,6 +75,10 @@ export default function PluriactividadDevolucionPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(WEB_APPLICATION_JSON_LD) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(BREADCRUMB_JSON_LD) }}
       />
       <script
         type="application/ld+json"

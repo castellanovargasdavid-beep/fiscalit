@@ -6,7 +6,7 @@ import {
 } from "@/components/tools/VerifactuTechnicalGuide";
 import { BoeAlertSignup } from "@/components/BoeAlertSignup";
 import type { FAQItem } from "@/components/FAQAccordion";
-import { buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd } from "@/lib/seo";
+import { buildBreadcrumbSchema, buildFaqJsonLd, buildPageMetadata, buildWebApplicationJsonLd, mergeFaqItems } from "@/lib/seo";
 
 const PATH = "/herramientas/diagnostico-verifactu";
 
@@ -23,6 +23,12 @@ const WEB_APPLICATION_JSON_LD = buildWebApplicationJsonLd({
     "Comprueba si tu sistema de facturación cumple los requisitos técnicos de VeriFactu y de la Ley Crea y Crece, con checklist y fechas límite de 2027.",
   path: PATH,
 });
+
+const BREADCRUMB_JSON_LD = buildBreadcrumbSchema([
+  { name: "Inicio", path: "/" },
+  { name: "Herramientas", path: "/#herramientas" },
+  { name: WEB_APPLICATION_JSON_LD.name, path: PATH },
+]);
 
 const FAQ_ITEMS: FAQItem[] = [
   {
@@ -76,12 +82,12 @@ export default function DiagnosticoVerifactuPage() {
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildFaqJsonLd(FAQ_ITEMS)) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(BREADCRUMB_JSON_LD) }}
       />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(buildFaqJsonLd(VERIFACTU_LANDING_FAQ_ITEMS)),
+          __html: JSON.stringify(buildFaqJsonLd(mergeFaqItems(FAQ_ITEMS, VERIFACTU_LANDING_FAQ_ITEMS))),
         }}
       />
       <VerifactuTool faqItems={FAQ_ITEMS} />
