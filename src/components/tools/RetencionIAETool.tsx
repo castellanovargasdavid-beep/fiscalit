@@ -1,22 +1,20 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { AlertTriangle, Info } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
+import { AlertTriangle, Info, RefreshCw } from "lucide-react";
 import { calcularRetencionIAE, type SeccionIAE, type TipoIVA } from "@/lib/calculations/retencionIAE";
 import { OptionGroup } from "@/components/ui/OptionGroup";
 import { SliderInput } from "@/components/ui/SliderInput";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { CompactSimulationNotice } from "@/components/tools/CompactSimulationNotice";
 import { CalculationTransparencyDetails } from "@/components/tools/CalculationTransparencyDetails";
-import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
-import { PrivacyLocalBadge } from "@/components/tools/PrivacyLocalBadge";
-import { TerritorialScopeNotice } from "@/components/tools/TerritorialScopeNotice";
+import { LegalDisclaimersGroup } from "@/components/tools/LegalDisclaimersGroup";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { RelatedToolsMesh } from "@/components/RelatedToolsMesh";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
-import { useTrackCalculationCompleted } from "@/lib/hooks";
+import { useCalculationFunnel } from "@/lib/hooks";
 import { formatEUR } from "@/lib/format";
 
 const TOOL_SLUG = "retencion-factura-iae";
@@ -29,6 +27,7 @@ type RespuestaSiNo = "si" | "no";
 type TipoIVAString = "21" | "10" | "4" | "0";
 
 export function RetencionIAETool({ faqItems }: RetencionIAEToolProps) {
+  const formularioRef = useRef<HTMLDivElement>(null);
   const [seccionIAE, setSeccionIAE] = useState<SeccionIAE>("2");
   const [esNuevoAutonomo, setEsNuevoAutonomo] = useState<RespuestaSiNo>("no");
   const [baseImponible, setBaseImponible] = useState(1_000);
@@ -44,7 +43,12 @@ export function RetencionIAETool({ faqItems }: RetencionIAEToolProps) {
       }),
     [seccionIAE, esNuevoAutonomo, baseImponible, tipoIVA],
   );
-  useTrackCalculationCompleted(TOOL_SLUG, resultado);
+  useCalculationFunnel(TOOL_SLUG, resultado);
+
+  const handleRevisarOtraFactura = () => {
+    formularioRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    formularioRef.current?.querySelector<HTMLInputElement>('input[type="number"]')?.focus();
+  };
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
@@ -54,7 +58,7 @@ export function RetencionIAETool({ faqItems }: RetencionIAEToolProps) {
         Simulador de factura con IRPF (7% o 15%), IVA y regla del 70% en el Modelo 130
       </h1>
 
-      <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div ref={formularioRef} className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <div className="grid gap-6 sm:grid-cols-2">
           <OptionGroup
             label="Sección IAE de tu actividad"
@@ -122,12 +126,21 @@ export function RetencionIAETool({ faqItems }: RetencionIAEToolProps) {
           <p className="text-sm text-slate-600">{resultado.motivoRetencion}</p>
         </div>
       </div>
+      <p className="mt-2 text-xs text-slate-500">
+        Base imponible: {formatEUR(baseImponible, true)} · IVA {tipoIVA}% · Territorio común · Simulación
+        orientativa.
+      </p>
 
-      <CalculationTransparencyDetails
-        metodologia="Retención según tu sección del IAE (Empresarial o Profesional) y si estás en el año de alta o en los 2 siguientes (7% reducido) o no (15% general)."
-        fuenteNormativa="Art. 95 del Reglamento del IRPF (RD 439/2007)"
-        fuenteUrl="https://www.boe.es/buscar/act.php?id=BOE-A-2007-6820#a95"
-      />
+      <div className="mt-4 flex justify-center print:hidden">
+        <button
+          type="button"
+          onClick={handleRevisarOtraFactura}
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700"
+        >
+          <RefreshCw className="h-4 w-4" aria-hidden="true" />
+          Revisar otra factura
+        </button>
+      </div>
 
       <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-100 p-6 shadow-sm print:break-inside-avoid">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">Factura proforma</h2>
@@ -150,6 +163,12 @@ export function RetencionIAETool({ faqItems }: RetencionIAEToolProps) {
           </div>
         </div>
       </div>
+
+      <CalculationTransparencyDetails
+        metodologia="Retención según tu sección del IAE (Empresarial o Profesional) y si estás en el año de alta o en los 2 siguientes (7% reducido) o no (15% general)."
+        fuenteNormativa="Art. 95 del Reglamento del IRPF (RD 439/2007)"
+        fuenteUrl="https://www.boe.es/buscar/act.php?id=BOE-A-2007-6820#a95"
+      />
 
       <div className="mt-6 flex gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-5">
         <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" aria-hidden="true" />
@@ -186,9 +205,7 @@ export function RetencionIAETool({ faqItems }: RetencionIAEToolProps) {
         motor="Retención IRPF en factura / IAE"
       />
 
-      <SimulationDisclaimer />
-      <PrivacyLocalBadge />
-      <TerritorialScopeNotice />
+      <LegalDisclaimersGroup />
 
       <div className="mt-10">
         <AffiliateCard

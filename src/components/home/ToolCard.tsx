@@ -5,10 +5,9 @@ import { cn } from "@/lib/utils";
 
 interface ToolCardProps {
   tool: Tool;
-  categoryLabel: string;
 }
 
-export function ToolCard({ tool, categoryLabel }: ToolCardProps) {
+export function ToolCard({ tool }: ToolCardProps) {
   const Icon = tool.icon;
 
   return (
@@ -27,16 +26,12 @@ export function ToolCard({ tool, categoryLabel }: ToolCardProps) {
         </span>
       )}
 
-      <div className="flex items-center justify-between gap-2">
-        <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-          <Icon className="h-5 w-5" aria-hidden="true" />
-        </span>
-        <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium whitespace-nowrap text-slate-600">
-          {categoryLabel}
-        </span>
-      </div>
+      <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+        <Icon className="h-5 w-5" aria-hidden="true" />
+      </span>
 
-      <h3 className="mt-4 font-semibold text-slate-900">{tool.title}</h3>
+      <h3 className="mt-4 font-semibold text-slate-900">{tool.problem}</h3>
+      <p className="mt-1 text-xs font-medium text-slate-500">{tool.title}</p>
       <p className="mt-1.5 text-sm text-slate-600">{tool.description}</p>
 
       <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-blue-600">

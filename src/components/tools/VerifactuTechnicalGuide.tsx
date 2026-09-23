@@ -164,7 +164,7 @@ export function VerifactuTechnicalGuide() {
           encadenamiento criptográfico de cada factura y generación automática del código QR tributario.
         </p>
         <a
-          href={holded.url}
+          href={`/go/${holded.id}?from=diagnostico-verifactu`}
           target="_blank"
           rel="noopener noreferrer sponsored"
           className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"

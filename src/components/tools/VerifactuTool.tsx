@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { AlertTriangle, CheckCircle2, Circle, Clock } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
+import { AlertTriangle, CheckCircle2, Circle, Clock, ClipboardCheck } from "lucide-react";
 import {
   diagnosticarVerifactu,
   type SistemaFacturacionActual,
@@ -12,15 +12,13 @@ import { OptionGroup } from "@/components/ui/OptionGroup";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { CompactSimulationNotice } from "@/components/tools/CompactSimulationNotice";
 import { CalculationTransparencyDetails } from "@/components/tools/CalculationTransparencyDetails";
-import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
-import { PrivacyLocalBadge } from "@/components/tools/PrivacyLocalBadge";
-import { TerritorialScopeNotice } from "@/components/tools/TerritorialScopeNotice";
+import { LegalDisclaimersGroup } from "@/components/tools/LegalDisclaimersGroup";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { RelatedToolsMesh } from "@/components/RelatedToolsMesh";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
-import { useIsClient, useTrackCalculationCompleted } from "@/lib/hooks";
+import { useIsClient, useCalculationFunnel } from "@/lib/hooks";
 import { cn } from "@/lib/utils";
 
 const TOOL_SLUG = "diagnostico-verifactu";
@@ -68,6 +66,7 @@ function formatearFecha(fecha: Date): string {
 
 export function VerifactuTool({ faqItems }: VerifactuToolProps) {
   const mounted = useIsClient();
+  const checklistRef = useRef<HTMLDivElement>(null);
 
   const [tipoContribuyente, setTipoContribuyente] = useState<TipoContribuyente>("autonomo");
   const [tipoCliente, setTipoCliente] = useState<TipoCliente>("AMBOS");
@@ -94,7 +93,7 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
       }),
     [tipoContribuyente, tipoCliente, facturacionAnual, sistemaActual, mounted],
   );
-  useTrackCalculationCompleted(TOOL_SLUG, resultado);
+  useCalculationFunnel(TOOL_SLUG, resultado);
 
   const estado = useMemo<{ nivel: EstadoSemaforo; titulo: string; mensaje: string }>(() => {
     const itemsCriticos = resultado.checklist.filter((item) => item.id !== "factura_electronica_b2b");
@@ -132,6 +131,10 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
 
   const EstiloEstado = ESTILOS_SEMAFORO[estado.nivel];
   const IconoEstado = EstiloEstado.icon;
+
+  const handleComprobarQueNecesito = () => {
+    checklistRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   const ctaHolded =
     estado.nivel !== "verde"
@@ -245,14 +248,21 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
           <IconoEstado className={cn("h-8 w-8 shrink-0", EstiloEstado.texto)} aria-hidden="true" />
           <div>
             <h2 className={cn("text-2xl font-bold sm:text-3xl", EstiloEstado.texto)}>{estado.titulo}</h2>
-
-            <CalculationTransparencyDetails
-              metodologia="Checklist técnico sobre los requisitos del Reglamento de sistemas informáticos de facturación (SIF), contrastado con tu sistema actual, tipo de cliente y volumen de facturación."
-              fuenteNormativa="Reglamento de requisitos de los sistemas informáticos de facturación (Orden HAC/1177/2024)"
-              fuenteUrl="https://www.boe.es/diario_boe/txt.php?id=BOE-A-2024-22138"
-            />
+            <p className="mt-1.5 text-xs text-slate-500">
+              {tipoContribuyente === "autonomo" ? "Autónomo" : "Sociedad / Empresa"} · Cliente {tipoCliente} ·
+              Territorio común · Simulación orientativa.
+            </p>
 
             <p className="mt-2 text-sm text-slate-700">{estado.mensaje}</p>
+
+            <button
+              type="button"
+              onClick={handleComprobarQueNecesito}
+              className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 print:hidden"
+            >
+              <ClipboardCheck className="h-4 w-4" aria-hidden="true" />
+              Comprobar qué necesito hacer
+            </button>
           </div>
         </div>
 
@@ -274,7 +284,10 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
         </dl>
       </div>
 
-      <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm print:break-inside-avoid">
+      <div
+        ref={checklistRef}
+        className="mt-6 scroll-mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm print:break-inside-avoid"
+      >
         <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">Checklist técnico</h2>
         <ul className="mt-4 space-y-3">
           {resultado.checklist.map((item) => (
@@ -293,15 +306,19 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
         </ul>
       </div>
 
+      <CalculationTransparencyDetails
+        metodologia="Checklist técnico sobre los requisitos del Reglamento de sistemas informáticos de facturación (SIF), contrastado con tu sistema actual, tipo de cliente y volumen de facturación."
+        fuenteNormativa="Reglamento de requisitos de los sistemas informáticos de facturación (Orden HAC/1177/2024)"
+        fuenteUrl="https://www.boe.es/diario_boe/txt.php?id=BOE-A-2024-22138"
+      />
+
       <LegalSourceBadge
         fuente="Conforme al Reglamento de requisitos de los sistemas informáticos de facturación (Orden HAC/1177/2024)."
         url="https://www.boe.es/diario_boe/txt.php?id=BOE-A-2024-22138"
         motor="Diagnóstico VeriFactu"
       />
 
-      <SimulationDisclaimer />
-      <PrivacyLocalBadge />
-      <TerritorialScopeNotice />
+      <LegalDisclaimersGroup />
 
       <div className="mt-10">
         <AffiliateCard partnerId="holded" toolSlug={TOOL_SLUG} {...ctaHolded} />

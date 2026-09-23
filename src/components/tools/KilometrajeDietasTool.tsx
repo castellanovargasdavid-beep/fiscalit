@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { AlertCircle, AlertTriangle } from "lucide-react";
+import { AlertCircle, AlertTriangle, Download, Loader2 } from "lucide-react";
 import {
   calcularKilometrajeDietas,
   type DesplazamientoDieta,
@@ -10,15 +10,16 @@ import { SliderInput } from "@/components/ui/SliderInput";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { CompactSimulationNotice } from "@/components/tools/CompactSimulationNotice";
 import { CalculationTransparencyDetails } from "@/components/tools/CalculationTransparencyDetails";
-import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
-import { PrivacyLocalBadge } from "@/components/tools/PrivacyLocalBadge";
-import { TerritorialScopeNotice } from "@/components/tools/TerritorialScopeNotice";
+import { LegalDisclaimersGroup } from "@/components/tools/LegalDisclaimersGroup";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { RelatedToolsMesh } from "@/components/RelatedToolsMesh";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
-import { useTrackCalculationCompleted } from "@/lib/hooks";
+import { useCalculationFunnel } from "@/lib/hooks";
+import { downloadScenarioPdf } from "@/lib/generateScenarioPdf";
+import { getAffiliate } from "@/config/affiliates";
+import { siteConfig } from "@/config/site";
 import { formatEUR } from "@/lib/format";
 
 const TOOL_SLUG = "calculadora-kilometraje-dietas";
@@ -36,6 +37,7 @@ const DOCUMENTACION_OBLIGATORIA = [
 ];
 
 export function KilometrajeDietasTool({ faqItems }: KilometrajeDietasToolProps) {
+  const [generandoPdf, setGenerandoPdf] = useState(false);
   const [kilometros, setKilometros] = useState(500);
   const [diasPernoctaEspana, setDiasPernoctaEspana] = useState(2);
   const [diasPernoctaExtranjero, setDiasPernoctaExtranjero] = useState(0);
@@ -85,7 +87,42 @@ export function KilometrajeDietasTool({ faqItems }: KilometrajeDietasToolProps) 
       dietas,
     });
   }, [kilometros, diasPernoctaEspana, diasPernoctaExtranjero, diasSinPernoctaEspana, diasSinPernoctaExtranjero]);
-  useTrackCalculationCompleted(TOOL_SLUG, resultado);
+  useCalculationFunnel(TOOL_SLUG, resultado);
+
+  const handleDescargarDesglose = async () => {
+    if (generandoPdf) return;
+    setGenerandoPdf(true);
+    try {
+      const partner = getAffiliate("qonto");
+      await downloadScenarioPdf({
+        toolTitle: "Kilometraje y dietas exentas",
+        highlight: `Total exento de IRPF: ${formatEUR(resultado.totalExentoIRPF)}.`,
+        fileName: "fiscalit-kilometraje-dietas",
+        sections: [
+          {
+            title: "Desglose",
+            rows: [
+              ...resultado.resumen.map((linea) => ({
+                label: linea.concepto,
+                value: formatEUR(linea.importeExento),
+              })),
+              { label: "Total kilometraje", value: formatEUR(resultado.totalExentoKilometraje) },
+              { label: "Total dietas", value: formatEUR(resultado.totalExentoDietas) },
+              { label: "Total exento de IRPF", value: formatEUR(resultado.totalExentoIRPF) },
+            ],
+          },
+        ],
+        promo: {
+          partnerName: partner.name,
+          badgeText: partner.tagline,
+          ctaLabel: partner.ctaLabel,
+          url: `${siteConfig.url}/go/${partner.id}`,
+        },
+      });
+    } finally {
+      setGenerandoPdf(false);
+    }
+  };
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
@@ -165,13 +202,24 @@ export function KilometrajeDietasTool({ faqItems }: KilometrajeDietasToolProps) 
       <div className="mt-8 rounded-2xl border border-emerald-600 bg-emerald-600 p-6 text-white shadow-sm print:break-inside-avoid">
         <p className="text-sm text-emerald-100">Total exento de IRPF</p>
         <h2 className="mt-1 text-4xl font-bold tracking-tight">{formatEUR(resultado.totalExentoIRPF)}</h2>
-      </div>
+        <p className="mt-1.5 text-xs text-emerald-100">
+          Kilómetros: {kilometros.toLocaleString("es-ES")} km · Territorio común · Simulación orientativa.
+        </p>
 
-      <CalculationTransparencyDetails
-        metodologia="0,26 €/km × kilómetros justificados, más las dietas de manutención según los días con o sin pernocta en España o en el extranjero."
-        fuenteNormativa="Orden HFP/792/2023"
-        fuenteUrl="https://www.boe.es/buscar/doc.php?id=BOE-A-2023-16461"
-      />
+        <button
+          type="button"
+          onClick={() => void handleDescargarDesglose()}
+          disabled={generandoPdf}
+          className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-emerald-700 shadow-sm transition-colors hover:bg-emerald-50 disabled:cursor-wait disabled:opacity-70 print:hidden"
+        >
+          {generandoPdf ? (
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+          ) : (
+            <Download className="h-4 w-4" aria-hidden="true" />
+          )}
+          {generandoPdf ? "Generando PDF…" : "Descargar desglose"}
+        </button>
+      </div>
 
       <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm print:break-inside-avoid">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">Desglose</h2>
@@ -199,6 +247,12 @@ export function KilometrajeDietasTool({ faqItems }: KilometrajeDietasToolProps) 
         </div>
       </div>
 
+      <CalculationTransparencyDetails
+        metodologia="0,26 €/km × kilómetros justificados, más las dietas de manutención según los días con o sin pernocta en España o en el extranjero."
+        fuenteNormativa="Orden HFP/792/2023"
+        fuenteUrl="https://www.boe.es/buscar/doc.php?id=BOE-A-2023-16461"
+      />
+
       <div className="mt-6 flex gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-5 print:break-inside-avoid">
         <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" aria-hidden="true" />
         <div>
@@ -217,9 +271,7 @@ export function KilometrajeDietasTool({ faqItems }: KilometrajeDietasToolProps) 
         motor="Kilometraje y dietas exentas"
       />
 
-      <SimulationDisclaimer />
-      <PrivacyLocalBadge />
-      <TerritorialScopeNotice />
+      <LegalDisclaimersGroup />
 
       <div className="mt-10">
         <AffiliateCard

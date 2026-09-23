@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Info } from "lucide-react";
+import { Bookmark, Check, Info } from "lucide-react";
 import {
   PORCENTAJE_DEVOLUCION_EXCESO,
   calcularPluriactividad,
@@ -11,19 +11,29 @@ import { SplitBar } from "@/components/tools/SplitBar";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { CompactSimulationNotice } from "@/components/tools/CompactSimulationNotice";
 import { CalculationTransparencyDetails } from "@/components/tools/CalculationTransparencyDetails";
-import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
-import { PrivacyLocalBadge } from "@/components/tools/PrivacyLocalBadge";
-import { TerritorialScopeNotice } from "@/components/tools/TerritorialScopeNotice";
+import { LegalDisclaimersGroup } from "@/components/tools/LegalDisclaimersGroup";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { RelatedToolsMesh } from "@/components/RelatedToolsMesh";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
-import { useTrackCalculationCompleted } from "@/lib/hooks";
+import { useCalculationFunnel } from "@/lib/hooks";
+import { trackSimulationShare } from "@/lib/analytics";
+import { useCopyShareLink, useSyncScenarioToUrl, useUrlSeededScenario } from "@/lib/useScenarioShare";
 import { formatEUR } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 const TOOL_SLUG = "pluriactividad-devolucion";
+
+interface Escenario {
+  salarioBrutoAnual: number;
+  cuotaMensualRETA: number;
+}
+
+const ESCENARIO_POR_DEFECTO: Escenario = {
+  salarioBrutoAnual: 24_000,
+  cuotaMensualRETA: 300,
+};
 
 interface PluriactividadToolProps {
   faqItems: FAQItem[];
@@ -37,8 +47,10 @@ interface PluriactividadToolProps {
 const TIPO_COTIZACION_CC_REGIMEN_GENERAL = 0.283;
 
 export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
-  const [salarioBrutoAnual, setSalarioBrutoAnual] = useState(24_000);
-  const [cuotaMensualRETA, setCuotaMensualRETA] = useState(300);
+  const [escenario, setEscenario] = useState<Escenario>(ESCENARIO_POR_DEFECTO);
+  useUrlSeededScenario(ESCENARIO_POR_DEFECTO, setEscenario);
+  useSyncScenarioToUrl(escenario);
+  const { salarioBrutoAnual, cuotaMensualRETA } = escenario;
 
   const cotizacionRegimenGeneralAnual = salarioBrutoAnual * TIPO_COTIZACION_CC_REGIMEN_GENERAL;
   const cotizacionRETAAnual = cuotaMensualRETA * 12;
@@ -47,7 +59,13 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
     () => calcularPluriactividad({ cotizacionRegimenGeneralAnual, cotizacionRETAAnual }),
     [cotizacionRegimenGeneralAnual, cotizacionRETAAnual],
   );
-  useTrackCalculationCompleted(TOOL_SLUG, resultado);
+  useCalculationFunnel(TOOL_SLUG, resultado);
+  const { copied, copyShareLink } = useCopyShareLink();
+
+  const handleGuardarSimulacion = async () => {
+    const ok = await copyShareLink();
+    if (ok) trackSimulationShare(TOOL_SLUG);
+  };
 
   const limiteDevolucion = cotizacionRETAAnual * PORCENTAJE_DEVOLUCION_EXCESO;
 
@@ -63,7 +81,7 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
         <SliderInput
           label="Salario bruto anual en nómina (Régimen General)"
           value={salarioBrutoAnual}
-          onChange={setSalarioBrutoAnual}
+          onChange={(value) => setEscenario((prev) => ({ ...prev, salarioBrutoAnual: value }))}
           min={0}
           max={80_000}
           step={500}
@@ -72,7 +90,7 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
         <SliderInput
           label="Cuota mensual media pagada en el RETA"
           value={cuotaMensualRETA}
-          onChange={setCuotaMensualRETA}
+          onChange={(value) => setEscenario((prev) => ({ ...prev, cuotaMensualRETA: value }))}
           min={0}
           max={1_500}
           step={10}
@@ -104,16 +122,28 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
         >
           {resultado.tieneDerechoDevolucion ? `Sí — ${formatEUR(resultado.importeDevolucion)}` : "No"}
         </h2>
-
-        <CalculationTransparencyDetails
-          metodologia="Compara tu cotización conjunta anual (Régimen General + RETA) con el tope legal; el exceso sobre ese tope, hasta un máximo del 50% de tu cuota RETA, genera derecho a devolución."
-          fuenteNormativa="Art. 313 del Texto Refundido de la Ley General de la Seguridad Social"
-          fuenteUrl="https://www.boe.es/buscar/act.php?id=BOE-A-2015-11724#a313"
-        />
+        <p className="mt-1.5 text-xs text-slate-500">
+          Salario bruto: {formatEUR(salarioBrutoAnual)}/año · Cuota RETA: {formatEUR(cuotaMensualRETA)}/mes ·
+          Territorio común · Simulación orientativa.
+        </p>
 
         {resultado.tieneDerechoDevolucion && (
           <p className="mt-2 text-sm text-emerald-700">Importe estimado a devolver</p>
         )}
+
+        <button
+          type="button"
+          onClick={() => void handleGuardarSimulacion()}
+          aria-live="polite"
+          className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 print:hidden"
+        >
+          {copied ? (
+            <Check className="h-4 w-4" aria-hidden="true" />
+          ) : (
+            <Bookmark className="h-4 w-4" aria-hidden="true" />
+          )}
+          {copied ? "¡Simulación guardada (enlace copiado)!" : "Guardar esta simulación"}
+        </button>
       </div>
 
       {resultado.tieneDerechoDevolucion && (
@@ -149,6 +179,12 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
         </p>
       </div>
 
+      <CalculationTransparencyDetails
+        metodologia="Compara tu cotización conjunta anual (Régimen General + RETA) con el tope legal; el exceso sobre ese tope, hasta un máximo del 50% de tu cuota RETA, genera derecho a devolución."
+        fuenteNormativa="Art. 313 del Texto Refundido de la Ley General de la Seguridad Social"
+        fuenteUrl="https://www.boe.es/buscar/act.php?id=BOE-A-2015-11724#a313"
+      />
+
       <div className="mt-6 flex gap-3 rounded-2xl border border-blue-200 bg-blue-50 p-5">
         <Info className="mt-0.5 h-5 w-5 shrink-0 text-blue-600" aria-hidden="true" />
         <p className="text-sm text-blue-800">
@@ -164,9 +200,7 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
         motor="Devolución por pluriactividad"
       />
 
-      <SimulationDisclaimer />
-      <PrivacyLocalBadge />
-      <TerritorialScopeNotice />
+      <LegalDisclaimersGroup />
 
       <div className="mt-10">
         <AffiliateCard

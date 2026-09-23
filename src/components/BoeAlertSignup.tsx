@@ -107,7 +107,7 @@ export function BoeAlertSignup({ className }: BoeAlertSignupProps) {
         </p>
       )}
 
-      <p className="mt-3 text-xs text-slate-400">Tus datos no se ceden a terceros. Baja en un clic.</p>
+      <p className="mt-3 text-xs text-slate-500">Tus datos no se ceden a terceros. Baja en un clic.</p>
     </div>
   );
 }

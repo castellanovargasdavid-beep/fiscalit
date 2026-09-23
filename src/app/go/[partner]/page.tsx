@@ -39,7 +39,7 @@ export default async function GoToPartnerPage({ params }: PageProps<"/go/[partne
 
   return (
     <div className="mx-auto flex min-h-[60vh] max-w-md flex-col items-center justify-center px-4 text-center">
-      <GoRedirectClient url={info.url} />
+      <GoRedirectClient url={info.url} partnerName={info.name} />
       <p className="text-sm text-slate-500">Redirigiendo a</p>
       <p className="mt-1 text-xl font-semibold text-slate-900">{info.name}</p>
       <p className="mt-4 text-sm text-slate-500">

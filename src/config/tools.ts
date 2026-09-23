@@ -25,6 +25,8 @@ export interface Tool {
   slug: string;
   href: string;
   title: string;
+  /** Frase en primera persona que expresa el problema real del usuario, usada como titular de la tarjeta en la home (en vez del nombre interno de la herramienta). */
+  problem: string;
   description: string;
   category: ToolCategory;
   icon: LucideIcon;
@@ -45,6 +47,7 @@ export const tools: Tool[] = [
     slug: "autonomo-vs-sl",
     href: "/herramientas/autonomo-vs-sl",
     title: "Autónomo vs Sociedad Limitada",
+    problem: "Quiero saber si me conviene una SL",
     description:
       "Compara cuánto te quedaría neto como autónomo o creando una SL, con IRPF, cuota RETA e Impuesto de Sociedades.",
     category: "fiscal",
@@ -57,6 +60,7 @@ export const tools: Tool[] = [
     slug: "calculadora-cuota-autonomos",
     href: "/herramientas/calculadora-cuota-autonomos",
     title: "Calculadora de cuota de autónomos",
+    problem: "Quiero saber cuánto pagaré de autónomo",
     description: "Descubre tu tramo de cotización RETA y la cuota mensual según tu rendimiento neto real.",
     category: "cotizaciones",
     icon: Calculator,
@@ -67,6 +71,7 @@ export const tools: Tool[] = [
     slug: "diagnostico-verifactu",
     href: "/herramientas/diagnostico-verifactu",
     title: "Diagnóstico VeriFactu",
+    problem: "Quiero saber si estoy preparado para VeriFactu",
     description:
       "Comprueba si tu sistema actual cumple los requisitos técnicos de facturación para la entrada en vigor obligatoria de VeriFactu y la Ley Crea y Crece, en 2027.",
     category: "facturacion",
@@ -78,6 +83,7 @@ export const tools: Tool[] = [
     slug: "calculadora-kilometraje-dietas",
     href: "/herramientas/calculadora-kilometraje-dietas",
     title: "Kilometraje y dietas exentas",
+    problem: "Quiero calcular mis desplazamientos",
     description:
       "Calcula el importe exento de IRPF por kilometraje y dietas de manutención para empleados y administradores en sus desplazamientos.",
     category: "fiscal",
@@ -89,6 +95,7 @@ export const tools: Tool[] = [
     slug: "retencion-factura-iae",
     href: "/herramientas/retencion-factura-iae",
     title: "Retención IRPF en factura",
+    problem: "Quiero revisar una factura",
     description:
       "Averigua si tu factura lleva retención (0%, 7% o 15%) según tu epígrafe del IAE y simula el líquido a cobrar.",
     category: "facturacion",
@@ -100,6 +107,7 @@ export const tools: Tool[] = [
     slug: "pluriactividad-devolucion",
     href: "/herramientas/pluriactividad-devolucion",
     title: "Devolución por pluriactividad",
+    problem: "Quiero saber si me deben devolver dinero de la Seguridad Social",
     description:
       "Comprueba si tienes derecho a que la Seguridad Social te devuelva el exceso cotizado entre Régimen General y RETA.",
     category: "cotizaciones",

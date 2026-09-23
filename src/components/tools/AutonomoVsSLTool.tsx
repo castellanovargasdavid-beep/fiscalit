@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { CheckCircle2, ChevronDown, Download, Loader2 } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
+import { CheckCircle2, ChevronDown, RefreshCw } from "lucide-react";
 import { compararAutonomoVsSL, type ComunidadAutonoma } from "@/lib/calculations/autonomoVsSL";
 import { SliderInput } from "@/components/ui/SliderInput";
 import { ScenarioPresets, type ScenarioPreset } from "@/components/ui/ScenarioPresets";
@@ -11,19 +11,16 @@ import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { HighValueLeadCard } from "@/components/tools/HighValueLeadCard";
 import { CompactSimulationNotice } from "@/components/tools/CompactSimulationNotice";
 import { CalculationTransparencyDetails } from "@/components/tools/CalculationTransparencyDetails";
-import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
-import { PrivacyLocalBadge } from "@/components/tools/PrivacyLocalBadge";
-import { TerritorialScopeNotice } from "@/components/tools/TerritorialScopeNotice";
+import { LegalDisclaimersGroup } from "@/components/tools/LegalDisclaimersGroup";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { RelatedToolsMesh } from "@/components/RelatedToolsMesh";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 import { useSyncScenarioToUrl, useUrlSeededScenario } from "@/lib/useScenarioShare";
-import { useTrackCalculationCompleted } from "@/lib/hooks";
+import { useCalculationFunnel } from "@/lib/hooks";
 import { downloadScenarioPdf } from "@/lib/generateScenarioPdf";
 import { downloadScenarioCsv } from "@/lib/exportCsv";
-import { trackAffiliateClick, trackPdfDownload } from "@/lib/analytics";
 import { getAffiliate } from "@/config/affiliates";
 import { siteConfig } from "@/config/site";
 import { formatEUR } from "@/lib/format";
@@ -88,7 +85,7 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
   const [escenario, setEscenario] = useState<Escenario>(ESCENARIO_POR_DEFECTO);
   useUrlSeededScenario(ESCENARIO_POR_DEFECTO, setEscenario);
   useSyncScenarioToUrl(escenario);
-  const [generandoInformeDestacado, setGenerandoInformeDestacado] = useState(false);
+  const formularioRef = useRef<HTMLDivElement>(null);
 
   const {
     ingresosAnuales,
@@ -123,7 +120,7 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
     ],
   );
 
-  useTrackCalculationCompleted("autonomo-vs-sl", resultado);
+  useCalculationFunnel("autonomo-vs-sl", resultado);
 
   const { autonomo, sociedadLimitada, diferenciaNeta, opcionMasVentajosa } = resultado;
 
@@ -220,15 +217,9 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
     });
   };
 
-  const handleDownloadPdfDestacado = async () => {
-    if (generandoInformeDestacado) return;
-    setGenerandoInformeDestacado(true);
-    try {
-      await handleDownloadPdf();
-      trackPdfDownload("autonomo-vs-sl");
-    } finally {
-      setGenerandoInformeDestacado(false);
-    }
+  const handleCompararOtroEscenario = () => {
+    formularioRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    formularioRef.current?.querySelector<HTMLInputElement>('input[type="range"]')?.focus();
   };
 
   return (
@@ -239,17 +230,14 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
         Simulador Autónomo vs SL: comparativa de disponible neto, IS e IRPF
       </h1>
 
-      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-6">
         <ScenarioPresets presets={PRESETS} onSelect={aplicarPreset} />
-        <ScenarioActions
-          toolSlug="autonomo-vs-sl"
-          onReset={() => setEscenario(ESCENARIO_POR_DEFECTO)}
-          onDownloadPdf={handleDownloadPdf}
-          onDownloadCsv={handleDownloadCsv}
-        />
       </div>
 
-      <div className="mt-4 grid gap-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:grid-cols-3">
+      <div
+        ref={formularioRef}
+        className="mt-4 grid gap-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:grid-cols-3"
+      >
         <SliderInput
           label="Facturación bruta anual"
           value={ingresosAnuales}
@@ -364,16 +352,11 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
 
         <button
           type="button"
-          onClick={() => void handleDownloadPdfDestacado()}
-          disabled={generandoInformeDestacado}
-          className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 disabled:cursor-wait disabled:opacity-60 print:hidden"
+          onClick={handleCompararOtroEscenario}
+          className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 print:hidden"
         >
-          {generandoInformeDestacado ? (
-            <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-          ) : (
-            <Download className="h-4 w-4" aria-hidden="true" />
-          )}
-          {generandoInformeDestacado ? "Generando informe…" : "Descargar informe de simulación (PDF)"}
+          <RefreshCw className="h-4 w-4" aria-hidden="true" />
+          Comparar otro escenario
         </button>
       </div>
 
@@ -440,15 +423,22 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
         />
       </div>
 
+      <div className="mt-6 flex justify-center print:hidden">
+        <ScenarioActions
+          toolSlug="autonomo-vs-sl"
+          onReset={() => setEscenario(ESCENARIO_POR_DEFECTO)}
+          onDownloadPdf={handleDownloadPdf}
+          onDownloadCsv={handleDownloadCsv}
+        />
+      </div>
+
       <LegalSourceBadge
         fuente="Basado en el Real Decreto-ley 13/2022 y tablas del BOE núm. 180."
         url="https://www.boe.es/buscar/act.php?id=BOE-A-2022-12482"
         motor="Autónomo vs Sociedad Limitada"
       />
 
-      <SimulationDisclaimer />
-      <PrivacyLocalBadge />
-      <TerritorialScopeNotice />
+      <LegalDisclaimersGroup />
 
       {ingresosAnuales > UMBRAL_LEAD_ALTO_VALOR && <HighValueLeadCard facturacionAnual={ingresosAnuales} />}
 
@@ -461,19 +451,6 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
           nextStepIntro={ctaRecomendacion.nextStepIntro}
           promoBadgeText={ctaRecomendacion.promoBadgeText}
         />
-        <p className="mt-3 text-center text-sm text-slate-600 print:hidden">
-          Para formalizar el cambio a SL o gestionar tu contabilidad sin errores, conecta con{" "}
-          <a
-            href={`/go/${getAffiliate("quipu").id}`}
-            target="_blank"
-            rel="noopener noreferrer sponsored"
-            onClick={() => trackAffiliateClick("Quipu", "autonomo-vs-sl")}
-            className="font-semibold text-blue-700 underline underline-offset-2 hover:text-blue-800"
-          >
-            Quipu
-          </a>
-          .
-        </p>
       </div>
 
       <RelatedToolsMesh slugs={["pluriactividad-devolucion", "calculadora-cuota-autonomos"]} />

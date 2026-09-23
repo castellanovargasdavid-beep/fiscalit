@@ -173,7 +173,7 @@ export function RetaTechnicalGuide() {
           cotización actual sigue siendo el correcto.
         </p>
         <a
-          href={quipu.url}
+          href={`/go/${quipu.id}?from=calculadora-cuota-autonomos`}
           target="_blank"
           rel="noopener noreferrer sponsored"
           className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"

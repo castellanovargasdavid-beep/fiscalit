@@ -2,11 +2,8 @@
 
 import { useMemo, useState } from "react";
 import { Search, SearchX } from "lucide-react";
-import { TOOL_CATEGORIES, tools, type ToolCategory } from "@/config/tools";
+import { tools } from "@/config/tools";
 import { ToolCard } from "@/components/home/ToolCard";
-import { cn } from "@/lib/utils";
-
-type FiltroCategoria = "todas" | ToolCategory;
 
 function normalizar(texto: string): string {
   return texto
@@ -17,28 +14,20 @@ function normalizar(texto: string): string {
 
 export function ToolsExplorer() {
   const [busqueda, setBusqueda] = useState("");
-  const [categoria, setCategoria] = useState<FiltroCategoria>("todas");
-
-  const categoriaLabelPorId = useMemo(
-    () => Object.fromEntries(TOOL_CATEGORIES.map((c) => [c.id, c.label])) as Record<ToolCategory, string>,
-    [],
-  );
 
   const herramientasFiltradas = useMemo(() => {
     const consulta = normalizar(busqueda.trim());
+    if (!consulta) return tools;
     return tools.filter((tool) => {
-      if (categoria !== "todas" && tool.category !== categoria) return false;
-      if (!consulta) return true;
       const haystack = normalizar(
-        [tool.title, tool.description, ...tool.keywords].join(" "),
+        [tool.problem, tool.title, tool.description, ...tool.keywords].join(" "),
       );
       return haystack.includes(consulta);
     });
-  }, [busqueda, categoria]);
+  }, [busqueda]);
 
   const limpiarFiltros = () => {
     setBusqueda("");
-    setCategoria("todas");
   };
 
   return (
@@ -65,26 +54,10 @@ export function ToolsExplorer() {
         </kbd>
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-2 print:hidden" role="group" aria-label="Filtrar por categoría">
-        <FiltroPill
-          activo={categoria === "todas"}
-          onClick={() => setCategoria("todas")}
-          label="Todas"
-        />
-        {TOOL_CATEGORIES.map((cat) => (
-          <FiltroPill
-            key={cat.id}
-            activo={categoria === cat.id}
-            onClick={() => setCategoria(cat.id)}
-            label={cat.label}
-          />
-        ))}
-      </div>
-
       {herramientasFiltradas.length > 0 ? (
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {herramientasFiltradas.map((tool) => (
-            <ToolCard key={tool.slug} tool={tool} categoryLabel={categoriaLabelPorId[tool.category]} />
+            <ToolCard key={tool.slug} tool={tool} />
           ))}
         </div>
       ) : (
@@ -101,31 +74,5 @@ export function ToolsExplorer() {
         </div>
       )}
     </section>
-  );
-}
-
-function FiltroPill({
-  label,
-  activo,
-  onClick,
-}: {
-  label: string;
-  activo: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={activo}
-      className={cn(
-        "rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors",
-        activo
-          ? "border-blue-600 bg-blue-600 text-white"
-          : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-900",
-      )}
-    >
-      {label}
-    </button>
   );
 }

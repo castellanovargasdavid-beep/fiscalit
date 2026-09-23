@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { Bookmark, Check, ChevronDown } from "lucide-react";
 import {
   TABLA_TRAMOS_RETA,
   calcularCuotaAutonomo,
@@ -13,16 +13,15 @@ import { ScenarioActions } from "@/components/tools/ScenarioActions";
 import { LegalSourceBadge } from "@/components/tools/LegalSourceBadge";
 import { CompactSimulationNotice } from "@/components/tools/CompactSimulationNotice";
 import { CalculationTransparencyDetails } from "@/components/tools/CalculationTransparencyDetails";
-import { SimulationDisclaimer } from "@/components/tools/SimulationDisclaimer";
-import { PrivacyLocalBadge } from "@/components/tools/PrivacyLocalBadge";
-import { TerritorialScopeNotice } from "@/components/tools/TerritorialScopeNotice";
+import { LegalDisclaimersGroup } from "@/components/tools/LegalDisclaimersGroup";
 import { EmbedWidgetModal } from "@/components/EmbedWidgetModal";
 import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { RelatedToolsMesh } from "@/components/RelatedToolsMesh";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
-import { useSyncScenarioToUrl, useUrlSeededScenario } from "@/lib/useScenarioShare";
-import { useTrackCalculationCompleted } from "@/lib/hooks";
+import { useCopyShareLink, useSyncScenarioToUrl, useUrlSeededScenario } from "@/lib/useScenarioShare";
+import { useCalculationFunnel } from "@/lib/hooks";
+import { trackSimulationShare } from "@/lib/analytics";
 import { downloadScenarioPdf } from "@/lib/generateScenarioPdf";
 import { downloadScenarioCsv } from "@/lib/exportCsv";
 import { getAffiliate } from "@/config/affiliates";
@@ -83,7 +82,13 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
     () => calcularCuotaAutonomo(rendimientoNetoAnual, tipoAutonomo),
     [rendimientoNetoAnual, tipoAutonomo],
   );
-  useTrackCalculationCompleted("calculadora-cuota-autonomos", resultado);
+  useCalculationFunnel("calculadora-cuota-autonomos", resultado);
+  const { copied, copyShareLink } = useCopyShareLink();
+
+  const handleGuardarCalculo = async () => {
+    const ok = await copyShareLink();
+    if (ok) trackSimulationShare("calculadora-cuota-autonomos");
+  };
 
   const ctaQuipu = {
     analysis: `Tu rendimiento neto te sitúa en el tramo ${resultado.tramoAsignado.tramo}/15, con una cuota mensual estimada entre ${formatEUR(resultado.cuotaMensualMinima)} y ${formatEUR(resultado.cuotaMensualMaxima)}.`,
@@ -149,14 +154,8 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
         Simulador de cuota de autónomos: tramos RETA según tus rendimientos netos
       </h1>
 
-      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-6">
         <ScenarioPresets presets={PRESETS} onSelect={aplicarPreset} />
-        <ScenarioActions
-          toolSlug="calculadora-cuota-autonomos"
-          onReset={() => setEscenario(ESCENARIO_POR_DEFECTO)}
-          onDownloadPdf={handleDownloadPdf}
-          onDownloadCsv={handleDownloadCsv}
-        />
       </div>
 
       <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -211,6 +210,21 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
           Cuota mensual estimada:{" "}
           <span className="text-blue-700">{formatEUR(resultado.cuotaMensualMinima, true)}/mes</span>
         </h2>
+        <p className="mt-1.5 text-xs text-slate-500">
+          Tramo {resultado.tramoAsignado.tramo}/15 · Rendimiento neto: {formatEUR(resultado.rendimientoNetoMensual)}
+          /mes · Territorio común · Simulación orientativa.
+        </p>
+
+        <p className="mt-3 text-sm text-slate-600">
+          Deducción de gastos de difícil justificación aplicada:{" "}
+          <strong className="text-slate-700">{tipoAutonomo === "individual" ? "7%" : "3%"}</strong> — rendimiento
+          neto computable: {formatEUR(resultado.rendimientoNetoComputable)}/año.
+        </p>
+        <p className="mt-2 text-xs text-slate-500">
+          Rango de cotización del tramo: {formatEUR(resultado.tramoAsignado.baseMinima, true)} –{" "}
+          {formatEUR(resultado.tramoAsignado.baseMaxima, true)} €/mes de base · Cuota máxima si eliges la base más
+          alta: {formatEUR(resultado.cuotaMensualMaxima, true)}/mes
+        </p>
 
         <CalculationTransparencyDetails
           metodologia={`Tramo ${resultado.tramoAsignado.tramo}/15 según tu rendimiento neto mensual (${formatEUR(resultado.rendimientoNetoMensual)}), tras aplicar la deducción del ${tipoAutonomo === "individual" ? "7%" : "3%"} por gastos de difícil justificación.`}
@@ -218,22 +232,20 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
           fuenteUrl="https://www.boe.es/buscar/act.php?id=BOE-A-2022-12482"
         />
 
-        <p className="mt-2 text-sm text-slate-600">
-          Tramo {resultado.tramoAsignado.tramo}/15 · Rendimiento neto estimado:{" "}
-          {formatEUR(resultado.rendimientoNetoMensual)}/mes
-        </p>
-        <p className="mt-2 text-xs text-slate-400">
-          Rango de cotización del tramo: {formatEUR(resultado.tramoAsignado.baseMinima, true)} –{" "}
-          {formatEUR(resultado.tramoAsignado.baseMaxima, true)} €/mes de base · Cuota máxima si eliges la base más
-          alta: {formatEUR(resultado.cuotaMensualMaxima, true)}/mes
-        </p>
+        <button
+          type="button"
+          onClick={() => void handleGuardarCalculo()}
+          aria-live="polite"
+          className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 print:hidden"
+        >
+          {copied ? (
+            <Check className="h-4 w-4" aria-hidden="true" />
+          ) : (
+            <Bookmark className="h-4 w-4" aria-hidden="true" />
+          )}
+          {copied ? "¡Cálculo guardado (enlace copiado)!" : "Guardar mi cálculo"}
+        </button>
       </div>
-
-      <p className="mt-4 text-sm text-slate-500">
-        Deducción de gastos de difícil justificación aplicada:{" "}
-        <strong className="text-slate-700">{tipoAutonomo === "individual" ? "7%" : "3%"}</strong> —
-        rendimiento neto computable: {formatEUR(resultado.rendimientoNetoComputable)}/año.
-      </p>
 
       <details className="group mt-8 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
         <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-medium text-slate-900">
@@ -276,15 +288,22 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
         </div>
       </details>
 
+      <div className="mt-6 flex justify-center print:hidden">
+        <ScenarioActions
+          toolSlug="calculadora-cuota-autonomos"
+          onReset={() => setEscenario(ESCENARIO_POR_DEFECTO)}
+          onDownloadPdf={handleDownloadPdf}
+          onDownloadCsv={handleDownloadCsv}
+        />
+      </div>
+
       <LegalSourceBadge
         fuente="Basado en el Real Decreto-ley 13/2022 y tablas del BOE núm. 180."
         url="https://www.boe.es/buscar/act.php?id=BOE-A-2022-12482"
         motor="Calculadora de cuota de autónomos"
       />
 
-      <SimulationDisclaimer />
-      <PrivacyLocalBadge />
-      <TerritorialScopeNotice />
+      <LegalDisclaimersGroup />
 
       <div className="mt-10">
         <AffiliateCard partnerId="quipu" toolSlug="calculadora-cuota-autonomos" {...ctaQuipu} />

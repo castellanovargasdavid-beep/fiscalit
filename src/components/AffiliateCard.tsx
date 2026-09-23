@@ -1,14 +1,16 @@
-"use client";
-
 import { ArrowUpRight, Sparkles, TrendingUp } from "lucide-react";
 import { getAffiliate, type AffiliateId } from "@/config/affiliates";
-import { trackAffiliateClick } from "@/lib/analytics";
 import { formatEUR } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 interface AffiliateCardProps {
   partnerId: AffiliateId;
-  /** Slug de la herramienta desde la que se muestra la tarjeta, para la analítica de clics de afiliado. */
+  /**
+   * Slug de la herramienta desde la que se muestra la tarjeta: viaja como
+   * `?from=` en la URL de `/go/[partner]`, que es quien registra el clic
+   * de afiliado (ver GoRedirectClient) — así esta tarjeta puede seguir
+   * siendo un componente de servidor, sin JavaScript propio.
+   */
   toolSlug: string;
   className?: string;
   /** "Análisis de tu resultado": resumen pedagógico breve de la cifra que acaba de obtener el usuario. */
@@ -48,7 +50,7 @@ export function AffiliateCard({
     >
       <div className="space-y-4 p-5 sm:p-6">
         <section>
-          <p className="text-xs font-semibold tracking-wide text-slate-400 uppercase">Análisis de tu resultado</p>
+          <p className="text-xs font-semibold tracking-wide text-slate-500 uppercase">Análisis de tu resultado</p>
           <p className="mt-1 text-sm leading-6 text-slate-700">{analysis}</p>
         </section>
 
@@ -90,10 +92,9 @@ export function AffiliateCard({
             </div>
 
             <a
-              href={`/go/${partner.id}`}
+              href={`/go/${partner.id}?from=${encodeURIComponent(toolSlug)}`}
               target="_blank"
               rel="noopener noreferrer sponsored"
-              onClick={() => trackAffiliateClick(partner.name, toolSlug)}
               className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-full bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
             >
               {partner.ctaLabel}
@@ -103,7 +104,7 @@ export function AffiliateCard({
         </section>
       </div>
 
-      <p className="border-t border-slate-100 bg-slate-50 px-5 py-2 text-[11px] text-slate-400 sm:px-6">
+      <p className="border-t border-slate-100 bg-slate-50 px-5 py-2 text-[11px] text-slate-500 sm:px-6">
         Puede que recibamos una comisión sin coste adicional para ti.
       </p>
     </aside>

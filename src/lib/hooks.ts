@@ -1,5 +1,11 @@
-import { useEffect, useSyncExternalStore } from "react";
-import { trackCalculationCompleted } from "@/lib/analytics";
+import { useEffect, useRef, useSyncExternalStore } from "react";
+import {
+  trackCalculationCompleted,
+  trackCalculationInteraction,
+  trackCalculationStarted,
+  trackResultViewed,
+  trackToolViewed,
+} from "@/lib/analytics";
 
 const emptySubscribe = () => () => {};
 
@@ -18,15 +24,48 @@ export function useIsClient(): boolean {
 }
 
 /**
- * Dispara `trackCalculationCompleted` cuando el resultado de una
- * calculadora lleva un momento estable (debounce de 1,5 s), en vez de en
- * cada cambio de slider: mide "el usuario llegó a un resultado", no cada
- * tecleo. `resultKey` es cualquier valor que cambie cuando cambia el
- * resultado (normalmente el propio objeto de resultado del `useMemo`).
+ * Instrumenta el embudo completo de una calculadora: `tool_viewed` una vez
+ * al montar, y luego `calculation_started` / `calculation_interaction` /
+ * `result_viewed` / `calculation_completed` ligados a interacción real del
+ * usuario — nunca al render inicial con los valores por defecto, que es
+ * exactamente lo que hacía la versión anterior de este hook.
+ *
+ * `resultKey` es cualquier valor que cambie cuando cambia el resultado
+ * (normalmente el propio objeto de resultado del `useMemo` de la
+ * herramienta). El primer cambio de `resultKey` tras el montaje se ignora
+ * a efectos de "inicio de cálculo": corresponde al escenario por defecto,
+ * no a una acción del usuario.
  */
-export function useTrackCalculationCompleted(toolSlug: string, resultKey: unknown): void {
+export function useCalculationFunnel(toolSlug: string, resultKey: unknown): void {
+  const esPrimerRender = useRef(true);
+  const haInteractuado = useRef(false);
+  const haCompletado = useRef(false);
+
   useEffect(() => {
-    const id = window.setTimeout(() => trackCalculationCompleted(toolSlug), 1500);
+    trackToolViewed(toolSlug);
+    // Deliberadamente sin `resultKey` en las dependencias: es una vista de página al montar, no debe repetirse en cada cambio de resultado.
+  }, [toolSlug]);
+
+  useEffect(() => {
+    if (esPrimerRender.current) {
+      esPrimerRender.current = false;
+      return;
+    }
+
+    if (!haInteractuado.current) {
+      haInteractuado.current = true;
+      trackCalculationStarted(toolSlug);
+    } else {
+      trackCalculationInteraction(toolSlug);
+    }
+
+    const id = window.setTimeout(() => {
+      trackResultViewed(toolSlug);
+      if (!haCompletado.current) {
+        haCompletado.current = true;
+        trackCalculationCompleted(toolSlug);
+      }
+    }, 800);
     return () => window.clearTimeout(id);
   }, [toolSlug, resultKey]);
 }
