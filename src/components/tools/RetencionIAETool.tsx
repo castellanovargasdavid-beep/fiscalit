@@ -16,7 +16,10 @@ import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { RelatedToolsMesh } from "@/components/RelatedToolsMesh";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
+import { useTrackCalculationCompleted } from "@/lib/hooks";
 import { formatEUR } from "@/lib/format";
+
+const TOOL_SLUG = "retencion-factura-iae";
 
 interface RetencionIAEToolProps {
   faqItems: FAQItem[];
@@ -41,6 +44,7 @@ export function RetencionIAETool({ faqItems }: RetencionIAEToolProps) {
       }),
     [seccionIAE, esNuevoAutonomo, baseImponible, tipoIVA],
   );
+  useTrackCalculationCompleted(TOOL_SLUG, resultado);
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
@@ -179,6 +183,7 @@ export function RetencionIAETool({ faqItems }: RetencionIAEToolProps) {
       <LegalSourceBadge
         fuente="Art. 95 del Reglamento del IRPF (RD 439/2007)."
         url="https://www.boe.es/buscar/act.php?id=BOE-A-2007-6820#a95"
+        motor="Retención IRPF en factura / IAE"
       />
 
       <SimulationDisclaimer />
@@ -188,6 +193,7 @@ export function RetencionIAETool({ faqItems }: RetencionIAEToolProps) {
       <div className="mt-10">
         <AffiliateCard
           partnerId="quipu"
+          toolSlug={TOOL_SLUG}
           analysis={`Con una base imponible de ${formatEUR(resultado.baseImponible, true)} y una retención del ${(resultado.tipoRetencionIRPF * 100).toFixed(0)}%, tu líquido a cobrar es ${formatEUR(resultado.totalLiquidoAPercibir, true)}.`}
           keyPoint="Esa retención es un anticipo de tu IRPF anual, no un gasto perdido: si no registras bien cada factura y su retención, puedes estar dejando dinero sobre la mesa a la hora de la Renta."
           nextStepIntro="Para que ninguna factura ni retención se te escape, un software de contabilidad automática como"

@@ -4,12 +4,10 @@ import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { mainNav, siteConfig } from "@/config/site";
-import { formatMesAnioISO } from "@/lib/format";
+import { formatMesAnioCapitalizado } from "@/lib/format";
 import { Logo } from "@/components/Logo";
 
-/** "septiembre de 2026" (formatMesAnioISO) → "Septiembre 2026", para el badge de revisión normativa. */
-const mesAnioRevision = formatMesAnioISO(siteConfig.lastMethodologyReview).replace(" de ", " ");
-const NORMATIVA_REVISION_LABEL = mesAnioRevision.charAt(0).toUpperCase() + mesAnioRevision.slice(1);
+const NORMATIVA_REVISION_LABEL = formatMesAnioCapitalizado(siteConfig.lastMethodologyReview);
 
 export function Header() {
   const [open, setOpen] = useState(false);

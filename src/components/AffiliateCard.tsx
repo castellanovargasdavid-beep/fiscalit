@@ -1,10 +1,15 @@
+"use client";
+
 import { ArrowUpRight, Sparkles, TrendingUp } from "lucide-react";
 import { getAffiliate, type AffiliateId } from "@/config/affiliates";
+import { trackAffiliateClick } from "@/lib/analytics";
 import { formatEUR } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 interface AffiliateCardProps {
   partnerId: AffiliateId;
+  /** Slug de la herramienta desde la que se muestra la tarjeta, para la analítica de clics de afiliado. */
+  toolSlug: string;
   className?: string;
   /** "Análisis de tu resultado": resumen pedagógico breve de la cifra que acaba de obtener el usuario. */
   analysis: string;
@@ -26,6 +31,7 @@ interface AffiliateCardProps {
  */
 export function AffiliateCard({
   partnerId,
+  toolSlug,
   className,
   analysis,
   keyPoint,
@@ -87,6 +93,7 @@ export function AffiliateCard({
               href={`/go/${partner.id}`}
               target="_blank"
               rel="noopener noreferrer sponsored"
+              onClick={() => trackAffiliateClick(partner.name, toolSlug)}
               className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-full bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
             >
               {partner.ctaLabel}

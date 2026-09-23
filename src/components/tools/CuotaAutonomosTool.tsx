@@ -22,6 +22,7 @@ import { AffiliateCard } from "@/components/AffiliateCard";
 import { RelatedToolsMesh } from "@/components/RelatedToolsMesh";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 import { useSyncScenarioToUrl, useUrlSeededScenario } from "@/lib/useScenarioShare";
+import { useTrackCalculationCompleted } from "@/lib/hooks";
 import { downloadScenarioPdf } from "@/lib/generateScenarioPdf";
 import { downloadScenarioCsv } from "@/lib/exportCsv";
 import { getAffiliate } from "@/config/affiliates";
@@ -82,6 +83,7 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
     () => calcularCuotaAutonomo(rendimientoNetoAnual, tipoAutonomo),
     [rendimientoNetoAnual, tipoAutonomo],
   );
+  useTrackCalculationCompleted("calculadora-cuota-autonomos", resultado);
 
   const ctaQuipu = {
     analysis: `Tu rendimiento neto te sitúa en el tramo ${resultado.tramoAsignado.tramo}/15, con una cuota mensual estimada entre ${formatEUR(resultado.cuotaMensualMinima)} y ${formatEUR(resultado.cuotaMensualMaxima)}.`,
@@ -150,6 +152,7 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <ScenarioPresets presets={PRESETS} onSelect={aplicarPreset} />
         <ScenarioActions
+          toolSlug="calculadora-cuota-autonomos"
           onReset={() => setEscenario(ESCENARIO_POR_DEFECTO)}
           onDownloadPdf={handleDownloadPdf}
           onDownloadCsv={handleDownloadCsv}
@@ -276,6 +279,7 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
       <LegalSourceBadge
         fuente="Basado en el Real Decreto-ley 13/2022 y tablas del BOE núm. 180."
         url="https://www.boe.es/buscar/act.php?id=BOE-A-2022-12482"
+        motor="Calculadora de cuota de autónomos"
       />
 
       <SimulationDisclaimer />
@@ -283,7 +287,7 @@ export function CuotaAutonomosTool({ faqItems }: CuotaAutonomosToolProps) {
       <TerritorialScopeNotice />
 
       <div className="mt-10">
-        <AffiliateCard partnerId="quipu" {...ctaQuipu} />
+        <AffiliateCard partnerId="quipu" toolSlug="calculadora-cuota-autonomos" {...ctaQuipu} />
       </div>
 
       <RelatedToolsMesh slugs={["retencion-factura-iae", "autonomo-vs-sl"]} />

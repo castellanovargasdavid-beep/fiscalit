@@ -48,3 +48,12 @@ export const ENGINE_VERSIONS: FichaVersionMotor[] = [
       "Art. 313 del Real Decreto Legislativo 8/2015, Texto Refundido de la Ley General de la Seguridad Social; Resolución anual de la Tesorería General de la Seguridad Social, tope conjunto de cotización 2026 (17.323,68€).",
   },
 ];
+
+/** Busca la ficha de versión de un motor por su nombre exacto (`motor`). Lanza si no existe: cada herramienta debe tener su ficha dada de alta aquí. */
+export function getEngineVersion(motor: string): FichaVersionMotor {
+  const ficha = ENGINE_VERSIONS.find((item) => item.motor === motor);
+  if (!ficha) {
+    throw new Error(`No existe ficha de versión de motor para "${motor}" en src/config/engineVersions.ts`);
+  }
+  return ficha;
+}

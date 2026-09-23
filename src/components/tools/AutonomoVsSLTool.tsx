@@ -20,8 +20,10 @@ import { AffiliateCard } from "@/components/AffiliateCard";
 import { RelatedToolsMesh } from "@/components/RelatedToolsMesh";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
 import { useSyncScenarioToUrl, useUrlSeededScenario } from "@/lib/useScenarioShare";
+import { useTrackCalculationCompleted } from "@/lib/hooks";
 import { downloadScenarioPdf } from "@/lib/generateScenarioPdf";
 import { downloadScenarioCsv } from "@/lib/exportCsv";
+import { trackAffiliateClick, trackPdfDownload } from "@/lib/analytics";
 import { getAffiliate } from "@/config/affiliates";
 import { siteConfig } from "@/config/site";
 import { formatEUR } from "@/lib/format";
@@ -121,6 +123,8 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
     ],
   );
 
+  useTrackCalculationCompleted("autonomo-vs-sl", resultado);
+
   const { autonomo, sociedadLimitada, diferenciaNeta, opcionMasVentajosa } = resultado;
 
   const ctaRecomendacion =
@@ -148,8 +152,10 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
 
   const veredictoTitulo =
     opcionMasVentajosa === "equivalente"
-      ? "Capital neto disponible prácticamente igual en ambas opciones"
-      : `${opcionMasVentajosa === "autonomo" ? "Autónomo" : "Sociedad Limitada"} te deja ${formatEUR(Math.abs(diferenciaNeta))} más de capital neto disponible`;
+      ? "En este escenario, ambas opciones dejan un capital neto disponible prácticamente igual"
+      : `En este escenario, ${opcionMasVentajosa === "autonomo" ? "Autónomo" : "Sociedad Limitada"} deja ${formatEUR(Math.abs(diferenciaNeta))} más de capital neto disponible`;
+
+  const contextoEscenario = `Facturación: ${formatEUR(ingresosAnuales)} · Gastos: ${formatEUR(gastosDeduciblesAnuales)} · Salario administrador: ${formatEUR(salarioBrutoAdministrador)} · Territorio común · Simulación orientativa.`;
 
   const conclusion =
     opcionMasVentajosa === "equivalente"
@@ -219,6 +225,7 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
     setGenerandoInformeDestacado(true);
     try {
       await handleDownloadPdf();
+      trackPdfDownload("autonomo-vs-sl");
     } finally {
       setGenerandoInformeDestacado(false);
     }
@@ -235,6 +242,7 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <ScenarioPresets presets={PRESETS} onSelect={aplicarPreset} />
         <ScenarioActions
+          toolSlug="autonomo-vs-sl"
           onReset={() => setEscenario(ESCENARIO_POR_DEFECTO)}
           onDownloadPdf={handleDownloadPdf}
           onDownloadCsv={handleDownloadCsv}
@@ -344,6 +352,7 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
         >
           {veredictoTitulo}
         </h2>
+        <p className="mt-1.5 text-xs text-slate-500">{contextoEscenario}</p>
 
         <CalculationTransparencyDetails
           metodologia="Compara el neto disponible como autónomo (rendimiento neto − cuota RETA − IRPF) frente a Sociedad Limitada (Impuesto sobre Sociedades + nómina del administrador + dividendos), con las tablas y tipos vigentes en 2026."
@@ -434,6 +443,7 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
       <LegalSourceBadge
         fuente="Basado en el Real Decreto-ley 13/2022 y tablas del BOE núm. 180."
         url="https://www.boe.es/buscar/act.php?id=BOE-A-2022-12482"
+        motor="Autónomo vs Sociedad Limitada"
       />
 
       <SimulationDisclaimer />
@@ -445,6 +455,7 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
       <div className="mt-10">
         <AffiliateCard
           partnerId={ctaRecomendacion.partnerId}
+          toolSlug="autonomo-vs-sl"
           analysis={ctaRecomendacion.analysis}
           keyPoint={ctaRecomendacion.keyPoint}
           nextStepIntro={ctaRecomendacion.nextStepIntro}
@@ -456,6 +467,7 @@ export function AutonomoVsSLTool({ faqItems }: AutonomoVsSLToolProps) {
             href={`/go/${getAffiliate("quipu").id}`}
             target="_blank"
             rel="noopener noreferrer sponsored"
+            onClick={() => trackAffiliateClick("Quipu", "autonomo-vs-sl")}
             className="font-semibold text-blue-700 underline underline-offset-2 hover:text-blue-800"
           >
             Quipu

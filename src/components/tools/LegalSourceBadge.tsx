@@ -1,5 +1,8 @@
 import Link from "next/link";
 import { ExternalLink, ShieldCheck } from "lucide-react";
+import { getEngineVersion } from "@/config/engineVersions";
+import { siteConfig } from "@/config/site";
+import { formatMesAnioCapitalizado } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 interface LegalSourceBadgeProps {
@@ -7,6 +10,8 @@ interface LegalSourceBadgeProps {
   fuente: string;
   /** URL oficial de boe.es a la norma citada en `fuente`. */
   url: string;
+  /** Nombre exacto del motor en `ENGINE_VERSIONS` (src/config/engineVersions.ts), para la micro-ficha de versión. */
+  motor: string;
   /** Ejercicio fiscal para el que está verificado el cálculo. */
   ejercicioFiscal?: number;
   className?: string;
@@ -17,35 +22,39 @@ interface LegalSourceBadgeProps {
  * badge de vigencia normativa + enlace a la fuente oficial en boe.es +
  * enlace a la metodología y fuentes aplicadas en todo el sitio.
  */
-export function LegalSourceBadge({ fuente, url, ejercicioFiscal = 2026, className }: LegalSourceBadgeProps) {
+export function LegalSourceBadge({ fuente, url, motor, ejercicioFiscal = 2026, className }: LegalSourceBadgeProps) {
+  const ficha = getEngineVersion(motor);
+  const revision = formatMesAnioCapitalizado(siteConfig.lastMethodologyReview);
+
   return (
-    <div
-      className={cn(
-        "mt-6 flex flex-col gap-2 rounded-xl border border-blue-100 bg-blue-50/60 p-4 text-sm sm:flex-row sm:items-center sm:gap-3",
-        className,
-      )}
-    >
-      <span className="inline-flex w-fit shrink-0 items-center gap-1.5 rounded-full bg-blue-600 px-2.5 py-1 text-xs font-medium text-white">
-        <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
-        Normativa revisada: Ejercicio {ejercicioFiscal} / Actualización BOE
-      </span>
-      <p className="text-slate-600">
-        {fuente}{" "}
-        <a
-          href={url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-0.5 font-medium text-blue-700 underline underline-offset-2 hover:text-blue-800"
-        >
-          Ver fuente oficial (BOE)
-          <ExternalLink className="h-3 w-3" aria-hidden="true" />
-        </a>{" "}
-        ·{" "}
+    <div className={cn("mt-6 rounded-xl border border-blue-100 bg-blue-50/60 p-4 text-sm", className)}>
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+        <span className="inline-flex w-fit shrink-0 items-center gap-1.5 rounded-full bg-blue-600 px-2.5 py-1 text-xs font-medium text-white">
+          <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
+          Normativa revisada: Ejercicio {ejercicioFiscal} / Actualización BOE
+        </span>
+        <p className="text-slate-600">
+          {fuente}{" "}
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-0.5 font-medium text-blue-700 underline underline-offset-2 hover:text-blue-800"
+          >
+            Ver fuente oficial (BOE)
+            <ExternalLink className="h-3 w-3" aria-hidden="true" />
+          </a>
+        </p>
+      </div>
+
+      <p className="mt-2 border-t border-blue-100 pt-2 text-xs text-slate-500">
+        Versión motor: <span className="font-medium text-slate-700">{ficha.version}</span> · Revisión: {revision} ·
+        Fuentes oficiales: BOE / AEAT / TGSS ·{" "}
         <Link
           href="/metodologia"
           className="font-medium text-blue-700 underline underline-offset-2 hover:text-blue-800 print:hidden"
         >
-          Metodología y fuentes
+          Ver ficha metodológica completa →
         </Link>
       </p>
     </div>

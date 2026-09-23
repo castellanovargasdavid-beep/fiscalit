@@ -18,7 +18,10 @@ import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { RelatedToolsMesh } from "@/components/RelatedToolsMesh";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
+import { useTrackCalculationCompleted } from "@/lib/hooks";
 import { formatEUR } from "@/lib/format";
+
+const TOOL_SLUG = "calculadora-kilometraje-dietas";
 
 interface KilometrajeDietasToolProps {
   faqItems: FAQItem[];
@@ -82,6 +85,7 @@ export function KilometrajeDietasTool({ faqItems }: KilometrajeDietasToolProps) 
       dietas,
     });
   }, [kilometros, diasPernoctaEspana, diasPernoctaExtranjero, diasSinPernoctaEspana, diasSinPernoctaExtranjero]);
+  useTrackCalculationCompleted(TOOL_SLUG, resultado);
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
@@ -210,6 +214,7 @@ export function KilometrajeDietasTool({ faqItems }: KilometrajeDietasToolProps) 
       <LegalSourceBadge
         fuente="Orden HFP/792/2023 (0,26 €/km en IRPF para asignaciones de empresa a trabajadores y administradores)."
         url="https://www.boe.es/buscar/doc.php?id=BOE-A-2023-16461"
+        motor="Kilometraje y dietas exentas"
       />
 
       <SimulationDisclaimer />
@@ -219,6 +224,7 @@ export function KilometrajeDietasTool({ faqItems }: KilometrajeDietasToolProps) 
       <div className="mt-10">
         <AffiliateCard
           partnerId="qonto"
+          toolSlug={TOOL_SLUG}
           analysis={`Este cálculo suma ${formatEUR(resultado.totalExentoIRPF)} en conceptos exentos de IRPF por kilometraje y dietas.`}
           keyPoint="Para que Hacienda no cuestione esa exención necesitas justificar cada desplazamiento con tickets, facturas y movimientos claramente diferenciados de tus gastos personales."
           nextStepIntro="Una cuenta profesional separada de tu cuenta personal, como"

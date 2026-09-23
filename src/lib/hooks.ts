@@ -1,4 +1,5 @@
-import { useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
+import { trackCalculationCompleted } from "@/lib/analytics";
 
 const emptySubscribe = () => () => {};
 
@@ -14,4 +15,18 @@ export function useIsClient(): boolean {
     () => true,
     () => false,
   );
+}
+
+/**
+ * Dispara `trackCalculationCompleted` cuando el resultado de una
+ * calculadora lleva un momento estable (debounce de 1,5 s), en vez de en
+ * cada cambio de slider: mide "el usuario llegó a un resultado", no cada
+ * tecleo. `resultKey` es cualquier valor que cambie cuando cambia el
+ * resultado (normalmente el propio objeto de resultado del `useMemo`).
+ */
+export function useTrackCalculationCompleted(toolSlug: string, resultKey: unknown): void {
+  useEffect(() => {
+    const id = window.setTimeout(() => trackCalculationCompleted(toolSlug), 1500);
+    return () => window.clearTimeout(id);
+  }, [toolSlug, resultKey]);
 }

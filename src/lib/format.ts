@@ -35,11 +35,17 @@ export function formatFechaISO(fechaISO: string): string {
   });
 }
 
-/** Formatea una fecha ISO (`"2026-09-22"`) como "mes año" en español (p. ej. "septiembre 2026"), sin el día. */
+/** Formatea una fecha ISO (`"2026-09-22"`) como "mes año" en español (p. ej. "septiembre de 2026"), sin el día. */
 export function formatMesAnioISO(fechaISO: string): string {
   return new Date(`${fechaISO}T00:00:00Z`).toLocaleDateString("es-ES", {
     month: "long",
     year: "numeric",
     timeZone: "UTC",
   });
+}
+
+/** Como `formatMesAnioISO`, pero sin "de" y con el mes capitalizado (p. ej. "Septiembre 2026"), para badges y microcopys. */
+export function formatMesAnioCapitalizado(fechaISO: string): string {
+  const sinDe = formatMesAnioISO(fechaISO).replace(" de ", " ");
+  return sinDe.charAt(0).toUpperCase() + sinDe.slice(1);
 }

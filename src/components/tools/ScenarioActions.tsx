@@ -3,9 +3,12 @@
 import { useState } from "react";
 import { Check, Download, FileSpreadsheet, Link2, Loader2, RotateCcw } from "lucide-react";
 import { useCopyShareLink } from "@/lib/useScenarioShare";
+import { trackPdfDownload, trackSimulationShare } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 interface ScenarioActionsProps {
+  /** Slug de la herramienta, para la analítica de embudo (descarga de PDF, compartir simulación). */
+  toolSlug: string;
   onReset: () => void;
   /** Genera y descarga el informe en PDF de la simulación actual. Si se omite, el botón no se muestra. */
   onDownloadPdf?: () => void | Promise<void>;
@@ -14,16 +17,22 @@ interface ScenarioActionsProps {
 }
 
 /** Barra de acción contextual: compartir la simulación (vía URL), descargar el informe en PDF o CSV/Excel, y restablecer los valores por defecto. */
-export function ScenarioActions({ onReset, onDownloadPdf, onDownloadCsv }: ScenarioActionsProps) {
+export function ScenarioActions({ toolSlug, onReset, onDownloadPdf, onDownloadCsv }: ScenarioActionsProps) {
   const { copied, copyShareLink } = useCopyShareLink();
   const [generatingPdf, setGeneratingPdf] = useState(false);
   const [generatingCsv, setGeneratingCsv] = useState(false);
+
+  const handleShare = async () => {
+    const ok = await copyShareLink();
+    if (ok) trackSimulationShare(toolSlug);
+  };
 
   const handleDownloadPdf = async () => {
     if (!onDownloadPdf || generatingPdf) return;
     setGeneratingPdf(true);
     try {
       await onDownloadPdf();
+      trackPdfDownload(toolSlug);
     } finally {
       setGeneratingPdf(false);
     }
@@ -44,7 +53,7 @@ export function ScenarioActions({ onReset, onDownloadPdf, onDownloadCsv }: Scena
       <div className="flex flex-wrap items-center gap-2">
         <button
           type="button"
-          onClick={() => void copyShareLink()}
+          onClick={() => void handleShare()}
           aria-live="polite"
           className={cn(
             "inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors",

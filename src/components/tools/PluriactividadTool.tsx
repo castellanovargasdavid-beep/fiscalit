@@ -19,8 +19,11 @@ import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { RelatedToolsMesh } from "@/components/RelatedToolsMesh";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
+import { useTrackCalculationCompleted } from "@/lib/hooks";
 import { formatEUR } from "@/lib/format";
 import { cn } from "@/lib/utils";
+
+const TOOL_SLUG = "pluriactividad-devolucion";
 
 interface PluriactividadToolProps {
   faqItems: FAQItem[];
@@ -44,6 +47,7 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
     () => calcularPluriactividad({ cotizacionRegimenGeneralAnual, cotizacionRETAAnual }),
     [cotizacionRegimenGeneralAnual, cotizacionRETAAnual],
   );
+  useTrackCalculationCompleted(TOOL_SLUG, resultado);
 
   const limiteDevolucion = cotizacionRETAAnual * PORCENTAJE_DEVOLUCION_EXCESO;
 
@@ -157,6 +161,7 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
       <LegalSourceBadge
         fuente="Art. 313 del Texto Refundido de la Ley General de la Seguridad Social."
         url="https://www.boe.es/buscar/act.php?id=BOE-A-2015-11724#a313"
+        motor="Devolución por pluriactividad"
       />
 
       <SimulationDisclaimer />
@@ -166,6 +171,7 @@ export function PluriactividadTool({ faqItems }: PluriactividadToolProps) {
       <div className="mt-10">
         <AffiliateCard
           partnerId="ayuda-t-pymes"
+          toolSlug={TOOL_SLUG}
           analysis={
             resultado.tieneDerechoDevolucion
               ? `Según tus cifras, tienes derecho a una devolución estimada de ${formatEUR(resultado.importeDevolucion)} por exceso de cotización en pluriactividad.`

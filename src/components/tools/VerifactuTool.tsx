@@ -20,8 +20,10 @@ import { PrintHeader } from "@/components/tools/PrintHeader";
 import { AffiliateCard } from "@/components/AffiliateCard";
 import { RelatedToolsMesh } from "@/components/RelatedToolsMesh";
 import { FAQAccordion, type FAQItem } from "@/components/FAQAccordion";
-import { useIsClient } from "@/lib/hooks";
+import { useIsClient, useTrackCalculationCompleted } from "@/lib/hooks";
 import { cn } from "@/lib/utils";
+
+const TOOL_SLUG = "diagnostico-verifactu";
 
 interface VerifactuToolProps {
   faqItems: FAQItem[];
@@ -92,6 +94,7 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
       }),
     [tipoContribuyente, tipoCliente, facturacionAnual, sistemaActual, mounted],
   );
+  useTrackCalculationCompleted(TOOL_SLUG, resultado);
 
   const estado = useMemo<{ nivel: EstadoSemaforo; titulo: string; mensaje: string }>(() => {
     const itemsCriticos = resultado.checklist.filter((item) => item.id !== "factura_electronica_b2b");
@@ -293,6 +296,7 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
       <LegalSourceBadge
         fuente="Conforme al Reglamento de requisitos de los sistemas informáticos de facturación (Orden HAC/1177/2024)."
         url="https://www.boe.es/diario_boe/txt.php?id=BOE-A-2024-22138"
+        motor="Diagnóstico VeriFactu"
       />
 
       <SimulationDisclaimer />
@@ -300,7 +304,7 @@ export function VerifactuTool({ faqItems }: VerifactuToolProps) {
       <TerritorialScopeNotice />
 
       <div className="mt-10">
-        <AffiliateCard partnerId="holded" {...ctaHolded} />
+        <AffiliateCard partnerId="holded" toolSlug={TOOL_SLUG} {...ctaHolded} />
       </div>
 
       <RelatedToolsMesh slugs={["retencion-factura-iae", "autonomo-vs-sl"]} />

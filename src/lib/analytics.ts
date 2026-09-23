@@ -12,11 +12,14 @@ export type AnalyticsEvent =
   | "share_link_copied"
   | "embed_code_copied"
   | "newsletter_subscribed"
-  | "lead_form_submitted";
+  | "lead_form_submitted"
+  | "affiliate_click";
 
 export interface AnalyticsPayload {
   /** Único dato de contexto permitido: el slug de la herramienta (p. ej. "calculadora-cuota-autonomos"). */
   tool?: string;
+  /** Nombre del partner de afiliación (p. ej. "Quipu"), solo para "affiliate_click". Nunca datos del usuario. */
+  partner?: string;
 }
 
 /**
@@ -35,7 +38,7 @@ export interface AnalyticsPayload {
 export function trackEvent(event: AnalyticsEvent, payload?: AnalyticsPayload): void {
   if (typeof window === "undefined" || !siteConfig.analyticsEndpoint) return;
 
-  const body = JSON.stringify({ event, tool: payload?.tool, ts: Date.now() });
+  const body = JSON.stringify({ event, tool: payload?.tool, partner: payload?.partner, ts: Date.now() });
 
   try {
     if (navigator.sendBeacon) {
@@ -51,4 +54,24 @@ export function trackEvent(event: AnalyticsEvent, payload?: AnalyticsPayload): v
   } catch {
     // El envío de analítica nunca debe romper la experiencia de la calculadora.
   }
+}
+
+/** Se ha mostrado un resultado estable de la calculadora (embudo: "llegó a un resultado"). */
+export function trackCalculationCompleted(toolSlug: string): void {
+  trackEvent("tool_completed", { tool: toolSlug });
+}
+
+/** El usuario ha descargado el informe en PDF de su simulación. */
+export function trackPdfDownload(toolSlug: string): void {
+  trackEvent("pdf_downloaded", { tool: toolSlug });
+}
+
+/** El usuario ha copiado el enlace para compartir su simulación. */
+export function trackSimulationShare(toolSlug: string): void {
+  trackEvent("share_link_copied", { tool: toolSlug });
+}
+
+/** El usuario ha pulsado un enlace de afiliado hacia `partnerName` desde la herramienta `toolSlug`. */
+export function trackAffiliateClick(partnerName: string, toolSlug: string): void {
+  trackEvent("affiliate_click", { tool: toolSlug, partner: partnerName });
 }
