@@ -1,3 +1,4 @@
+import { track } from "@vercel/analytics";
 import { siteConfig } from "@/config/site";
 
 /**
@@ -37,20 +38,32 @@ export interface AnalyticsPayload {
 }
 
 /**
- * Punto único y auditable por el que Fiscalit podría enviar analítica de
+ * Punto único y auditable por el que Fiscalit envía analítica de
  * interacción. Es deliberadamente estrecho: solo acepta un nombre de
  * evento de la lista cerrada `AnalyticsEvent` y, como mucho, el slug de la
  * herramienta. La firma de tipos hace estructuralmente imposible adjuntar
  * ingresos, gastos, cuotas, salarios o cualquier otra cifra que el usuario
  * haya introducido en una calculadora: eso nunca debe salir del navegador.
  *
- * Hoy es un no-op: `siteConfig.analyticsEndpoint` está vacío porque
- * Fiscalit no usa ninguna herramienta de analítica. Si en el futuro se
- * configura un proveedor, esta función —y solo esta función— es la vía
- * permitida para enviarle eventos.
+ * El proveedor activo es Vercel Web Analytics (`@vercel/analytics`), que ya
+ * no envía ni almacena esas cifras porque nunca se le pasan. Fuera del
+ * navegador, o fuera de un despliegue en Vercel, `track()` no hace nada.
+ * `siteConfig.analyticsEndpoint` sigue disponible como vía adicional para
+ * un proveedor propio, si algún día se necesita.
  */
 export function trackEvent(event: AnalyticsEvent, payload?: AnalyticsPayload): void {
-  if (typeof window === "undefined" || !siteConfig.analyticsEndpoint) return;
+  if (typeof window === "undefined") return;
+
+  try {
+    const properties: Record<string, string> = {};
+    if (payload?.tool) properties.tool = payload.tool;
+    if (payload?.partner) properties.partner = payload.partner;
+    track(event, properties);
+  } catch {
+    // El envío de analítica nunca debe romper la experiencia de la calculadora.
+  }
+
+  if (!siteConfig.analyticsEndpoint) return;
 
   const body = JSON.stringify({ event, tool: payload?.tool, partner: payload?.partner, ts: Date.now() });
 
